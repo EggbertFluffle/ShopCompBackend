@@ -4,13 +4,32 @@ ShopComp Use Cases JSON State Representations
 /register-shopper
     POST
         {
-
+            "username" : "shopper-username",
+            "password" : "shopper-password"
         }
     200:
         {
-
+            "receipts" : [],
+            "shopping-lists" : [],
+            "store-chains" : [
+                {
+                    "name": "BJ's",
+                    "url": "https://www.bjs.com",
+                    "stores": []
+                },
+                {
+                    "name": "Walmart",
+                    "url": "https://www.walmart.com",
+                    "stores": [
+                        {
+                            "address" : "123 Main St. Boston"
+                        }
+                    ]
+                }
+            ]
+            "message" : "Account registered successfully"
         }
-    400: { }
+    400: { "error" : "Error creating account. Please follow the username/password policy" }
 -----------------------------------------------------------------
 /login-shopper
     POST
