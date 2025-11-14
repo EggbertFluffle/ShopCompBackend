@@ -1,5 +1,6 @@
 ShopComp Use Cases JSON State Representations
 
+-----------------------------------------------------------------
 /register-shopper
     POST
         {
@@ -10,7 +11,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /login-shopper
     POST
         {
@@ -21,7 +22,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /show-account-dashboard
     POST
         {
@@ -32,7 +33,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /add-chain
     POST
         {
@@ -56,7 +57,7 @@ ShopComp Use Cases JSON State Representations
             ]
         }
     400: { "error" : "Error adding new chain" }
-
+-----------------------------------------------------------------
 /add-store-to-chain
     POST
         {
@@ -67,7 +68,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /review-history
     POST
         {
@@ -78,7 +79,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /review-activity
     POST
         {
@@ -89,7 +90,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /create-receipt
     POST
         {
@@ -100,7 +101,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /add-item-to-receipt
     POST
         {
@@ -111,7 +112,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /remove-item-from-receipt
     POST
         {
@@ -122,7 +123,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /edit-item-on-receipt
     POST
         {
@@ -133,7 +134,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /submit-receipt
     POST
         {
@@ -144,7 +145,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /analyse-receipt-image
     POST
         {
@@ -155,7 +156,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /create-shopping-list
     POST
         {
@@ -166,7 +167,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /add-to-shopping-list
     POST
         {
@@ -177,7 +178,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /remove-from-shopping-list
     POST
         {
@@ -188,7 +189,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /list-store-chains
     POST
         {
@@ -199,7 +200,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /report-options-for-shopping-list
     POST
         {
@@ -210,7 +211,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /search-recent-purchases
     POST
         {
@@ -221,7 +222,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /login-administrator
     POST
         {
@@ -232,7 +233,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /show-admin-dashboard
     POST
         {
@@ -243,7 +244,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /remove-store
     POST
         {
@@ -254,7 +255,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
-
+-----------------------------------------------------------------
 /remove-store-chain
     POST
         {
