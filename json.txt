@@ -1,6 +1,6 @@
 ShopComp Use Cases JSON State Representations
 
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /register-shopper
     POST
         {
@@ -30,7 +30,7 @@ ShopComp Use Cases JSON State Representations
             "message" : "Account registered successfully"
         }
     400: { "error" : "Error creating account. Please follow the username/password policy" }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /login-shopper
     POST
         {
@@ -41,7 +41,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /show-account-dashboard
     POST
         {
@@ -52,7 +52,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /add-chain
     POST
         {
@@ -76,7 +76,7 @@ ShopComp Use Cases JSON State Representations
             ]
         }
     400: { "error" : "Error adding new chain" }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /add-store-to-chain
     POST
         {
@@ -87,7 +87,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /review-history
     POST
         {
@@ -98,7 +98,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Andry
 /review-activity
     POST
         {
