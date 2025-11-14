@@ -1,5 +1,38 @@
 ShopComp Use Cases JSON State Representations
 
+/register-shopper
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/login-shopper
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/show-account-dashboard
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
 /add-chain
     POST
         {
@@ -22,7 +55,213 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400:
+    400: { "error" : "Error adding new chain" }
+
+/add-store-to-chain
+    POST
         {
-            "error" : "Error adding new chain"
+
         }
+    200:
+        {
+
+        }
+    400: { }
+
+/review-history
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/review-activity
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/create-receipt
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/add-item-to-receipt
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/remove-item-from-receipt
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/edit-item-on-receipt
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/submit-receipt
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/analyse-receipt-image
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/create-shopping-list
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/add-to-shopping-list
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/remove-from-shopping-list
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/list-store-chains
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/report-options-for-shopping-list
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/search-recent-purchases
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/login-administrator
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/show-admin-dashboard
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/remove-store
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
+
+/remove-store-chain
+    POST
+        {
+
+        }
+    200:
+        {
+
+        }
+    400: { }
