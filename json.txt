@@ -1,0 +1,28 @@
+ShopComp Use Cases JSON State Representations
+
+/add-chain
+    POST
+        {
+            "chain-name" : "Walmart",
+            "chain-URL" : "https://www.walmart.com"
+        }
+    200:
+        {
+            "chain-name" : "Walmart",
+            "chains-list": [
+                {
+                "name": "BJ's",
+                "url": "https://www.bjs.com",
+                "stores": []
+                },
+                {
+                "name": "Walmart",
+                "url": "https://www.walmart.com",
+                "stores": []
+                }
+            ]
+        }
+    400:
+        {
+            "error" : "Error adding new chain"
+        }
