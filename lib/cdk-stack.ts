@@ -33,7 +33,7 @@ export class CdkStack extends cdk.Stack {
 		// generic default handler for any API function that doesn't get its own Lambda method
 		const default_fn = new lambdaNodejs.NodejsFunction(this, 'LambdaDefaultFunction', {
 			runtime: lambda.Runtime.NODEJS_22_X,
-			handler: 'default.handler',
+			handler: 'handler.handler',
 			code: lambda.Code.fromAsset(path.join(__dirname, 'default')),
 			vpc: vpc,                                                             // Reference the VPC defined above
 			securityGroups: [securityGroup],                                      // Associate the security group
@@ -144,7 +144,7 @@ export class CdkStack extends cdk.Stack {
 		// Add a POST method to the '/shopcomp/test' resource
 		const test_fn = new lambdaNodejs.NodejsFunction(this, 'TestFunction', {
 		  runtime: lambda.Runtime.NODEJS_22_X,
-		  handler: 'test.handler',
+		  handler: 'handler.handler',
 		  code: lambda.Code.fromAsset(path.join(__dirname, 'test')),
 		  vpc: vpc,                                                             // Reference the VPC defined above
 		  environment: {
