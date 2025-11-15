@@ -1,11 +1,13 @@
-import * as cdk from 'aws-cdk-lib'
 import { Construct } from 'constructs'
+
+import { Duration } from 'aws-cdk-lib'
+import * as cdk from 'aws-cdk-lib'
 import * as apigw from "aws-cdk-lib/aws-apigateway"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
-import * as path from 'node:path'
 import * as ec2 from 'aws-cdk-lib/aws-ec2'
-import { Duration } from 'aws-cdk-lib'
+
+import * as path from 'node:path'
 
 export class CdkStack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -38,7 +40,7 @@ export class CdkStack extends cdk.Stack {
 			timeout: Duration.seconds(3),                                         // Example timeout, adjust as needed
 		})
 
-		const api_endpoint = new apigw.LambdaRestApi(this, `shopcompapi`, {
+		const api_endpoint = new apigw.LambdaRestApi(this, `shopcomp`, {
 			handler: default_fn,
 			restApiName: `ShopCompAPI`, 
 			proxy: false,
@@ -54,7 +56,7 @@ export class CdkStack extends cdk.Stack {
 		const testResource = shopcompResource.addResource('test')
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
-		const integration_parameters = { 
+		const integration_parameters = {
 			proxy: false,
 			passthroughBehavior: apigw.PassthroughBehavior.WHEN_NO_MATCH,
 
@@ -86,7 +88,6 @@ export class CdkStack extends cdk.Stack {
 				}
 			]
 		}
-
 
 		const response_parameters = {
 			methodResponses: [
@@ -147,11 +148,10 @@ export class CdkStack extends cdk.Stack {
 		  code: lambda.Code.fromAsset(path.join(__dirname, 'test')),
 		  vpc: vpc,                                                             // Reference the VPC defined above
 		  environment: {
-		      // Define your environment variables here
-		      RDS_USER: process.env.RDS_USER!,
-		      RDS_PASSWORD: process.env.RDS_PASSWORD!,
-		      RDS_DATABASE: process.env.RDS_DATABASE!,
-		      RDS_HOST: process.env.RDS_HOST!
+		      RDS_USER: rdsUser,
+		      RDS_PASSWORD: rdsPassword,
+		      RDS_DATABASE: rdsDatabase,
+		      RDS_HOST: rdsHost
 		    },
 		  securityGroups: [securityGroup],                                      // Associate the security group
 		  timeout: Duration.seconds(3),                                         // Example timeout, adjust as needed
