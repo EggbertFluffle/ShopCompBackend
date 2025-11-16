@@ -2,12 +2,12 @@ ShopComp Use Cases JSON State Representations
 
 ----------------------------------------------------------------- Andry
 /register-shopper
-    POST
+    POST:
         {
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200:
+    200 on success:
         {
             "receipts" : [],
             "shopping-lists" : [],
@@ -29,259 +29,272 @@ ShopComp Use Cases JSON State Representations
             ]
             "message" : "Account registered successfully"
         }
-    400: { "error" : "Error creating account. Please follow the username/password policy" }
+    400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
 /login-shopper
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 ----------------------------------------------------------------- Andry
 /show-account-dashboard
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 ----------------------------------------------------------------- Andry
 /add-chain
-    POST
+    POST:
         {
             "chain-name" : "Walmart",
             "chain-URL" : "https://www.walmart.com"
         }
-    200:
+    200 on success:
         {
             "chain-name" : "Walmart",
             "chains-list": [
                 {
-                "name": "BJ's",
-                "url": "https://www.bjs.com",
-                "stores": []
+					"name": "BJ's",
+					"url": "https://www.bjs.com",
+					"stores": []
                 },
                 {
-                "name": "Walmart",
-                "url": "https://www.walmart.com",
-                "stores": []
+					"name": "Walmart",
+					"url": "https://www.walmart.com",
+					"stores": []
                 }
             ]
         }
-    400: { "error" : "Error adding new chain" }
+    400 on failure: { "error" : "Error adding new chain" }
 ----------------------------------------------------------------- Andry
 /add-store-to-chain
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 ----------------------------------------------------------------- Andry
 /review-history
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 ----------------------------------------------------------------- Andry
 /review-activity
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
------------------------------------------------------------------
-/create-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/add-item-to-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/remove-item-from-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/edit-item-on-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /submit-receipt
-    POST
+    POST:
         {
-
+			"receipt": {
+				"date": "UNIX EPOCH TIME",
+				"store": {
+					"address": "123 Goat St, Worcester, MA",
+					"chain-name": "BJ's"
+				},
+				"items": [
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					}, 
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+				]
+			}
         }
-    200:
-        {
-
-        }
-    400: { }
+    200 on success: { } // TODO: Shouls this return anything either, and if so, what?
+    400 on failure: { "error": "Submitted receipt is invalid: MORE INFORMATION HERE" }
 -----------------------------------------------------------------
 /analyse-receipt-image
-    POST
+    POST:
         {
-
+			open-api-key: "OPEN API KEY",
+			file: "MIME ENCODED STRING"
         }
-    200:
+    200 on success:
         {
-
+			"receipt": {
+				"date": "DATE AS UNIX EPOCH TIME",
+				"store": {
+					"address": "123 Goat St, Worcester, MA",
+					"chain-name": "BJ's"
+				},
+				"items": [
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					}, 
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+				]
+			}
         }
-    400: { }
+    400 on failure: { "error": "Invalid Open-API key" }
 -----------------------------------------------------------------
 /create-shopping-list
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /add-to-shopping-list
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /remove-from-shopping-list
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /list-store-chains
-    POST
+    GET: {}
+    200 on success:
         {
-
+			"chains": [
+                {
+					"name": "BJ's",
+					"url": "https://www.bjs.com",
+					"stores": [
+						{ "address": "123 Goat St, Worcester, MA" }
+					]
+                },
+                {
+					"name": "Walmart",
+					"url": "https://www.walmart.com",
+					"stores": [
+						{ "address": "122 Goat St, Worcester, MA" }
+						{ "address": "121 Goat St, Worcester, MA" }
+					]
+                }
+			]
         }
-    200:
-        {
-
-        }
-    400: { }
+    400 on failure: { "" } // TODO: Can this even error logically? (besides being unauthorized)
 -----------------------------------------------------------------
 /report-options-for-shopping-list
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /search-recent-purchases
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /login-administrator
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /show-admin-dashboard
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /remove-store
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /remove-store-chain
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
