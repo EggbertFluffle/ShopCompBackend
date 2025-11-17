@@ -18,64 +18,7 @@ ShopComp Use Cases JSON State Representations
         }
     200: { "message" : "Logged in successfully" }
     400: { "error" : "Error logging in. Please follow the username/password policy" }
------------------------------------------------------------------ Andry
-/return-main-page-info   -->   (post logging in, main page is rendered, calling this lambda)
-    GET
-    200:
-        {
-            "receipts" : [
-                {
-                    "date" : "2025-10-31",
-                    "address" : "123 Main St. Boston",
-                    "items" : [
-                        {
-                            "item-name" : "Whole Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "10",
-                            "item-quantity" : "1"
-                        }
-                    ]
-                },
-                {
-                    "date" : "2025-10-31",
-                    "address" : "200 East Rd. Chicago",
-                    "items" : [
-                        {
-                            "item-name" : "Classic Lays Chips",
-                            "item-category" : "Chips",
-                            "item-price" : "3",
-                            "item-quantity" : "2"
-                        },
-                        {
-                            "item-name" : "Slim Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "12",
-                            "item-quantity" : "1"
-                        }
-                    ]
-                }
-            ],
-            "store-chains" : [
-                {
-                    "name": "BJ's",
-                    "url": "https://www.bjs.com",
-                    "stores": []
-                },
-                {
-                    "name": "Walmart",
-                    "url": "https://www.walmart.com",
-                    "stores": [
-                        {
-                            "address" : "123 Main St. Boston"
-                        },
-                        {
-                            "address" : "200 East Rd. Chicago"
-                        }
-                    ]
-                }
-            ]
-        }
-    400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
+    
 ----------------------------------------------------------------- Andry
 /show-account-dashboard   -->   Might not actually use this as an API
     POST
@@ -439,16 +382,34 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { }
 -----------------------------------------------------------------
-/search-recent-purchases
+/search-recent-purchases      -->    Uses "keyword" to return receipts with "keyword" items
     POST:
         {
-
+            "username" : "shopper-username",
+            "search-keyword" : "Chips"
         }
     200 on success:
         {
-
+            "receipt" : {
+                "date" : "2025-10-31",
+                "address" : "200 East Rd. Chicago",
+                "items" : [
+                    {
+                        "item-name" : "Classic Lays Chips",
+                        "item-category" : "Chips",
+                        "item-price" : "3",
+                        "item-quantity" : "2"
+                    },
+                    {
+                        "item-name" : "Slim Milk Bottle",
+                        "item-category" : "Milk",
+                        "item-price" : "12",
+                           "item-quantity" : "1"
+                    }
+                ]
+            }
         }
-    400 on failure: { }
+    400 on failure: { "error" : "Item does not exist in recent purchases" }
 ----------------------------------------------------------------- Bryce
 /login-administrator
     POST:
@@ -457,7 +418,9 @@ ShopComp Use Cases JSON State Representations
             "password" : "admin-password"
         }
     200 on success:
-        { }
+        { 
+            "message" : "Logged in successfully as Administrator"
+        }
     400: { "error" : "Invalid username or password" }
 ----------------------------------------------------------------- Bryce
 /show-admin-dashboard
