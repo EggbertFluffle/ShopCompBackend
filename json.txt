@@ -2,14 +2,13 @@ ShopComp Use Cases JSON State Representations
 
 ----------------------------------------------------------------- Andry
 /register-shopper
-    POST
+    POST:
         {
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
     200: { "message" : "Account registered successfully" }
     400: { "error" : "Error creating account. Please follow the username/password policy" }
------------------------------------------------------------------ Andry
 /login-shopper
     POST
         {
@@ -75,6 +74,17 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
+    400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
+/login-shopper
+    POST:
+        {
+
+        }
+    200 on success:
+        {
+
+        }
     400: { "error" : "Unable to return main page info" }
 ----------------------------------------------------------------- Andry
 /show-account-dashboard   -->   We will NOT have an API for this USE CASE
@@ -82,43 +92,43 @@ ShopComp Use Cases JSON State Representations
         {
                   
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 ----------------------------------------------------------------- Andry
 /add-chain
-    POST
+    POST:
         {
             "chain-name" : "Walmart",
             "chain-URL" : "https://www.walmart.com"
         }
-    200:
+    200 on success:
         {
             "chain-name" : "Walmart",
             "chains-list": [
                 {
-                "name": "BJ's",
-                "url": "https://www.bjs.com",
-                "stores": []
+					"name": "BJ's",
+					"url": "https://www.bjs.com",
+					"stores": []
                 },
                 {
-                "name": "Walmart",
-                "url": "https://www.walmart.com",
-                "stores": []
+					"name": "Walmart",
+					"url": "https://www.walmart.com",
+					"stores": []
                 }
             ]
         }
-    400: { "error" : "Error adding new chain" }
+    400 on failure: { "error" : "Error adding new chain" }
 ----------------------------------------------------------------- Andry
 /add-store-to-chain
-    POST
+    POST:
         {
             "chain-name" : "Walmart",
             "address" : "210 C St. Milford"
         }
-    200:
+    200 on success:
         {
             "chain-name" : "Walmart",
             "stores" : [
@@ -128,11 +138,11 @@ ShopComp Use Cases JSON State Representations
     400: { "error" : "Cannot add store to chain" }
 ----------------------------------------------------------------- Andry
 /review-history
-    POST
+    POST:
         {
             "username" : "shapper-username"
         }
-    200:
+    200 on success:
         {
             "receipts" : [
                 {
@@ -170,12 +180,12 @@ ShopComp Use Cases JSON State Representations
     400: { "error" : "Error returning receipts" }
 ----------------------------------------------------------------- Andry
 /review-activity
-    POST
+    POST:
         {
             "username" : "shopper-username",
             "time-period-option" : "last-week"
         }
-    200:
+    200 on success:
         {
             "receipt-dates" : [
                 { "date" : "2025-10-31" },
@@ -187,180 +197,386 @@ ShopComp Use Cases JSON State Representations
             ],
             "total-spent" : "28"
         }
-    400: { "error" : "Error return spending activity" }
------------------------------------------------------------------
-/create-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/add-item-to-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/remove-item-from-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
------------------------------------------------------------------
-/edit-item-on-receipt
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /submit-receipt
-    POST
+    POST:
         {
-
+			"receipt": {
+				"date": "UNIX EPOCH TIME",
+				"store": {
+					"address": "123 Goat St, Worcester, MA",
+					"chain-name": "BJ's"
+				},
+				"items": [
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					}, 
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+				]
+			}
         }
-    200:
-        {
-
-        }
-    400: { }
+    200 on success: { }
+    400 on failure: { "error": "Submitted receipt is invalid: MORE INFORMATION HERE" }
 -----------------------------------------------------------------
 /analyse-receipt-image
-    POST
+    POST:
         {
-
+			open-api-key: "OPEN API KEY",
+			file: "MIME ENCODED STRING"
         }
-    200:
+    200 on success:
         {
-
+			"receipt": {
+				"date": "DATE AS UNIX EPOCH TIME",
+				"store": {
+					"address": "123 Goat St, Worcester, MA",
+					"chain-name": "BJ's"
+				},
+				"items": [
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					}, 
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+					{ 
+						"name": "ITEM NAME", 
+						"price": "ITEM PRICE", 
+						"quantity": "ITEM QUANTITY"
+					},
+				]
+			}
         }
-    400: { }
------------------------------------------------------------------
+    400 on failure: { "error": "Invalid Open-API key" }
+----------------------------------------------------------------- Nikita
+/list-shopping-lists
+    POST:
+        {
+          "shopper-username": "shopper123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Weekly Groceries",
+              "list-id": "abc123",
+              "items": [
+                {
+                  "name": "Apples",
+                  "quantity": 5
+                },
+                {
+                  "name": "Bananas",
+                  "quantity": 7
+                }
+              ]
+            },
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping lists retrieved successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to retrieve shopping lists for the specified user"
+    }
+----------------------------------------------------------------- Nikita
+/remove-shopping-list
+    POST:
+        {
+          "shopper-username": "shopper123"
+          "list-id": "abc123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping list removed successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to remove the specified shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /create-shopping-list
-    POST
+    POST:
         {
-
+          "list-name": "Weekly Groceries",
+          "shopper-username": "shopper123"
         }
-    200:
+    200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "message": "Shopping list created successfully",
+          "code": 200
         }
-    400: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to create shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /add-to-shopping-list
-    POST
+    POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          }
         }
-    200:
+    200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          },
+          list-items: [
+            {
+              "name": "Apples",
+              "quantity": 5
+            },
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item added successfully to the shopping list",
+          "code": 200
         }
-    400: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to add item to the shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
-    POST
+    POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item-name": "Apples"
         }
-    200:
+    200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          list-items: [
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item removed successfully from the shopping list",
+          "code": 200
         }
-    400: { }
+    400 on failure: { 
+      "error": "Unable to remove item from the shopping list"
+    }
 -----------------------------------------------------------------
 /list-store-chains
-    POST
+    GET: {}
+    200 on success:
         {
-
+			"chains": [
+                {
+					"name": "BJ's",
+					"url": "https://www.bjs.com",
+					"stores": [
+						{ "address": "123 Goat St, Worcester, MA" }
+					]
+                },
+                {
+					"name": "Walmart",
+					"url": "https://www.walmart.com",
+					"stores": [
+						{ "address": "122 Goat St, Worcester, MA" }
+						{ "address": "121 Goat St, Worcester, MA" }
+					]
+                }
+			]
         }
-    200:
-        {
-
-        }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /report-options-for-shopping-list
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /search-recent-purchases
-    POST
+    POST:
         {
 
         }
-    200:
+    200 on success:
         {
 
         }
-    400: { }
+    400 on failure: { }
 -----------------------------------------------------------------
 /login-administrator
-    POST
+    POST:
         {
-
+            "username" : "admin-username",
+            "password" : "admin-password"
         }
-    200:
+    200 on success:
         {
-
+            "username" : "admin-username",
+            "message"  : "Administrator login successful"
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing username or password" }
+    400: { "error" : "Invalid administrator credentials" }
+    400: { "error" : "Administrator account is disabled" }
+----------------------------------------------------------------- Bryce
 /show-admin-dashboard
-    POST
+    POST:
         {
-
+            "username" : "admin-username"
         }
-    200:
+    200 on success:
         {
-
+            "username" : "admin-username",
+            "summary" : {
+                "store-chain-count" : 3,
+                "store-count"       : 10,
+                "receipt-count"     : 125,
+                "active-shoppers"   : 45
+            },
+            "store-chains" : [
+                {
+                    "name": "BJ's",
+                    "url": "https://www.bjs.com",
+                    "stores": [
+                        { "address" : "10 Maple St. Worcester" }
+                    ]
+                },
+                {
+                    "name": "Walmart",
+                    "url": "https://www.walmart.com",
+                    "stores": [
+                        { "address" : "123 Main St. Boston" },
+                        { "address" : "5 Park Ave. Worcester" }
+                    ]
+                },
+                {
+                    "name": "Trader Joe's",
+                    "url": "https://www.traderjoes.com",
+                    "stores": []
+                }
+            ],
+            "recent-activity" : [
+                {
+                    "timestamp" : "2025-11-17T10:15:00Z",
+                    "event"     : "New receipt submitted for Walmart"
+                },
+                {
+                    "timestamp" : "2025-11-17T09:42:00Z",
+                    "event"     : "Store added to BJ's"
+                }
+            ]
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing administrator username" }
+    400: { "error" : "Administrator does not exist" }
+-----------------------------------------------------------------  Bryce
 /remove-store
-    POST
+    POST:
         {
-
+            "username"   : "admin-username",
+            "chain-name" : "Walmart",
+            "store-address" : "123 Main St. Boston"
         }
-    200:
+    200 on success:
         {
-
+            "chain-name" : "Walmart",
+            "stores" : [
+                // updated list AFTER removal
+                { "address" : "5 Park Ave. Worcester" }
+            ],
+            "message" : "Store removed successfully from chain Walmart"
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing username, chain-name, or store-address" }
+    400: { "error" : "Administrator does not exist" }
+    400: { "error" : "Store Chain does not exist" }
+    400: { "error" : "Store does not exist in the specified Store Chain" }
+    400: { "error" : "Store cannot be removed because it is protected" }
+-----------------------------------------------------------------  Bryce
 /remove-store-chain
-    POST
+    POST:
         {
-
+            "username"   : "admin-username",
+            "chain-name" : "BJ's",
+            "confirm"    : true
         }
-    200:
+    200 on success:
         {
-
+            "removed-chain" : "BJ's",
+            "store-chains" : [
+                {
+                    "name": "Walmart",
+                    "url": "https://www.walmart.com",
+                    "stores": [
+                        { "address" : "123 Main St. Boston" }
+                    ]
+                },
+                {
+                    "name": "Trader Joe's",
+                    "url": "https://www.traderjoes.com",
+                    "stores": []
+                }
+            ],
+            "message" : "Store Chain removed successfully"
         }
-    400: { }
+    400: { "error" : "Missing username or chain-name" }
+    400: { "error" : "Administrator does not exist" }
+    400: { "error" : "Store Chain does not exist" }
+    400: { "error" : "Removal must be confirmed" }
+    400: { "error" : "Store Chain cannot be removed because it is protected or required" }
