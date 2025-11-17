@@ -7,10 +7,49 @@ ShopComp Use Cases JSON State Representations
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
+    200: { "message" : "Account registered successfully" }
+    400: { "error" : "Error creating account. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
+/login-shopper
+    POST
+        {
+            "username" : "shopper-username",
+            "password" : "shopper-password"
+        }
     200:
         {
-            "receipts" : [],
-            "shopping-lists" : [],
+            "receipts" : [
+                {
+                    "date" : "2025-10-31",
+                    "address" : "123 Main St. Boston",
+                    "items" : [
+                        {
+                            "item-name" : "Whole Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "10",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                },
+                {
+                    "date" : "2025-10-31",
+                    "address" : "200 East Rd. Chicago",
+                    "items" : [
+                        {
+                            "item-name" : "Classic Lays Chips",
+                            "item-category" : "Chips",
+                            "item-price" : "3",
+                            "item-quantity" : "2"
+                        },
+                        {
+                            "item-name" : "Slim Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "12",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                }
+            ],
             "store-chains" : [
                 {
                     "name": "BJ's",
@@ -23,24 +62,15 @@ ShopComp Use Cases JSON State Representations
                     "stores": [
                         {
                             "address" : "123 Main St. Boston"
+                        },
+                        {
+                            "address" : "200 East Rd. Chicago"
                         }
                     ]
                 }
             ]
-            "message" : "Account registered successfully"
         }
-    400: { "error" : "Error creating account. Please follow the username/password policy" }
------------------------------------------------------------------ Andry
-/login-shopper
-    POST
-        {
-
-        }
-    200:
-        {
-
-        }
-    400: { }
+    400: { "error" : "Error logging in. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
 /show-account-dashboard
     POST
