@@ -371,7 +371,7 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { }
 -----------------------------------------------------------------
-/report-options-for-shopping-list
+/report-options-for-shopping-list    -->    Attempts to find shopping list items in existing receipts
     POST:
         {
 
