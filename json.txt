@@ -9,6 +9,7 @@ ShopComp Use Cases JSON State Representations
         }
     200: { "message" : "Account registered successfully" }
     400: { "error" : "Error creating account. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
 /login-shopper
     POST
         {
@@ -76,18 +77,7 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
-/login-shopper
-    POST:
-        {
-
-        }
-    200 on success:
-        {
-
-        }
-    400: { "error" : "Unable to return main page info" }
------------------------------------------------------------------ Andry
-/show-account-dashboard   -->   We will NOT have an API for this USE CASE
+/show-account-dashboard   -->   Might not actually use this as an API
     POST
         {
                   
