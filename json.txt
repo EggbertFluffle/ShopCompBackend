@@ -16,6 +16,11 @@ ShopComp Use Cases JSON State Representations
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
+    200: { "message" : "Logged in successfully" }
+    400: { "error" : "Error logging in. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
+/return-main-page-info   -->   (post logging in, main page is rendered, calling this lambda)
+    GET
     200:
         {
             "receipts" : [
@@ -70,7 +75,7 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400: { "error" : "Error logging in. Please follow the username/password policy" }
+    400: { "error" : "Unable to return main page info" }
 ----------------------------------------------------------------- Andry
 /show-account-dashboard
     POST
