@@ -220,39 +220,157 @@ ShopComp Use Cases JSON State Representations
 			}
         }
     400 on failure: { "error": "Invalid Open-API key" }
------------------------------------------------------------------
+----------------------------------------------------------------- Nikita
+/list-shopping-lists
+    POST:
+        {
+          "shopper-username": "shopper123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Weekly Groceries",
+              "list-id": "abc123",
+              "items": [
+                {
+                  "name": "Apples",
+                  "quantity": 5
+                },
+                {
+                  "name": "Bananas",
+                  "quantity": 7
+                }
+              ]
+            },
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping lists retrieved successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to retrieve shopping lists for the specified user"
+    }
+----------------------------------------------------------------- Nikita
+/remove-shopping-list
+    POST:
+        {
+          "shopper-username": "shopper123"
+          "list-id": "abc123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping list removed successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to remove the specified shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /create-shopping-list
     POST:
         {
-
+          "list-name": "Weekly Groceries",
+          "shopper-username": "shopper123"
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "message": "Shopping list created successfully",
+          "code": 200
         }
-    400 on failure: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to create shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /add-to-shopping-list
     POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          }
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          },
+          list-items: [
+            {
+              "name": "Apples",
+              "quantity": 5
+            },
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item added successfully to the shopping list",
+          "code": 200
         }
-    400 on failure: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to add item to the shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
     POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item-name": "Apples"
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          list-items: [
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item removed successfully from the shopping list",
+          "code": 200
         }
-    400 on failure: { }
+    400 on failure: { 
+      "error": "Unable to remove item from the shopping list"
+    }
 -----------------------------------------------------------------
 /list-store-chains
     GET: {}
