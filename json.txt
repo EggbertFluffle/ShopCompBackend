@@ -7,10 +7,53 @@ ShopComp Use Cases JSON State Representations
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200 on success:
+    200: { "message" : "Account registered successfully" }
+    400: { "error" : "Error creating account. Please follow the username/password policy" }
+/login-shopper
+    POST
         {
-            "receipts" : [],
-            "shopping-lists" : [],
+            "username" : "shopper-username",
+            "password" : "shopper-password"
+        }
+    200: { "message" : "Logged in successfully" }
+    400: { "error" : "Error logging in. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
+/return-main-page-info   -->   (post logging in, main page is rendered, calling this lambda)
+    GET
+    200:
+        {
+            "receipts" : [
+                {
+                    "date" : "2025-10-31",
+                    "address" : "123 Main St. Boston",
+                    "items" : [
+                        {
+                            "item-name" : "Whole Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "10",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                },
+                {
+                    "date" : "2025-10-31",
+                    "address" : "200 East Rd. Chicago",
+                    "items" : [
+                        {
+                            "item-name" : "Classic Lays Chips",
+                            "item-category" : "Chips",
+                            "item-price" : "3",
+                            "item-quantity" : "2"
+                        },
+                        {
+                            "item-name" : "Slim Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "12",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                }
+            ],
             "store-chains" : [
                 {
                     "name": "BJ's",
@@ -23,11 +66,13 @@ ShopComp Use Cases JSON State Representations
                     "stores": [
                         {
                             "address" : "123 Main St. Boston"
+                        },
+                        {
+                            "address" : "200 East Rd. Chicago"
                         }
                     ]
                 }
             ]
-            "message" : "Account registered successfully"
         }
     400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
@@ -40,7 +85,7 @@ ShopComp Use Cases JSON State Representations
         {
 
         }
-    400 on failure: { }
+    400: { "error" : "Unable to return main page info" }
 ----------------------------------------------------------------- Andry
 /show-account-dashboard
     POST:
@@ -138,7 +183,7 @@ ShopComp Use Cases JSON State Representations
 				]
 			}
         }
-    200 on success: { } // TODO: Shouls this return anything either, and if so, what?
+    200 on success: { }
     400 on failure: { "error": "Submitted receipt is invalid: MORE INFORMATION HERE" }
 -----------------------------------------------------------------
 /analyse-receipt-image
@@ -231,7 +276,7 @@ ShopComp Use Cases JSON State Representations
                 }
 			]
         }
-    400 on failure: { "" } // TODO: Can this even error logically? (besides being unauthorized)
+    400 on failure: { }
 -----------------------------------------------------------------
 /report-options-for-shopping-list
     POST:
