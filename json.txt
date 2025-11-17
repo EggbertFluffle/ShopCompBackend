@@ -154,7 +154,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400 on failure: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Harrison
 /submit-receipt
     POST:
         {
@@ -185,7 +185,7 @@ ShopComp Use Cases JSON State Representations
         }
     200 on success: { }
     400 on failure: { "error": "Submitted receipt is invalid: MORE INFORMATION HERE" }
------------------------------------------------------------------
+----------------------------------------------------------------- Harrison
 /analyse-receipt-image
     POST:
         {
@@ -253,7 +253,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400 on failure: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Harrison
 /list-store-chains
     GET: {}
     200 on success:
@@ -299,7 +299,7 @@ ShopComp Use Cases JSON State Representations
 
         }
     400 on failure: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Bryce
 /login-administrator
     POST:
         {
@@ -307,13 +307,8 @@ ShopComp Use Cases JSON State Representations
             "password" : "admin-password"
         }
     200 on success:
-        {
-            "username" : "admin-username",
-            "message"  : "Administrator login successful"
-        }
-    400: { "error" : "Missing username or password" }
-    400: { "error" : "Invalid administrator credentials" }
-    400: { "error" : "Administrator account is disabled" }
+        { }
+    400: { "error" : "Invalid username or password" }
 ----------------------------------------------------------------- Bryce
 /show-admin-dashboard
     POST:
@@ -369,7 +364,7 @@ ShopComp Use Cases JSON State Representations
     POST:
         {
             "username"   : "admin-username",
-            "chain-name" : "Walmart",
+            "store-chain" : "Walmart",
             "store-address" : "123 Main St. Boston"
         }
     200 on success:
