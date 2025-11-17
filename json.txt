@@ -87,10 +87,10 @@ ShopComp Use Cases JSON State Representations
         }
     400: { "error" : "Unable to return main page info" }
 ----------------------------------------------------------------- Andry
-/show-account-dashboard
-    POST:
+/show-account-dashboard   -->   We will NOT have an API for this USE CASE
+    POST
         {
-
+                  
         }
     200 on success:
         {
@@ -125,33 +125,77 @@ ShopComp Use Cases JSON State Representations
 /add-store-to-chain
     POST:
         {
-
+            "chain-name" : "Walmart",
+            "address" : "210 C St. Milford"
         }
     200 on success:
         {
-
+            "chain-name" : "Walmart",
+            "stores" : [
+                { "address" : "210 C St. Milford" }
+            ]
         }
-    400 on failure: { }
+    400: { "error" : "Cannot add store to chain" }
 ----------------------------------------------------------------- Andry
 /review-history
     POST:
         {
-
+            "username" : "shapper-username"
         }
     200 on success:
         {
-
+            "receipts" : [
+                {
+                    "date" : "2025-10-31",
+                    "address" : "123 Main St. Boston",
+                    "items" : [
+                        {
+                            "item-name" : "Whole Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "10",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                },
+                {
+                    "date" : "2025-10-31",
+                    "address" : "200 East Rd. Chicago",
+                    "items" : [
+                        {
+                            "item-name" : "Classic Lays Chips",
+                            "item-category" : "Chips",
+                            "item-price" : "3",
+                            "item-quantity" : "2"
+                        },
+                        {
+                            "item-name" : "Slim Milk Bottle",
+                            "item-category" : "Milk",
+                            "item-price" : "12",
+                            "item-quantity" : "1"
+                        }
+                    ]
+                }
+            ]
         }
-    400 on failure: { }
+    400: { "error" : "Error returning receipts" }
 ----------------------------------------------------------------- Andry
 /review-activity
     POST:
         {
-
+            "username" : "shopper-username",
+            "time-period-option" : "last-week"
         }
     200 on success:
         {
-
+            "receipt-dates" : [
+                { "date" : "2025-10-31" },
+                { "date" : "2025-10-31" }
+            ],
+            "receipts-totals" : [
+                { "receipt-total" : "10" },
+                { "receipt-total" : "18" }
+            ],
+            "total-spent" : "28"
         }
     400 on failure: { }
 ----------------------------------------------------------------- Harrison
@@ -220,39 +264,155 @@ ShopComp Use Cases JSON State Representations
 			}
         }
     400 on failure: { "error": "Invalid Open-API key" }
------------------------------------------------------------------
+----------------------------------------------------------------- Nikita
+/list-shopping-lists
+    POST:
+        {
+          "shopper-username": "shopper123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Weekly Groceries",
+              "list-id": "abc123",
+              "items": [
+                {
+                  "name": "Apples",
+                  "quantity": 5
+                },
+                {
+                  "name": "Bananas",
+                  "quantity": 7
+                }
+              ]
+            },
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping lists retrieved successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to retrieve shopping lists for the specified user"
+    }
+----------------------------------------------------------------- Nikita
+/remove-shopping-list
+    POST:
+        {
+          "shopper-username": "shopper123"
+          "list-id": "abc123"
+        }
+    200 on success:
+        {
+          "lists" : [
+            {
+              "list-name": "Party Supplies",
+              "list-id": "def456",
+              "items": [
+                {
+                  "name": "Chips",
+                  "quantity": 10
+                },
+                {
+                  "name": "Soda",
+                  "quantity": 6
+                }
+              ]
+            }
+          ]
+          "message": "Shopping list removed successfully",
+          "code": 200
+        }
+    400 on failure: { 
+      "error": "Unable to remove the specified shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /create-shopping-list
     POST:
         {
-
+          "list-name": "Weekly Groceries",
+          "shopper-username": "shopper123"
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "message": "Shopping list created successfully",
+          "code": 200
         }
-    400 on failure: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to create shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /add-to-shopping-list
     POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          }
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          "item": {
+            "name": "Apples",
+            "quantity": 5
+          },
+          list-items: [
+            {
+              "name": "Apples",
+              "quantity": 5
+            },
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item added successfully to the shopping list",
+          "code": 200
         }
-    400 on failure: { }
------------------------------------------------------------------
+    400 on failure: { 
+      "error": "Unable to add item to the shopping list"
+    }
+----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
     POST:
         {
-
+          "list-id": "abc123",
+          "shopper-username": "shopper123",
+          "item-name": "Apples"
         }
     200 on success:
         {
-
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          list-items: [
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ],
+          "message": "Item removed successfully from the shopping list",
+          "code": 200
         }
-    400 on failure: { }
+	400 on failure: { "error": "Unable to remove item from the shopping list" }
 ----------------------------------------------------------------- Harrison
 /list-store-chains
     GET: {}
