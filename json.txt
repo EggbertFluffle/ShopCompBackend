@@ -197,47 +197,122 @@ ShopComp Use Cases JSON State Representations
 
         }
     400: { }
------------------------------------------------------------------
+----------------------------------------------------------------- Bryce
 /login-administrator
     POST
         {
-
+            "username" : "admin-username",
+            "password" : "admin-password"
         }
     200:
         {
-
+            "username" : "admin-username",
+            "message"  : "Administrator login successful"
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing username or password" }
+    400: { "error" : "Invalid administrator credentials" }
+    400: { "error" : "Administrator account is disabled" }
+----------------------------------------------------------------- Bryce
 /show-admin-dashboard
     POST
         {
-
+            "username" : "admin-username"
         }
     200:
         {
-
+            "username" : "admin-username",
+            "summary" : {
+                "store-chain-count" : 3,
+                "store-count"       : 10,
+                "receipt-count"     : 125,
+                "active-shoppers"   : 45
+            },
+            "store-chains" : [
+                {
+                    "name": "BJ's",
+                    "url": "https://www.bjs.com",
+                    "stores": [
+                        { "address" : "10 Maple St. Worcester" }
+                    ]
+                },
+                {
+                    "name": "Walmart",
+                    "url": "https://www.walmart.com",
+                    "stores": [
+                        { "address" : "123 Main St. Boston" },
+                        { "address" : "5 Park Ave. Worcester" }
+                    ]
+                },
+                {
+                    "name": "Trader Joe's",
+                    "url": "https://www.traderjoes.com",
+                    "stores": []
+                }
+            ],
+            "recent-activity" : [
+                {
+                    "timestamp" : "2025-11-17T10:15:00Z",
+                    "event"     : "New receipt submitted for Walmart"
+                },
+                {
+                    "timestamp" : "2025-11-17T09:42:00Z",
+                    "event"     : "Store added to BJ's"
+                }
+            ]
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing administrator username" }
+    400: { "error" : "Administrator does not exist" }
+-----------------------------------------------------------------  Bryce
 /remove-store
     POST
         {
-
+            "username"   : "admin-username",
+            "chain-name" : "Walmart",
+            "store-address" : "123 Main St. Boston"
         }
     200:
         {
-
+            "chain-name" : "Walmart",
+            "stores" : [
+                // updated list AFTER removal
+                { "address" : "5 Park Ave. Worcester" }
+            ],
+            "message" : "Store removed successfully from chain Walmart"
         }
-    400: { }
------------------------------------------------------------------
+    400: { "error" : "Missing username, chain-name, or store-address" }
+    400: { "error" : "Administrator does not exist" }
+    400: { "error" : "Store Chain does not exist" }
+    400: { "error" : "Store does not exist in the specified Store Chain" }
+    400: { "error" : "Store cannot be removed because it is protected" }
+-----------------------------------------------------------------  Bryce
 /remove-store-chain
     POST
         {
-
+            "username"   : "admin-username",
+            "chain-name" : "BJ's",
+            "confirm"    : true
         }
     200:
         {
-
+            "removed-chain" : "BJ's",
+            "store-chains" : [
+                {
+                    "name": "Walmart",
+                    "url": "https://www.walmart.com",
+                    "stores": [
+                        { "address" : "123 Main St. Boston" }
+                    ]
+                },
+                {
+                    "name": "Trader Joe's",
+                    "url": "https://www.traderjoes.com",
+                    "stores": []
+                }
+            ],
+            "message" : "Store Chain removed successfully"
         }
-    400: { }
+    400: { "error" : "Missing username or chain-name" }
+    400: { "error" : "Administrator does not exist" }
+    400: { "error" : "Store Chain does not exist" }
+    400: { "error" : "Removal must be confirmed" }
+    400: { "error" : "Store Chain cannot be removed because it is protected or required" }
