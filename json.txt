@@ -249,7 +249,10 @@ ShopComp Use Cases JSON State Representations
           "code": 200
         }
     400 on failure: { 
-      "error": "Unable to retrieve shopping lists for the specified user"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated"
     }
 ----------------------------------------------------------------- Nikita
 /remove-shopping-list
@@ -280,7 +283,13 @@ ShopComp Use Cases JSON State Representations
           "code": 200
         }
     400 on failure: { 
-      "error": "Unable to remove the specified shopping list"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Shopping list does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated or not authorized to delete this list"
     }
 ----------------------------------------------------------------- Nikita
 /create-shopping-list
@@ -297,7 +306,13 @@ ShopComp Use Cases JSON State Representations
           "code": 200
         }
     400 on failure: { 
-      "error": "Unable to create shopping list"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Shopping list with this name already exists"
+    }
+    400 on failure: {
+      "error": "Not authenticated or not authorized to create a list for this user"
     }
 ----------------------------------------------------------------- Nikita
 /add-to-shopping-list
@@ -332,7 +347,19 @@ ShopComp Use Cases JSON State Representations
           "code": 200
         }
     400 on failure: { 
-      "error": "Unable to add item to the shopping list"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Shopping list does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated or not authorized to modify this list"
+    }
+    400 on failure: {
+      "error": "Item already exists in the shopping list"
+    }
+    400 on failure: {
+      "error": "Invalid item data"
     }
 ----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
@@ -355,7 +382,18 @@ ShopComp Use Cases JSON State Representations
           "message": "Item removed successfully from the shopping list",
           "code": 200
         }
-	400 on failure: { "error": "Unable to remove item from the shopping list" }
+	400 on failure: {
+    "error": "User does not exist" 
+  }
+  400 on failure: {
+    "error": "Shopping list does not exist" 
+  }
+  400 on failure: {
+    "error": "Not authenticated or not authorized to modify this list" 
+  }
+  400 on failure: {
+    "error": "Item does not exist in the shopping list" 
+  }
 ----------------------------------------------------------------- Harrison
 /list-store-chains
     GET: {}
