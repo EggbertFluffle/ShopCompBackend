@@ -42,16 +42,20 @@ ShopComp Use Cases JSON State Representations
     200 on success:
         {
             "chain-name" : "Walmart",
+            "chain-id" : "rgr342",
+            "chain-url" : "https://www.walmart.com",
             "chains-list": [
                 {
-					"name": "BJ's",
-					"url": "https://www.bjs.com",
-					"stores": []
+                  "name": "BJ's",
+                  "chain-id": "asd394",
+                  "url": "https://www.bjs.com",
+                  "stores": []
                 },
                 {
-					"name": "Walmart",
-					"url": "https://www.walmart.com",
-					"stores": []
+                  "name": "Walmart",
+                  "chain-id": "rgr342",
+                  "url": "https://www.walmart.com",
+                  "stores": []
                 }
             ]
         }
@@ -145,68 +149,94 @@ ShopComp Use Cases JSON State Representations
 /submit-receipt
     POST:
         {
-			"receipt": {
-				"date": "UNIX EPOCH TIME",
-				"store": {
-					"address": "123 Goat St, Worcester, MA",
-					"chain-name": "BJ's"
-				},
-				"items": [
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					}, 
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					},
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					},
-				]
-			}
+          "shopper-username": "shopper123",
+          "receipt": {
+            "date": "UNIX EPOCH TIME",
+            "store-id": "rgr342",
+            "items": [
+              { 
+                "name": "Apple", 
+                "price": "1.00", 
+                "quantity": "2"
+              }, 
+              { 
+                "name": "Banana", 
+                "price": "0.50", 
+                "quantity": "3"
+              },
+              { 
+                "name": "Chocolate Bar", 
+                "price": "2.00", 
+                "quantity": "1"
+              },
+            ]
+          }
         }
-    200 on success: { }
-    400 on failure: { "error": "Submitted receipt is invalid: MORE INFORMATION HERE" }
+    200 on success: {
+      "message": "Receipt submitted successfully",
+      "receipt-id": "ghi789"
+    }
+    400 on failure: {
+      "error": "User not authenticated or not authorized to submit receipt for this user"
+    }
+    400 on failure: {
+      "error": "Invalid receipt data format"
+    }
+    400 on failure: {
+      "error": "Database error while storing receipt"
+    }
+    400 on failure: {
+      "error": "Store ID does not exist"
+    }
+    400 on failure: {
+      "error": "Receipt date is in the future"
+    }
+    400 on failure: {
+      "error": "Receipt contains no items"
+    }
+    400 on failure: {
+      "error": "User does not exist"
+    }
 ----------------------------------------------------------------- Harrison
 /analyse-receipt-image
     POST:
         {
-			open-api-key: "OPEN API KEY",
-			file: "MIME ENCODED STRING"
+          open-api-key: "OPEN API KEY",
+          file: "MIME ENCODED STRING"
         }
     200 on success:
         {
-			"receipt": {
-				"date": "DATE AS UNIX EPOCH TIME",
-				"store": {
-					"address": "123 Goat St, Worcester, MA",
-					"chain-name": "BJ's"
-				},
-				"items": [
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					}, 
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					},
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					},
-				]
-			}
+          "receipt": {
+            "date": "2025-10-31",
+            "receipt-id": "arf456",
+            "items": [
+              { 
+                "name": "Apple", 
+                "price": "1.00", 
+                "quantity": "2"
+              }, 
+              { 
+                "name": "Banana", 
+                "price": "0.50", 
+                "quantity": "3"
+              },
+              { 
+                "name": "Chocolate Bar", 
+                "price": "2.00", 
+                "quantity": "1"
+              },
+            ]
+          }
         }
-    400 on failure: { "error": "Invalid Open-API key" }
+    400 on failure: { 
+      "error": "Invalid Open-API key" 
+    }
+    400 on failure: { 
+      "error": "Image file is missing or corrupted" 
+    }
+    400 on failure: { 
+      "error": "OpenAI generated an error" 
+    }
 ----------------------------------------------------------------- Nikita
 /list-shopping-lists
     POST:
@@ -399,30 +429,37 @@ ShopComp Use Cases JSON State Representations
     GET: {}
     200 on success:
         {
-			"chains": [
-                {
-					"name": "BJ's",
-					"url": "https://www.bjs.com",
-					"stores": [
-						{ "address": "123 Goat St, Worcester, MA" }
-					]
-                },
-                {
-					"name": "Walmart",
-					"url": "https://www.walmart.com",
-					"stores": [
-						{ "address": "122 Goat St, Worcester, MA" }
-						{ "address": "121 Goat St, Worcester, MA" }
-					]
-                }
-			]
+          "chains": [
+            {
+              "name": "BJ's",
+              "url": "https://www.bjs.com",
+              "chain-id": "asd394",
+              "stores": [
+                { "address": "120 Goat St, Worcester, MA", "store-id": "qwe123" }
+              ]
+            },
+            {
+              "name": "Walmart",
+              "url": "https://www.walmart.com",
+              "chain-id": "rgr342",
+              "stores": [
+                { "address": "122 Goat St, Worcester, MA", "store-id": "wer231" },
+                { "address": "124 Goat St, Worcester, MA", "store-id": "tyu567" }
+              ]
+            }
+          ]
         }
-    400 on failure: { }
+    400 on failure: { 
+      "error": "Database error while retrieving store chains"
+    }
+    400 on failure: { 
+      "error": "User not authenticated or not authorized to view store chains"
+    }
 -----------------------------------------------------------------
 /report-options-for-shopping-list    -->    Attempts to find shopping list items in existing receipts
     POST:
         {
-
+          
         }
     200 on success:
         {
@@ -440,7 +477,15 @@ ShopComp Use Cases JSON State Representations
         {
             "receipt" : {
                 "date" : "2025-10-31",
-                "address" : "200 East Rd. Chicago",
+                "store": {
+                    "address" : "200 East Rd. Chicago",
+                    "store-id": "rfw234",
+                },
+                "chain": {
+                    "name": "Walmart",
+                    "chain-id": "rgr342"
+                },
+                "receipt-id" : "receipt-uuid",
                 "items" : [
                     {
                         "item-name" : "Classic Lays Chips",
@@ -457,7 +502,18 @@ ShopComp Use Cases JSON State Representations
                 ]
             }
         }
-    400 on failure: { "error" : "Item does not exist in recent purchases" }
+    400 on failure: {
+      "error" : "Item does not exist in recent purchases" 
+    }
+    400 on failure: { 
+      "error" : "User does not exist" 
+    }
+    400 on failure: { 
+      "error" : "User not authenticated or not authorized to view recent purchases" 
+    }
+    400 on failure: { 
+      "error" : "Database error while retrieving recent purchases" 
+    }
 ----------------------------------------------------------------- Bryce
 /login-administrator
     POST:
@@ -525,14 +581,17 @@ ShopComp Use Cases JSON State Representations
     POST:
         {
             "username"   : "admin-username",
-            "store-chain" : "Walmart",
-            "store-address" : "123 Main St. Boston"
+            "store-id"   : "tyu567",
         }
     200 on success:
         {
             "chain-name" : "Walmart",
+            "chain-id"   : "rgr342",
+            "removed-store" : {
+                "address" : "210 C St. Milford",
+                "store-id" : "tyu567"
+            },
             "stores" : [
-                // updated list AFTER removal
                 { "address" : "5 Park Ave. Worcester" }
             ],
             "message" : "Store removed successfully from chain Walmart"
@@ -547,22 +606,25 @@ ShopComp Use Cases JSON State Representations
     POST:
         {
             "username"   : "admin-username",
-            "chain-name" : "BJ's",
-            "confirm"    : true
+            "chain-id"   : "asd394",
         }
     200 on success:
         {
             "removed-chain" : "BJ's",
+            "chain-id"   : "asd394",
             "store-chains" : [
                 {
                     "name": "Walmart",
+                    "chain-id": "rgr342",
                     "url": "https://www.walmart.com",
                     "stores": [
-                        { "address" : "123 Main St. Boston" }
+                        { "address" : "123 Main St. Boston", "store-id": "wer231" },
+                        { "address" : "5 Park Ave. Worcester", "store-id": "tyu567" }
                     ]
                 },
                 {
                     "name": "Trader Joe's",
+                    "chain-id": "tyu890",
                     "url": "https://www.traderjoes.com",
                     "stores": []
                 }
