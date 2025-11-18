@@ -7,18 +7,25 @@ ShopComp Use Cases JSON State Representations
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200: { "message" : "Account registered successfully" }
+    200: 
+		{ 
+			"uuid": "unique-uuid-for-shopper" 
+		}
     400: { "error" : "Error creating account. Please follow the username/password policy" }
+----------------------------------------------------------------- Andry
 /login-shopper
     POST
         {
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200: { "message" : "Logged in successfully" }
+    200: 
+		{ 
+			"uuid": "unique-uuid-for-shopper" 
+		}
     400: { "error" : "Error logging in. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
-/return-main-page-info   -->   (post logging in, main page is rendered, calling this lambda)
+/return-main-page-info --> (post logging in, main page is rendered, calling this lambda)
     GET
     200:
         {
@@ -26,30 +33,33 @@ ShopComp Use Cases JSON State Representations
                 {
                     "date" : "2025-10-31",
                     "address" : "123 Main St. Boston",
+					"uuid": "unique-uuid",
                     "items" : [
                         {
-                            "item-name" : "Whole Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "10",
-                            "item-quantity" : "1"
+                            "name" : "Whole Milk Bottle",
+                            "category" : "Milk",
+                            "price" : "10",
+                            "quantity" : "1",
+							"uuid": "unique-uuid"
                         }
                     ]
                 },
                 {
                     "date" : "2025-10-31",
                     "address" : "200 East Rd. Chicago",
+					"uuid": "unique-uuid",
                     "items" : [
                         {
-                            "item-name" : "Classic Lays Chips",
-                            "item-category" : "Chips",
-                            "item-price" : "3",
-                            "item-quantity" : "2"
+                            "name" : "Classic Lays Chips",
+                            "category" : "Chips",
+                            "price" : "3",
+                            "quantity" : "2"
                         },
                         {
-                            "item-name" : "Slim Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "12",
-                            "item-quantity" : "1"
+                            "name" : "Slim Milk Bottle",
+                            "category" : "Milk",
+                            "price" : "12",
+                            "quantity" : "1"
                         }
                     ]
                 }
@@ -58,17 +68,21 @@ ShopComp Use Cases JSON State Representations
                 {
                     "name": "BJ's",
                     "url": "https://www.bjs.com",
+					"uuid": "unique-uuid",
                     "stores": []
                 },
                 {
                     "name": "Walmart",
                     "url": "https://www.walmart.com",
+					"uuid": "unique-uuid",
                     "stores": [
                         {
                             "address" : "123 Main St. Boston"
+							"uuid": "unique-uuid",
                         },
                         {
                             "address" : "200 East Rd. Chicago"
+							"uuid": "unique-uuid",
                         }
                     ]
                 }
@@ -76,46 +90,61 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
 ----------------------------------------------------------------- Andry
-/login-shopper
-    POST:
-        {
-
-        }
+/show-account-dashboard  -->  We will NOT have an API for this USE CASE
+    GET // Shopper only sees all the public chains and stores
     200 on success:
         {
+			"chains": [
+                {
+					"name": "BJ's",
+					"url": "https://www.bjs.com",
+					"uuid": "unique-uuid",
+					"stores": [
+						{ 
+							"address": "123 Goat St, Worcester, MA",
+							"uuid": "unique-uuid"
+						}
+					]
+                },
+                {
+					"name": "Walmart",
+					"url": "https://www.walmart.com",
+					"stores": [
+						{
+							"address": "122 Goat St, Worcester, MA",
+							"uuid": "unique-uuid"
+							},
+						{
+							"address": "121 Goat St, Worcester, MA",
+							"uuid": "unique-uuid"
+						}
+					]
+                }
 
-        }
-    400: { "error" : "Unable to return main page info" }
------------------------------------------------------------------ Andry
-/show-account-dashboard   -->   We will NOT have an API for this USE CASE
-    POST
-        {
-                  
-        }
-    200 on success:
-        {
-
+			]
         }
     400 on failure: { }
 ----------------------------------------------------------------- Andry
 /add-chain
     POST:
         {
+			"username": "SHOPPER USERNAME",
             "chain-name" : "Walmart",
             "chain-URL" : "https://www.walmart.com"
         }
     200 on success:
         {
-            "chain-name" : "Walmart",
-            "chains-list": [
+            "chains": [
                 {
 					"name": "BJ's",
 					"url": "https://www.bjs.com",
+					"uuid": "unique-uuid",
 					"stores": []
                 },
                 {
 					"name": "Walmart",
 					"url": "https://www.walmart.com",
+					"uuid": "unique-uuid",
 					"stores": []
                 }
             ]
@@ -125,6 +154,7 @@ ShopComp Use Cases JSON State Representations
 /add-store-to-chain
     POST:
         {
+			"username": "SHOPPER USERNAME",
             "chain-name" : "Walmart",
             "address" : "210 C St. Milford"
         }
@@ -140,7 +170,7 @@ ShopComp Use Cases JSON State Representations
 /review-history
     POST:
         {
-            "username" : "shapper-username"
+            "username" : "shopper-username",
         }
     200 on success:
         {
@@ -148,30 +178,35 @@ ShopComp Use Cases JSON State Representations
                 {
                     "date" : "2025-10-31",
                     "address" : "123 Main St. Boston",
+					"uuid": "receipt-uuid",
                     "items" : [
                         {
-                            "item-name" : "Whole Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "10",
-                            "item-quantity" : "1"
+                            "name" : "Whole Milk Bottle",
+                            "category" : "Milk",
+                            "price" : "10",
+                            "quantity" : "1",
+							"uuid": "item-uuid"
                         }
                     ]
                 },
                 {
                     "date" : "2025-10-31",
                     "address" : "200 East Rd. Chicago",
+					"uuid": "receipt-uuid",
                     "items" : [
                         {
-                            "item-name" : "Classic Lays Chips",
-                            "item-category" : "Chips",
-                            "item-price" : "3",
-                            "item-quantity" : "2"
+                            "name" : "Classic Lays Chips",
+                            "category" : "Chips",
+                            "price" : "3",
+                            "quantity" : "2",
+							"uuid": "item-uuid"
                         },
                         {
-                            "item-name" : "Slim Milk Bottle",
-                            "item-category" : "Milk",
-                            "item-price" : "12",
-                            "item-quantity" : "1"
+                            "name" : "Slim Milk Bottle",
+                            "category" : "Milk",
+                            "price" : "12",
+                            "quantity" : "1",
+							"uuid": "item-uuid"
                         }
                     ]
                 }
@@ -183,7 +218,7 @@ ShopComp Use Cases JSON State Representations
     POST:
         {
             "username" : "shopper-username",
-            "time-period-option" : "last-week"
+            "time-period" : "last-week"
         }
     200 on success:
         {
@@ -192,8 +227,8 @@ ShopComp Use Cases JSON State Representations
                 { "date" : "2025-10-31" }
             ],
             "receipts-totals" : [
-                { "receipt-total" : "10" },
-                { "receipt-total" : "18" }
+                { "total" : "10" },
+                { "total" : "18" }
             ],
             "total-spent" : "28"
         }
@@ -206,7 +241,7 @@ ShopComp Use Cases JSON State Representations
 				"date": "UNIX EPOCH TIME",
 				"store": {
 					"address": "123 Goat St, Worcester, MA",
-					"chain-name": "BJ's"
+					"store-uuid": "uuid-for-store",
 				},
 				"items": [
 					{ 
@@ -242,24 +277,19 @@ ShopComp Use Cases JSON State Representations
 				"date": "DATE AS UNIX EPOCH TIME",
 				"store": {
 					"address": "123 Goat St, Worcester, MA",
-					"chain-name": "BJ's"
+					"uuid": "store-uuid"
 				},
 				"items": [
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					}, 
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
+					{
+					  "name": "Apples",
+					  "price": "100",
+					  "quantity": "5"
 					},
-					{ 
-						"name": "ITEM NAME", 
-						"price": "ITEM PRICE", 
-						"quantity": "ITEM QUANTITY"
-					},
+					{
+					  "name": "Bananas",
+					  "price": "10000",
+					  "quantity": "100",
+					}
 				]
 			}
         }
@@ -268,42 +298,44 @@ ShopComp Use Cases JSON State Representations
 /list-shopping-lists
     POST:
         {
-          "shopper-username": "shopper123"
+          "username": "shopper123"
         }
     200 on success:
         {
-          "lists" : [
+          "shopping-list" : [
             {
-              "list-name": "Weekly Groceries",
-              "list-id": "abc123",
+              "name": "Weekly Groceries",
+              "uuid": "abc123",
               "items": [
                 {
                   "name": "Apples",
+				  "uuid": "abc123",
                   "quantity": 5
                 },
                 {
-                  "name": "Bananas",
+				  "name": "Bananas",
+				  "uuid": "abc123",
                   "quantity": 7
                 }
               ]
             },
             {
-              "list-name": "Party Supplies",
-              "list-id": "def456",
+              "name": "Party Supplies",
+              "uuid": "def456",
               "items": [
                 {
                   "name": "Chips",
+				  "uuid": "def456",
                   "quantity": 10
                 },
                 {
                   "name": "Soda",
+				  "uuid": "def456",
                   "quantity": 6
                 }
               ]
             }
           ]
-          "message": "Shopping lists retrieved successfully",
-          "code": 200
         }
     400 on failure: { 
       "error": "Unable to retrieve shopping lists for the specified user"
@@ -312,29 +344,29 @@ ShopComp Use Cases JSON State Representations
 /remove-shopping-list
     POST:
         {
-          "shopper-username": "shopper123"
-          "list-id": "abc123"
+          "username": "shopper123",
+          "id": "abc123"
         }
     200 on success:
         {
           "lists" : [
             {
-              "list-name": "Party Supplies",
-              "list-id": "def456",
+              "name": "Party Supplies",
+              "uuid": "def456",
               "items": [
                 {
                   "name": "Chips",
-                  "quantity": 10
+				  "uuid": "def456",
+                  "quantity": "10"
                 },
                 {
                   "name": "Soda",
-                  "quantity": 6
+				  "uuid": "def456",
+                  "quantity": "6"
                 }
               ]
             }
           ]
-          "message": "Shopping list removed successfully",
-          "code": 200
         }
     400 on failure: { 
       "error": "Unable to remove the specified shopping list"
@@ -351,17 +383,13 @@ ShopComp Use Cases JSON State Representations
           "list-name": "Weekly Groceries",
           "list-id": "abc123",
           "message": "Shopping list created successfully",
-          "code": 200
         }
-    400 on failure: { 
-      "error": "Unable to create shopping list"
-    }
+    400 on failure: { "error": "Unable to create shopping list" }
 ----------------------------------------------------------------- Nikita
 /add-to-shopping-list
     POST:
         {
-          "list-id": "abc123",
-          "shopper-username": "shopper123",
+          "username": "shopper123",
           "item": {
             "name": "Apples",
             "quantity": 5
@@ -434,6 +462,7 @@ ShopComp Use Cases JSON State Representations
 						{ "address": "121 Goat St, Worcester, MA" }
 					]
                 }
+
 			]
         }
     400 on failure: { }
@@ -531,27 +560,21 @@ ShopComp Use Cases JSON State Representations
         {
             "chain-name" : "Walmart",
             "stores" : [
-                // updated list AFTER removal
                 { "address" : "5 Park Ave. Worcester" }
+                { "address" : "18 Goat St. Worcester" }
             ],
-            "message" : "Store removed successfully from chain Walmart"
         }
-    400: { "error" : "Missing username, chain-name, or store-address" }
-    400: { "error" : "Administrator does not exist" }
     400: { "error" : "Store Chain does not exist" }
-    400: { "error" : "Store does not exist in the specified Store Chain" }
-    400: { "error" : "Store cannot be removed because it is protected" }
+    400: { "error" : "Store does not exist as part of a chain Store Chain" }
 -----------------------------------------------------------------  Bryce
 /remove-store-chain
     POST:
         {
-            "username"   : "admin-username",
-            "chain-name" : "BJ's",
-            "confirm"    : true
+            "username": "admin-username",
+            "chain-name": "BJ's",
         }
     200 on success:
         {
-            "removed-chain" : "BJ's",
             "store-chains" : [
                 {
                     "name": "Walmart",
@@ -566,10 +589,5 @@ ShopComp Use Cases JSON State Representations
                     "stores": []
                 }
             ],
-            "message" : "Store Chain removed successfully"
         }
-    400: { "error" : "Missing username or chain-name" }
-    400: { "error" : "Administrator does not exist" }
     400: { "error" : "Store Chain does not exist" }
-    400: { "error" : "Removal must be confirmed" }
-    400: { "error" : "Store Chain cannot be removed because it is protected or required" }
