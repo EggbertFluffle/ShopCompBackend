@@ -1,7 +1,7 @@
 ShopComp Use Cases JSON State Representations
 
 ----------------------------------------------------------------- Andry
-/register-shopper
+/register-shopper  -->  (a uuid is created but not passed to the shopper)
     POST:
         {
             "username" : "shopper-username",
@@ -24,6 +24,8 @@ ShopComp Use Cases JSON State Representations
 			"uuid": "unique-uuid-for-shopper" 
 		}
     400: { "error" : "Error logging in. Please follow the username/password policy" }
+         { "error" : "Error logging in. Wrong username or password " }
+    
 ----------------------------------------------------------------- Andry
 /return-main-page-info --> (post logging in, main page is rendered, calling this lambda)
     GET
@@ -149,7 +151,9 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400 on failure: { "error" : "Error adding new chain" }
+    400 on failure: 
+        { "error" : "Error. Some field/s are empty" }
+        { "error" : "Error. Chain name already exists" }
 ----------------------------------------------------------------- Andry
 /add-store-to-chain
     POST:
@@ -165,7 +169,9 @@ ShopComp Use Cases JSON State Representations
                 { "address" : "210 C St. Milford" }
             ]
         }
-    400: { "error" : "Cannot add store to chain" }
+    400: 
+        { "error" : "Error. Store already exists in chain" }
+        { "error" : "Error. Some field/s are empty" }
 ----------------------------------------------------------------- Andry
 /review-history
     POST:
@@ -212,7 +218,9 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400: { "error" : "Error returning receipts" }
+    400: 
+        { "error" : "Error returning receipts" }
+        { "error" : "No receipts exist" }
 ----------------------------------------------------------------- Andry
 /review-activity
     POST:
@@ -232,7 +240,9 @@ ShopComp Use Cases JSON State Representations
             ],
             "total-spent" : "28"
         }
-    400 on failure: { }
+    400 on failure: 
+        { "error" : "Error returning receipts" }
+        { "error" : "No receipts exist" }
 ----------------------------------------------------------------- Harrison
 /submit-receipt
     POST:
@@ -338,7 +348,10 @@ ShopComp Use Cases JSON State Representations
           ]
         }
     400 on failure: { 
-      "error": "Unable to retrieve shopping lists for the specified user"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated"
     }
 ----------------------------------------------------------------- Nikita
 /remove-shopping-list
@@ -369,7 +382,13 @@ ShopComp Use Cases JSON State Representations
           ]
         }
     400 on failure: { 
-      "error": "Unable to remove the specified shopping list"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Shopping list does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated or not authorized to delete this list"
     }
 ----------------------------------------------------------------- Nikita
 /create-shopping-list
@@ -384,7 +403,9 @@ ShopComp Use Cases JSON State Representations
           "list-id": "abc123",
           "message": "Shopping list created successfully",
         }
-    400 on failure: { "error": "Unable to create shopping list" }
+    400 on failure: { "error": "User does not exist" }
+    400 on failure: { "error": "Shopping list with this name already exists" }
+    400 on failure: { "error": "Not authenticated or not authorized to create a list for this user" }
 ----------------------------------------------------------------- Nikita
 /add-to-shopping-list
     POST:
@@ -417,7 +438,19 @@ ShopComp Use Cases JSON State Representations
           "code": 200
         }
     400 on failure: { 
-      "error": "Unable to add item to the shopping list"
+      "error": "User does not exist"
+    }
+    400 on failure: {
+      "error": "Shopping list does not exist"
+    }
+    400 on failure: {
+      "error": "Not authenticated or not authorized to modify this list"
+    }
+    400 on failure: {
+      "error": "Item already exists in the shopping list"
+    }
+    400 on failure: {
+      "error": "Invalid item data"
     }
 ----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
@@ -440,7 +473,18 @@ ShopComp Use Cases JSON State Representations
           "message": "Item removed successfully from the shopping list",
           "code": 200
         }
-	400 on failure: { "error": "Unable to remove item from the shopping list" }
+	400 on failure: {
+    "error": "User does not exist" 
+  }
+  400 on failure: {
+    "error": "Shopping list does not exist" 
+  }
+  400 on failure: {
+    "error": "Not authenticated or not authorized to modify this list" 
+  }
+  400 on failure: {
+    "error": "Item does not exist in the shopping list" 
+  }
 ----------------------------------------------------------------- Harrison
 /list-store-chains
     GET: {}
@@ -467,7 +511,7 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { }
 -----------------------------------------------------------------
-/report-options-for-shopping-list
+/report-options-for-shopping-list    -->    Attempts to find shopping list items in existing receipts
     POST:
         {
 
@@ -478,16 +522,34 @@ ShopComp Use Cases JSON State Representations
         }
     400 on failure: { }
 -----------------------------------------------------------------
-/search-recent-purchases
+/search-recent-purchases      -->    Uses "keyword" to return receipts with "keyword" items
     POST:
         {
-
+            "username" : "shopper-username",
+            "search-keyword" : "Chips"
         }
     200 on success:
         {
-
+            "receipt" : {
+                "date" : "2025-10-31",
+                "address" : "200 East Rd. Chicago",
+                "items" : [
+                    {
+                        "item-name" : "Classic Lays Chips",
+                        "item-category" : "Chips",
+                        "item-price" : "3",
+                        "item-quantity" : "2"
+                    },
+                    {
+                        "item-name" : "Slim Milk Bottle",
+                        "item-category" : "Milk",
+                        "item-price" : "12",
+                           "item-quantity" : "1"
+                    }
+                ]
+            }
         }
-    400 on failure: { }
+    400 on failure: { "error" : "Item does not exist in recent purchases" }
 ----------------------------------------------------------------- Bryce
 /login-administrator
     POST:
@@ -496,7 +558,9 @@ ShopComp Use Cases JSON State Representations
             "password" : "admin-password"
         }
     200 on success:
-        { }
+        { 
+            "message" : "Logged in successfully as Administrator"
+        }
     400: { "error" : "Invalid username or password" }
 ----------------------------------------------------------------- Bryce
 /show-admin-dashboard
