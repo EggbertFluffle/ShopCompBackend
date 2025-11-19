@@ -4,12 +4,12 @@ ShopComp Use Cases JSON State Representations
 /register-shopper  -->  (a uuid is created but not passed to the shopper)
     POST:
         {
-            "username" : "shopper-username",
-            "password" : "shopper-password"
+            "username" : "catmajor",
+            "password" : "password123"
         }
     200: 
 		{ 
-			"uuid": "unique-uuid-for-shopper" 
+			"uuid": "abc123" 
 		}
     400: { "error" : "Error creating account. Please follow the username/password policy" }
     400: { "error" : "Error creating account. Username already exists" }
@@ -17,12 +17,12 @@ ShopComp Use Cases JSON State Representations
 /login-shopper
     POST
         {
-            "username" : "shopper-username",
-            "password" : "shopper-password"
+            "username" : "eggbert",
+            "password" : "password123"
         }
     200: 
 		{ 
-			"uuid": "unique-uuid-for-shopper" 
+			"uuid": "abc123" 
 		}
     400: { "error" : "Error logging in. Please follow the username/password policy" }
          { "error" : "Error logging in. Wrong username or password " }
@@ -36,33 +36,35 @@ ShopComp Use Cases JSON State Representations
                 {
                     "date" : "2025-10-31",
                     "address" : "123 Main St. Boston",
-					"uuid": "unique-uuid",
+					"uuid": "abc123",
                     "items" : [
                         {
                             "name" : "Whole Milk Bottle",
                             "category" : "Milk",
                             "price" : "10",
                             "quantity" : "1",
-							"uuid": "unique-uuid"
+							"uuid": "efg456"
                         }
                     ]
                 },
                 {
                     "date" : "2025-10-31",
                     "address" : "200 East Rd. Chicago",
-					"uuid": "unique-uuid",
+					"uuid": "efg456",
                     "items" : [
                         {
                             "name" : "Classic Lays Chips",
                             "category" : "Chips",
                             "price" : "3",
-                            "quantity" : "2"
+                            "quantity" : "2",
+							"uuid": "efg456"
                         },
                         {
                             "name" : "Slim Milk Bottle",
                             "category" : "Milk",
                             "price" : "12",
-                            "quantity" : "1"
+                            "quantity" : "1",
+							"uuid": "efg456"
                         }
                     ]
                 }
@@ -71,21 +73,21 @@ ShopComp Use Cases JSON State Representations
                 {
                     "name": "BJ's",
                     "url": "https://www.bjs.com",
-					"uuid": "unique-uuid",
+					"uuid": "abc123",
                     "stores": []
                 },
                 {
                     "name": "Walmart",
                     "url": "https://www.walmart.com",
-					"uuid": "unique-uuid",
+					"uuid": "abc123",
                     "stores": [
                         {
                             "address" : "123 Main St. Boston"
-							"uuid": "unique-uuid",
+							"uuid": "efg456",
                         },
                         {
                             "address" : "200 East Rd. Chicago"
-							"uuid": "unique-uuid",
+							"uuid": "efg456",
                         }
                     ]
                 }
@@ -101,25 +103,26 @@ ShopComp Use Cases JSON State Representations
                 {
 					"name": "BJ's",
 					"url": "https://www.bjs.com",
-					"uuid": "unique-uuid",
+					"uuid": "abc123",
 					"stores": [
 						{ 
 							"address": "123 Goat St, Worcester, MA",
-							"uuid": "unique-uuid"
+							"store-uuid": "efg456"
 						}
 					]
                 },
                 {
 					"name": "Walmart",
 					"url": "https://www.walmart.com",
+					"uuid": "abc123",
 					"stores": [
 						{
 							"address": "122 Goat St, Worcester, MA",
-							"uuid": "unique-uuid"
+							"store-uuid": "efg456"
 							},
 						{
 							"address": "121 Goat St, Worcester, MA",
-							"uuid": "unique-uuid"
+							"store-uuid": "efg456"
 						}
 					]
                 }
