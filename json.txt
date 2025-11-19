@@ -1,33 +1,24 @@
 ShopComp Use Cases JSON State Representations
 
------------------------------------------------------------------ Andry
+(1)----------------------------------------------------------------- Andry
 /register-shopper  -->  (a uuid is created but not passed to the shopper)
     POST:
         {
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200: 
-		{ 
-			"uuid": "unique-uuid-for-shopper" 
-		}
     400: { "error" : "Error creating account. Please follow the username/password policy" }
     400: { "error" : "Error creating account. Username already exists" }
------------------------------------------------------------------ Andry
+(2)----------------------------------------------------------------- Andry
 /login-shopper
     POST
         {
             "username" : "shopper-username",
             "password" : "shopper-password"
         }
-    200: 
-		{ 
-			"uuid": "unique-uuid-for-shopper" 
-		}
     400: { "error" : "Error logging in. Please follow the username/password policy" }
          { "error" : "Error logging in. Wrong username or password " }
-    
------------------------------------------------------------------ Andry
+(3)----------------------------------------------------------------- Andry
 /return-main-page-info --> (post logging in, main page is rendered, calling this lambda)
     GET
     200:
@@ -91,11 +82,13 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400 on failure: { "error" : "Error creating account. Please follow the username/password policy" }
------------------------------------------------------------------ Andry
+    400: 
+        { "error" : "Unable to return receipts" }
+        { "error" : "Unable to return store chains information" }
+(4)----------------------------------------------------------------- Andry
 /show-account-dashboard  -->  We will NOT have an API for this USE CASE
     GET // Shopper only sees all the public chains and stores
-    200 on success:
+    200:
         {
 			"chains": [
                 {
@@ -126,8 +119,9 @@ ShopComp Use Cases JSON State Representations
 
 			]
         }
-    400 on failure: { }
------------------------------------------------------------------ Andry
+    400: 
+        { "error" : "Unable to return account information" }
+(5)----------------------------------------------------------------- Andry
 /add-chain
     POST:
         {
@@ -135,7 +129,7 @@ ShopComp Use Cases JSON State Representations
             "chain-name" : "Walmart",
             "chain-URL" : "https://www.walmart.com"
         }
-    200 on success:
+    200:
         {
             "chain-name" : "Walmart",
             "chain-id" : "rgr342",
@@ -155,10 +149,10 @@ ShopComp Use Cases JSON State Representations
                 }
             ]
         }
-    400 on failure: 
+    400: 
         { "error" : "Error. Some field/s are empty" }
         { "error" : "Error. Chain name already exists" }
------------------------------------------------------------------ Andry
+(6)----------------------------------------------------------------- Andry
 /add-store-to-chain
     POST:
         {
@@ -166,7 +160,7 @@ ShopComp Use Cases JSON State Representations
             "chain-name" : "Walmart",
             "address" : "210 C St. Milford"
         }
-    200 on success:
+    200:
         {
             "chain-name" : "Walmart",
             "stores" : [
@@ -176,13 +170,13 @@ ShopComp Use Cases JSON State Representations
     400: 
         { "error" : "Error. Store already exists in chain" }
         { "error" : "Error. Some field/s are empty" }
------------------------------------------------------------------ Andry
+(7)----------------------------------------------------------------- Andry
 /review-history
     POST:
         {
             "username" : "shopper-username",
         }
-    200 on success:
+    200:
         {
             "receipts" : [
                 {
@@ -225,14 +219,14 @@ ShopComp Use Cases JSON State Representations
     400: 
         { "error" : "Error returning receipts" }
         { "error" : "No receipts exist" }
------------------------------------------------------------------ Andry
+(8)----------------------------------------------------------------- Andry
 /review-activity
     POST:
         {
             "username" : "shopper-username",
             "time-period" : "last-week"
         }
-    200 on success:
+    200:
         {
             "receipt-dates" : [
                 { "date" : "2025-10-31" },
@@ -244,10 +238,10 @@ ShopComp Use Cases JSON State Representations
             ],
             "total-spent" : "28"
         }
-    400 on failure: 
+    400: 
         { "error" : "Error returning receipts" }
         { "error" : "No receipts exist" }
------------------------------------------------------------------ Harrison
+(9)----------------------------------------------------------------- Harrison
 /submit-receipt
     POST:
         {
@@ -274,39 +268,39 @@ ShopComp Use Cases JSON State Representations
             ]
           }
         }
-    200 on success: {
+    200: {
       "message": "Receipt submitted successfully",
       "receipt-id": "ghi789"
     }
-    400 on failure: {
+    400: {
       "error": "User not authenticated or not authorized to submit receipt for this user"
     }
-    400 on failure: {
+    400: {
       "error": "Invalid receipt data format"
     }
-    400 on failure: {
+    400: {
       "error": "Database error while storing receipt"
     }
-    400 on failure: {
+    400: {
       "error": "Store ID does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Receipt date is in the future"
     }
-    400 on failure: {
+    400: {
       "error": "Receipt contains no items"
     }
-    400 on failure: {
+    400: {
       "error": "User does not exist"
     }
------------------------------------------------------------------ Harrison
+(10)----------------------------------------------------------------- Harrison
 /analyse-receipt-image
     POST:
         {
           open-api-key: "OPEN API KEY",
           file: "MIME ENCODED STRING"
         }
-    200 on success:
+    200:
         {
           "receipt": {
             "date": "2025-10-31",
@@ -330,22 +324,22 @@ ShopComp Use Cases JSON State Representations
             ]
           }
         }
-    400 on failure: { 
+    400: { 
       "error": "Invalid Open-API key" 
     }
-    400 on failure: { 
+    400: { 
       "error": "Image file is missing or corrupted" 
     }
-    400 on failure: { 
+    400: { 
       "error": "OpenAI generated an error" 
     }
------------------------------------------------------------------ Nikita
+(11)----------------------------------------------------------------- Nikita
 /list-shopping-lists
     POST:
         {
           "username": "shopper123"
         }
-    200 on success:
+    200:
         {
           "shopping-list" : [
             {
@@ -382,20 +376,20 @@ ShopComp Use Cases JSON State Representations
             }
           ]
         }
-    400 on failure: { 
+    400: { 
       "error": "User does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Not authenticated"
     }
------------------------------------------------------------------ Nikita
+(12)----------------------------------------------------------------- Nikita
 /remove-shopping-list
     POST:
         {
           "username": "shopper123",
           "id": "abc123"
         }
-    200 on success:
+    200:
         {
           "lists" : [
             {
@@ -416,32 +410,32 @@ ShopComp Use Cases JSON State Representations
             }
           ]
         }
-    400 on failure: { 
+    400: { 
       "error": "User does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Shopping list does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Not authenticated or not authorized to delete this list"
     }
------------------------------------------------------------------ Nikita
+(13)----------------------------------------------------------------- Nikita
 /create-shopping-list
     POST:
         {
           "list-name": "Weekly Groceries",
           "shopper-username": "shopper123"
         }
-    200 on success:
+    200:
         {
           "list-name": "Weekly Groceries",
           "list-id": "abc123",
           "message": "Shopping list created successfully",
         }
-    400 on failure: { "error": "User does not exist" }
-    400 on failure: { "error": "Shopping list with this name already exists" }
-    400 on failure: { "error": "Not authenticated or not authorized to create a list for this user" }
------------------------------------------------------------------ Nikita
+    400: { "error": "User does not exist" }
+    400: { "error": "Shopping list with this name already exists" }
+    400: { "error": "Not authenticated or not authorized to create a list for this user" }
+(14)----------------------------------------------------------------- Nikita
 /add-to-shopping-list
     POST:
         {
@@ -451,7 +445,7 @@ ShopComp Use Cases JSON State Representations
             "quantity": 5
           }
         }
-    200 on success:
+    200:                                          ---> (FIX) in 200, there is "item" and "list-items"
         {
           "list-name": "Weekly Groceries",
           "list-id": "abc123",
@@ -472,22 +466,22 @@ ShopComp Use Cases JSON State Representations
           "message": "Item added successfully to the shopping list",
           "code": 200
         }
-    400 on failure: { 
+    400: { 
       "error": "User does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Shopping list does not exist"
     }
-    400 on failure: {
+    400: {
       "error": "Not authenticated or not authorized to modify this list"
     }
-    400 on failure: {
+    400: {
       "error": "Item already exists in the shopping list"
     }
-    400 on failure: {
+    400: {
       "error": "Invalid item data"
     }
------------------------------------------------------------------ Nikita
+(15)----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
     POST:
         {
@@ -495,7 +489,7 @@ ShopComp Use Cases JSON State Representations
           "shopper-username": "shopper123",
           "item-name": "Apples"
         }
-    200 on success:
+    200:
         {
           "list-name": "Weekly Groceries",
           "list-id": "abc123",
@@ -508,22 +502,22 @@ ShopComp Use Cases JSON State Representations
           "message": "Item removed successfully from the shopping list",
           "code": 200
         }
-	400 on failure: {
+	400: {
     "error": "User does not exist" 
   }
-  400 on failure: {
+  400: {
     "error": "Shopping list does not exist" 
   }
-  400 on failure: {
+  400: {
     "error": "Not authenticated or not authorized to modify this list" 
   }
-  400 on failure: {
+  400: {
     "error": "Item does not exist in the shopping list" 
   }
------------------------------------------------------------------ Harrison
+(16)----------------------------------------------------------------- Harrison
 /list-store-chains
     GET: {}
-    200 on success:
+    200:
         {
           "chains": [
             {
@@ -545,31 +539,42 @@ ShopComp Use Cases JSON State Representations
             }
           ]
         }
-    400 on failure: { 
+    400: { 
       "error": "Database error while retrieving store chains"
     }
-    400 on failure: { 
+    400: { 
       "error": "User not authenticated or not authorized to view store chains"
     }
------------------------------------------------------------------
+(17)-----------------------------------------------------------------
 /report-options-for-shopping-list    -->    Attempts to find shopping list items in existing receipts
     POST:
         {
-          
+          "list-name": "Weekly Groceries",
+          "list-id": "abc123",
+          list-items: [
+            {
+              "name": "Apples",
+              "quantity": 5
+            },
+            {
+              "name": "Bananas",
+              "quantity": 7
+            }
+          ]
         }
-    200 on success:
+    200:
         {
-
+            
         }
-    400 on failure: { }
------------------------------------------------------------------
+    400: { }
+(18)-----------------------------------------------------------------
 /search-recent-purchases      -->    Uses "keyword" to return receipts with "keyword" items
     POST:
         {
             "username" : "shopper-username",
             "search-keyword" : "Chips"
         }
-    200 on success:
+    200:
         {
             "receipt" : {
                 "date" : "2025-10-31",
@@ -598,37 +603,37 @@ ShopComp Use Cases JSON State Representations
                 ]
             }
         }
-    400 on failure: {
+    400: {
       "error" : "Item does not exist in recent purchases" 
     }
-    400 on failure: { 
+    400: { 
       "error" : "User does not exist" 
     }
-    400 on failure: { 
+    400: { 
       "error" : "User not authenticated or not authorized to view recent purchases" 
     }
-    400 on failure: { 
+    400: { 
       "error" : "Database error while retrieving recent purchases" 
     }
------------------------------------------------------------------ Bryce
+(19)----------------------------------------------------------------- Bryce
 /login-administrator
     POST:
         {
             "username" : "admin-username",
             "password" : "admin-password"
         }
-    200 on success:
+    200:
         { 
             "message" : "Logged in successfully as Administrator"
         }
     400: { "error" : "Invalid username or password" }
------------------------------------------------------------------ Bryce
+(20)----------------------------------------------------------------- Bryce
 /show-admin-dashboard
     POST:
         {
             "username" : "admin-username"
         }
-    200 on success:
+    200:
         {
             "username" : "admin-username",
             "summary" : {
@@ -672,14 +677,14 @@ ShopComp Use Cases JSON State Representations
         }
     400: { "error" : "Missing administrator username" }
     400: { "error" : "Administrator does not exist" }
------------------------------------------------------------------  Bryce
+(21)-----------------------------------------------------------------  Bryce
 /remove-store
     POST:
         {
             "username"   : "admin-username",
             "store-id"   : "tyu567",
         }
-    200 on success:
+    200:
         {
             "chain-name" : "Walmart",
             "chain-id"   : "rgr342",
@@ -694,14 +699,14 @@ ShopComp Use Cases JSON State Representations
         }
     400: { "error" : "Store Chain does not exist" }
     400: { "error" : "Store does not exist as part of a chain Store Chain" }
------------------------------------------------------------------  Bryce
+(22)-----------------------------------------------------------------  Bryce
 /remove-store-chain
     POST:
         {
             "username"   : "admin-username",
             "chain-id"   : "asd394",
         }
-    200 on success:
+    200:
         {
             "removed-chain" : "BJ's",
             "chain-id"   : "asd394",
