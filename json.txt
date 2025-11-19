@@ -626,7 +626,8 @@ ShopComp Use Cases JSON State Representations
         { 
             "message" : "Logged in successfully as Administrator"
         }
-    400: { "error" : "Invalid username or password" }
+    400: { "error" : "Error logging in. Please follow the username/password policy" }
+         { "error" : "Error logging in. Wrong username or password " }
 (20)----------------------------------------------------------------- Bryce
 /show-admin-dashboard
     POST:
