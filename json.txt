@@ -539,9 +539,7 @@ ShopComp Use Cases JSON State Representations
             }
           ]
         }
-    400: { 
-      "error": "Database error while retrieving store chains"
-    }
+    400: { "error": "Database error while retrieving store chains" }
     400: { 
       "error": "User not authenticated or not authorized to view store chains"
     }
