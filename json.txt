@@ -9,7 +9,7 @@ ShopComp Use Cases JSON State Representations
         }
     200: 
 		{ 
-			"shopper-uuid": "abc123" 
+			"shopper-uuid": "abc111" 
 		}
     400: { "error" : "Error creating account. Please follow the username/password policy" }
     400: { "error" : "Error creating account. Username already exists" }
@@ -28,57 +28,24 @@ ShopComp Use Cases JSON State Representations
          { "error" : "Error logging in. Wrong username or password " }
 (3)----------------------------------------------------------------- Andry
 /return-main-page-info --> (post logging in, main page is rendered, calling this lambda)
-    GET
+    POST
+        {
+            "username" : "eggbert",
+            "shopper-uuid" : "abc123"
+        }
     200:
         {
-            "receipts" : [
-                {
-                    "date" : "2025-10-31",
-                    "address" : "123 Main St. Boston",
-					"uuid": "abc123",
-                    "items" : [
-                        {
-                            "name" : "Whole Milk Bottle",
-                            "category" : "Milk",
-                            "price" : "10",
-                            "quantity" : "1",
-							"uuid": "efg456"
-                        }
-                    ]
-                },
-                {
-                    "date" : "2025-10-31",
-                    "address" : "200 East Rd. Chicago",
-					"uuid": "efg456",
-                    "items" : [
-                        {
-                            "name" : "Classic Lays Chips",
-                            "category" : "Chips",
-                            "price" : "3",
-                            "quantity" : "2",
-							"uuid": "efg456"
-                        },
-                        {
-                            "name" : "Slim Milk Bottle",
-                            "category" : "Milk",
-                            "price" : "12",
-                            "quantity" : "1",
-							"uuid": "efg456"
-                        }
-                    ]
-                }
-            ],
             "store-chains" : [
                 {
                     "name": "BJ's",
                     "url": "https://www.bjs.com",
-					"uuid": "abc123",
+					"store-chain-uuid": "abc123",
                     "stores": []
                 },
                 {
                     "name": "Walmart",
                     "url": "https://www.walmart.com",
-					"uuid": "abc123",
+					"store-chain-uuid": "abc123",
                     "stores": [
                         {
                             "address" : "123 Main St. Boston"
