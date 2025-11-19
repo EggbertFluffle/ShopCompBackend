@@ -1,7 +1,7 @@
 ShopComp Use Cases JSON State Representations
 
 (1)----------------------------------------------------------------- Andry
-/register-shopper  -->  (a uuid is created but not passed to the shopper)
+/register-shopper --> (a uuid is created but not passed to the shopper)
 POST:
 {
     "shopper-username": "catmajor",
@@ -9,7 +9,7 @@ POST:
 }
 200:
 {
-    "shopper-uuid": "uuid-here"
+    "shopper-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b"
 }
 400: { "error": "Error creating account. Please follow the username/password policy" }
 400: { "error": "Error creating account. Username already exists" }
@@ -23,7 +23,7 @@ POST:
 }
 200:
 {
-    "shopper-uuid": "uuid-here"
+    "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
 }
 400: { "error": "Error logging in. Please follow the username/password policy" }
 400: { "error": "Error logging in. Wrong username or password " }
@@ -33,7 +33,7 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "abc123"
+    "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
 }
 200:
 {
@@ -41,21 +41,21 @@ POST:
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "8cb9f0a1-efb7-40c6-8929-2cd792478086",
             "stores": []
         },
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "8f22b275-f0ed-4b66-a96c-0dc7c29a3eb8",
             "stores": [
                 {
                     "address": "123 Main St. Boston"
-                    "store-uuid": "uuid-here",
+                    "store-uuid": "58de70e2-28f7-40b2-b8b5-81178326d146",
                 },
                 {
                     "address": "200 East Rd. Chicago"
-                    "store-uuid": "uuid-here",
+                    "store-uuid": "f0568158-af34-4d7e-8f49-0a915abfc298",
                 }
             ]
         }
@@ -73,25 +73,25 @@ GET // Shopper only sees all the public chains and stores
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "d3bf11cf-10e5-4e9f-a382-a953e627e378",
             "stores": [
                 {
                     "address": "123 Goat St, Worcester, MA",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "de1c8b09-bc8e-468e-933b-c12d1b09d7cd"
                 }
             ]
         },
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "71cdcd1a-7082-4ce7-af0c-b09606304094",
             "stores": [
                 {
                     "address": "122 Goat St, Worcester, MA",
-                    "store-uuid": "uuid-here",
+                    "store-uuid": "12886594-e6a6-46a8-9951-5313d8528ce8",
                     {
                         "address": "121 Goat St, Worcester, MA",
-                        "store-uuid": "uuid-here"
+                        "store-uuid": "ea973996-8193-4fa0-8cf2-afc41b90695a"
                     }
                 ]
             }
@@ -105,7 +105,7 @@ GET // Shopper only sees all the public chains and stores
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "uuid-here",
+    "shopper-uuid": "1eb16c2b-1b23-41cb-a28b-1149543a307b",
     "store-chain-name": "Walmart",
     "store-chain-url": "https://www.walmart.com"
 }
@@ -114,13 +114,13 @@ POST:
     "store-chains-list": [
         {
             "name": "BJ's",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "76aed3e5-ff1e-4df6-a8e0-f168ecee40b4",
             "url": "https://www.bjs.com",
             "stores": []
         },
         {
             "name": "Walmart",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "c7b13c64-9f9e-4116-b841-024d4d6b2674",
             "url": "https://www.walmart.com",
             "stores": []
         }
@@ -134,9 +134,9 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "uuid-here",
+    "shopper-uuid": "f117b458-4498-42e6-886b-c6c1c52c93b9",
     "store-chain-name": "Walmart",
-    "store-chain-uuid": "uuid-here",
+    "store-chain-uuid": "733c0455-97ee-47e9-9add-6391f5c77722",
     "address": "210 C St. Milford"
 }
 200:
@@ -144,17 +144,17 @@ POST:
     "store-chains-list": [
         {
             "name": "BJ's",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "3e0b7b11-dadd-4ea2-a6f9-cfc390698eb1",
             "url": "https://www.bjs.com",
             "stores": []
         },
         {
             "name": "Walmart",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "2f7b98b6-bdba-401b-bcae-3a0f40e4675f",
             "url": "https://www.walmart.com",
             "stores": [
                 {
-                    "store-uuid": "uuid-here",
+                    "store-uuid": "62948627-9462-4151-8aab-57a9fd17ef7b",
                     "address": "210 C St. Milford"
                 }
             ]
@@ -177,16 +177,16 @@ POST:
             "date": "2025-10-31",
             "store": {
                 "address": "123 Main St. Boston",
-                "store-uuid": "uuid-here"
+                "store-uuid": "947c5233-06f0-4633-9021-ea2f10cf0da3"
             },
-            "receipt-uuid": "uuid-here",
+            "receipt-uuid": "e80dc1ea-df8f-414c-8991-8942d756a0e0",
             "items": [
                 {
                     "name": "Whole Milk Bottle",
                     "category": "Milk",
                     "price": "10",
                     "quantity": "1",
-                    "item-uuid": "uuid-here"
+                    "item-uuid": "a494e5e5-d2c5-4535-8eaa-b22d9b2b733b"
                 }
             ]
         },
@@ -194,23 +194,23 @@ POST:
             "date": "2025-10-31",
             "store": {
                 "address": "200 East Rd. Chicago",
-                "store-uuid": "uuid-here"
+                "store-uuid": "0e1280f5-fff8-4cbd-892d-1d9309e1df64"
             },
-            "receipt-uuid": "uuid-here",
+            "receipt-uuid": "0a6c5000-ed61-4c8b-91cb-3e21e19f14b4",
             "items": [
                 {
                     "name": "Classic Lays Chips",
                     "category": "Chips",
                     "price": "3",
                     "quantity": "2",
-                    "item-uuid": "uuid-here"
+                    "item-uuid": "55094466-dfee-45c4-8a28-fef6df67687b"
                 },
                 {
                     "name": "Slim Milk Bottle",
                     "category": "Milk",
                     "price": "12",
                     "quantity": "1",
-                    "item-uuid": "uuid-here"
+                    "item-uuid": "ce6d1180-7208-440c-89e9-e009973435e6"
                 }
             ]
         }
@@ -224,7 +224,7 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "uuid-here",
+    "shopper-uuid": "fb85e68c-e691-4135-b36d-795ae2022573",
     "time-period": "last-week"
 }
 200:
@@ -251,7 +251,7 @@ POST:
         "date": "2025-10-31",
         "store": {
             "address": "123 Main St. Boston",
-            "store-uuid": "uuid-here"
+            "store-uuid": "4a8268a1-3584-4277-a150-804c611491f2"
         },
         "items": [
             {
@@ -275,7 +275,7 @@ POST:
 200:
 {
     "message": "Receipt submitted successfully",
-    "receipt-uuid": "ghi789"
+    "receipt-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72"
 }
 400: { "error": "User not authenticated or not authorized to submit receipt for this user" }
 400: { "error": "Invalid receipt data format" }
@@ -290,7 +290,7 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "uuid-here",
+    "shopper-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72",
     "open-api-key": "SUPER_SECRET_OPEN_API_KEY",
     "image": "image/png:base_64,SUPER_COOL_IMAGE_OF_RECEIPT_IN_BASE_64"
 }
@@ -300,7 +300,7 @@ POST:
         "date": "2025-10-31",
         "store": {
             "address": "123 Main St. Boston",
-            "store-uuid": "uuid-here"
+            "store-uuid": "bd9f3bf6-8d66-4bc4-8246-794bcce952e7"
         },
         "items": [
             {
@@ -336,32 +336,32 @@ POST:
     "shopping-list": [
         {
             "name": "Weekly Groceries",
-            "shopping-list-uuid": "uuid-here",
+            "shopping-list-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
             "items": [
                 {
                     "name": "Apples",
-                    "uuid": "abc123",
+                    "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
                     "quantity": 5
                 },
                 {
                     "name": "Bananas",
-                    "uuid": "abc123",
+                    "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
                     "quantity": 7
                 }
             ]
         },
         {
             "name": "Party Supplies",
-            "shopping-list-uuid": "uuid-here",
+            "shopping-list-uuid": "d690a7f3-e135-4499-8b6e-cb51157ba5da",
             "items": [
                 {
                     "name": "Chips",
-                    "item-uuid": "uuid-here",
+                    "item-uuid": "b038d09b-5ec9-4050-b61f-b57f1d936c17",
                     "quantity": "10"
                 },
                 {
                     "name": "Soda",
-                    "item-uuid": "uuid-here",
+                    "item-uuid": "78282345-6f5b-4547-94ba-ee1bb1ee8742",
                     "quantity": "6"
                 }
             ]
@@ -376,23 +376,23 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-    "shopper-uuid": "uuid-here"
+    "shopper-uuid": "3d3d86a9-1d45-4333-b779-c58353c489d2"
 }
 200:
 {
     "shopping-lists": [
         {
             "name": "Party Supplies",
-            "shopping-list-uuid": "uuid-here",
+            "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
             "items": [
                 {
                     "name": "Chips",
                     "quantity": "10",
-					"item-uuid": "uuid-here"
+					"item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
                 },
                 {
                     "name": "Soda",
-                    "item-uuid": "uuid-here",
+                    "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
                     "quantity": "6"
                 }
             ]
@@ -408,13 +408,13 @@ POST:
 POST:
 {
     "shopper-username": "eggbert",
-	"shopper-uuid": "uuid-here",
+	"shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
 	"shopping-list-name": "Weekly Groceries",
 }
 200:
 {
     "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "uuid-here",
+    "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
     "message": "Shopping list created successfully",
 }
 400: { "error": "User does not exist" }
@@ -426,7 +426,7 @@ POST:
 POST:
 {
     "shopper-username": "eggber",
-    "shopper-uuid": "uuid-here",
+    "shopper-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
     "item": {
         "name": "Apples",
         "quantity": 5
@@ -435,7 +435,7 @@ POST:
 200:
 {
     "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "abc123",
+    "shopping-list-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
     "item": {
         "name": "Apples",
         "quantity": "5"
@@ -461,14 +461,14 @@ POST:
 /remove-from-shopping-list
 POST:
 {
-    "shopping-list-uuid": "uuid-here",
+    "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
     "shopper-username": "eggbert",
     "item-name": "Apples"
 }
 200:
 {
     "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "abc123",
+    "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
     "shopping-list-items": [
         {
             "name": "Bananas",
@@ -490,26 +490,26 @@ GET:
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "3722687c-3c93-4e44-ab4e-0464ad8d8b88 ",
             "stores": [
                 {
                     "address": "120 Goat St, Worcester, MA",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "f92bbc75-36d7-42e2-830c-ed485b9def41 "
                 }
             ]
         },
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "1a9fe42e-3d79-4c98-86be-a94758647ff4 ",
             "stores": [
                 {
                     "address": "122 Goat St, Worcester, MA",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "96d466de-e69d-4bf6-b113-2da2eba0389c "
                 },
                 {
                     "address": "124 Goat St, Worcester, MA",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "ea4d4ac5-91fd-4646-a554-89497698a723 "
                 }
             ]
         }
@@ -523,7 +523,7 @@ GET:
 POST:
 {
     "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "uuid-here",
+    "shopping-list-uuid": "de2c22b8-9e0e-4a29-a414-b59f1ff7d737 ",
     "items": [
         {
             "name": "Apples",
@@ -551,10 +551,9 @@ POST:
 {
     "receipt": {
         "date": "2025-10-31",
-        "receipt-uuid": "receipt-uuid",
-        "store": {
+        "receipt-uuid": "receipt-uuid", "store": {
             "address": "200 East Rd. Chicago",
-            "store-uuid": "uuid-here",
+            "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
         }
         "items": [
             {
@@ -562,14 +561,14 @@ POST:
                 "category": "Chips",
                 "price": "3",
                 "quantity": "2",
-                "item-uuid": "uuid-here"
+                "item-uuid": "6801704f-cfc4-4eb1-90d1-29b1797e9824 "
             },
             {
                 "name": "Slim Milk Bottle",
                 "category": "Milk",
                 "price": "12",
                 "quantity": "1",
-                "item-uuid": "uuid-here"
+                "item-uuid": "c400e24b-4a8b-4e48-b14e-2a428cf3bd37 "
             }
         ]
     }
@@ -588,7 +587,7 @@ POST:
 }
 200:
 {
-    "admin-uuid": "uuid-here"
+    "admin-uuid": "667ddd8a-377c-43b7-a71f-ff0e86211ff4 "
 }
 400: { "error": "Error logging in. Please follow the username/password policy" }
 400: { "error": "Error logging in. Wrong username or password " }
@@ -598,7 +597,7 @@ POST:
 POST:
 {
     "admin-username": "admin",
-    "admin-uuid": "uuid-here"
+    "admin-uuid": "d1102d19-f991-4f4b-aeea-94803f2cb543 "
 }
 200:
 {
@@ -612,33 +611,33 @@ POST:
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "84896baf-81c0-46bd-a34c-c3fc1f73ee9c ",
             "stores": [
                 {
                     "address": "10 Maple St. Worcester"
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "0b40c430-c729-41b3-be2d-bd338ff847bc "
                 }
             ]
         },
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "098d9bcc-5eee-4d4c-a820-1089bf196230 ",
             "stores": [
                 {
                     "address": "123 Main St. Boston",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "f7a3fac4-7846-45c2-aefe-3e45e56548bf "
                 },
                 {
                     "address": "5 Park Ave. Worcester",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "83624234-08e4-474b-af0f-3ce98a40f393 "
                 }
             ]
         },
         {
             "name": "Trader Joe's",
             "url": "https://www.traderjoes.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "e40842a2-cb70-4499-a9bf-dfc4b6f84d79 ",
             "stores": []
         }
     ],
@@ -661,10 +660,10 @@ POST:
 POST:
 {
     "admin-username": "admin",
-    "admin-uuid": "uuid-here",
+    "admin-uuid": "6de4130e-3d50-4685-a4c8-07a74c0cb1f0 ",
     "store-chain-name": "BJ's",
-    "store-chain-uuid": "uuid-here"
-    "store-uuid": "uuid-here",
+    "store-chain-uuid": "705d5ec0-702d-4e09-9004-2b9e296db6ae "
+    "store-uuid": "d80c4583-d1eb-4c01-a104-7c8b8aa21aa2 ",
 }
 200:
 {
@@ -672,28 +671,28 @@ POST:
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "c759e8d0-092e-4379-a20c-a354c0ece846 ",
             "stores": []
         },
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "f17d54a6-d8c5-431b-af38-1c0ff514bb1d ",
             "stores": [
                 {
                     "address": "123 Main St. Boston",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "4a7b0bfc-b4e0-4004-a68b-91d8415c07ac "
                 },
                 {
                     "address": "5 Park Ave. Worcester",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "b705cfa0-c180-44b9-8376-a53d2247f62d "
                 }
             ]
         },
         {
             "name": "Trader Joe's",
             "url": "https://www.traderjoes.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "955e0f94-4342-45d9-9979-bdfcb3b1d6bc ",
             "stores": []
         }
     ],
@@ -706,9 +705,9 @@ POST:
 POST:
 {
     "admin-username": "admin",
-    "admin-uuid": "uuid-here",
+    "admin-uuid": "6eb639f7-78ec-4ff8-91c3-e15a9eec409c ",
     "store-chain-name": "BJ's",
-    "store-chain-uuid": "uuid-here"
+    "store-chain-uuid": "0a68ce4e-07ce-4cb6-b811-5aa35311ddec "
 }
 200:
 {
@@ -716,22 +715,22 @@ POST:
         {
             "name": "Walmart",
             "url": "https://www.walmart.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "9d5fb257-6d54-4202-a1d2-be27c203a390 ",
             "stores": [
                 {
                     "address": "123 Main St. Boston",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "7997ced6-6278-47c2-9153-01769480b03b "
                 },
                 {
                     "address": "5 Park Ave. Worcester",
-                    "store-uuid": "uuid-here"
+                    "store-uuid": "6a59d39e-529f-4aae-a379-5d2a3ca82e3f "
                 }
             ]
         },
         {
             "name": "Trader Joe's",
             "url": "https://www.traderjoes.com",
-            "store-chain-uuid": "uuid-here",
+            "store-chain-uuid": "3ab2a75e-5c45-43eb-a218-4d054b38c0f1 ",
             "stores": []
         }
     ],
