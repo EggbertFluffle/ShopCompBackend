@@ -12,7 +12,7 @@ POST:
     "shopper-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b"
 }
 400: { "error": "Error creating account. Please follow the username/password policy" }
-400: { "error": "Error creating account. Username already exists" }
+400: { "error": "Error creating account. Shopper username already exists" }
 
 (2)----------------------------------------------------------------- Andry
 /login-shopper
@@ -61,7 +61,7 @@ POST:
         }
     ]
 }
-400: { "error": "Unable to return receipts" }
+400: { "error": "Unable to return store-chains" }
 400: { "error": "Unable to return store chains information" }
 
 (4)----------------------------------------------------------------- Andry
@@ -111,7 +111,7 @@ POST:
 }
 200:
 {
-    "store-chains-list": [
+    "store-chains": [
         {
             "name": "BJ's",
             "store-chain-uuid": "76aed3e5-ff1e-4df6-a8e0-f168ecee40b4",
@@ -141,7 +141,7 @@ POST:
 }
 200:
 {
-    "store-chains-list": [
+    "store-chains": [
         {
             "name": "BJ's",
             "store-chain-uuid": "3e0b7b11-dadd-4ea2-a6f9-cfc390698eb1",
@@ -233,7 +233,7 @@ POST:
         { "date": "2025-10-31" },
         { "date": "2025-10-31" }
     ],
-    "receipts-totals": [
+    "receipt-totals": [
         { "total": "10" },
         { "total": "18" }
     ],
@@ -277,13 +277,13 @@ POST:
     "message": "Receipt submitted successfully",
     "receipt-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72"
 }
-400: { "error": "User not authenticated or not authorized to submit receipt for this user" }
+400: { "error": "Shopper not authenticated or not authorized to submit receipt for this user" }
 400: { "error": "Invalid receipt data format" }
 400: { "error": "Database error while storing receipt" }
 400: { "error": "Store ID does not exist" }
 400: { "error": "Receipt date is in the future" }
 400: { "error": "Receipt contains no items" }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 
 (10)----------------------------------------------------------------- Harrison
 /analyse-receipt-image
@@ -333,7 +333,7 @@ POST:
 }
 200:
 {
-    "shopping-list": [
+    "shopping-lists": [
         {
             "name": "Weekly Groceries",
             "shopping-list-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
@@ -341,12 +341,12 @@ POST:
                 {
                     "name": "Apples",
                     "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
-                    "quantity": 5
+                    "quantity": "5"
                 },
                 {
                     "name": "Bananas",
                     "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
-                    "quantity": 7
+                    "quantity": "7"
                 }
             ]
         },
@@ -368,7 +368,7 @@ POST:
         }
     ]
 }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 400: { "error": "Not authenticated" }
 
 (12)----------------------------------------------------------------- Nikita
@@ -399,7 +399,7 @@ POST:
         }
     ]
 }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to delete this list" }
 
@@ -417,7 +417,7 @@ POST:
     "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
     "message": "Shopping list created successfully",
 }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 400: { "error": "Shopping list with this name already exists" }
 400: { "error": "Not authenticated or not authorized to create a list for this user" }
 
@@ -440,7 +440,7 @@ POST:
         "name": "Apples",
         "quantity": "5"
     },
-    "shopping-list-items": [
+    "items": [
         {
             "name": "Apples",
             "quantity": "5"
@@ -451,7 +451,7 @@ POST:
         }
     ],
 }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to modify this list" }
 400: { "error": "Item already exists in the shopping list" }
@@ -469,14 +469,14 @@ POST:
 {
     "shopping-list-name": "Weekly Groceries",
     "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
-    "shopping-list-items": [
+    "items": [
         {
             "name": "Bananas",
             "quantity": "7"
         }
     ],
 }
-400: { "error": "User does not exist" }
+400: { "error": "Shopper does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to modify this list" }
 400: { "error": "Item does not exist in the shopping list" }
@@ -486,7 +486,7 @@ POST:
 GET:
 200:
 {
-    "chains": [
+    "store-chains": [
         {
             "name": "BJ's",
             "url": "https://www.bjs.com",
@@ -516,7 +516,7 @@ GET:
     ]
 }
 400: { "error": "Database error while retrieving store chains" }
-400: { "error": "User not authenticated or not authorized to view store chains" }
+400:  "error": "Shopper not authenticated or not authorized to view store chains" }
 
 (17)-----------------------------------------------------------------
 /report-options-for-shopping-list    --> Attempts to find shopping list items in existing receipts
@@ -549,7 +549,8 @@ POST:
 }
 200:
 {
-    "receipt": {
+    "receipts": [
+      {
         "date": "2025-10-31",
         "receipt-uuid": "receipt-uuid", "store": {
             "address": "200 East Rd. Chicago",
@@ -571,11 +572,12 @@ POST:
                 "item-uuid": "c400e24b-4a8b-4e48-b14e-2a428cf3bd37 "
             }
         ]
-    }
+      }
+    ]
 }
 400: { "error": "Item does not exist in recent purchases" }
-400: { "error": "User does not exist" }
-400: { "error": "User not authenticated or not authorized to view recent purchases" }
+400: { "error": "Shopper does not exist" }
+400: { "error": "Shopper not authenticated or not authorized to view recent purchases" }
 400: { "error": "Database error while retrieving recent purchases" }
 
 (19)----------------------------------------------------------------- Bryce
