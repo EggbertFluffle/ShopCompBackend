@@ -1,5 +1,7 @@
 ShopComp Use Cases JSON State Representations
 
+Calculator Tutorial: https://andry-tutorial-bucket.s3.us-east-1.amazonaws.com/lambdaAdder.html
+
 (1)----------------------------------------------------------------- Andry
 /register-shopper --> (a uuid is created but not passed to the shopper)
 POST:
