@@ -6,6 +6,13 @@
 |efg456|ibomba|unc456|
 
 
+## Admin
+
+|uuid|username|password|
+|---|---|---|
+|abc123|admin|goat123|
+
+
 ## Receipt
 
 |uuid|shopper-uuid|date|store-uuid|
