@@ -52,8 +52,7 @@ export class CdkStack extends cdk.Stack {
 		})
 
 		// Create a resource (e.g., '/calc')
-		const shopcompResource = api_endpoint.root.addResource('shopcomp')
-		const testResource = shopcompResource.addResource('test')
+		const registerShopperResource = api_endpoint.root.addResource('register-shopper')
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -141,21 +140,21 @@ export class CdkStack extends cdk.Stack {
 			]
 		}
 
-		// Add a POST method to the '/shopcomp/test' resource
-		const test_fn = new lambdaNodejs.NodejsFunction(this, 'TestFunction', {
-		  runtime: lambda.Runtime.NODEJS_22_X,
-		  handler: 'handler.handler',
-		  code: lambda.Code.fromAsset(path.join(__dirname, 'test')),
-		  vpc: vpc,                                                             // Reference the VPC defined above
-		  environment: {
-		      RDS_USER: rdsUser,
-		      RDS_PASSWORD: rdsPassword,
-		      RDS_DATABASE: rdsDatabase,
-		      RDS_HOST: rdsHost
-		    },
-		  securityGroups: [securityGroup],                                      // Associate the security group
-		  timeout: Duration.seconds(3),                                         // Example timeout, adjust as needed
+		// Add a POST method to the '/register-shopper' resource
+		const register_shopper_fn = new lambdaNodejs.NodejsFunction(this, 'RegisterShopper', {
+			runtime: lambda.Runtime.NODEJS_22_X,
+			handler: 'handler.handler',
+			code: lambda.Code.fromAsset(path.join(__dirname, 'register-shopper')),
+			vpc: vpc,                                                             // Reference the VPC defined above
+			environment: {
+				RDS_USER: rdsUser,
+				RDS_PASSWORD: rdsPassword,
+				RDS_DATABASE: rdsDatabase,
+				RDS_HOST: rdsHost
+			},
+			securityGroups: [securityGroup],                                      // Associate the security group
+			timeout: Duration.seconds(3),                                         // Example timeout, adjust as needed
 		})
-		testResource.addMethod('POST', new apigw.LambdaIntegration(test_fn, integration_parameters), response_parameters)
+		registerShopperResource.addMethod('POST', new apigw.LambdaIntegration(register_shopper_fn, integration_parameters), response_parameters)
 	}
 }
