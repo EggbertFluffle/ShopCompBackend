@@ -73,8 +73,8 @@ export class CdkStack extends cdk.Stack {
       api_endpoint.root.addResource("register-shopper");
     const submitReceiptResource =
       api_endpoint.root.addResource("submit-receipt");
-    const listStoreOptionsResource =
-      api_endpoint.root.addResource("list-store-options");
+    const getStoreChainsResource =
+      api_endpoint.root.addResource("get-store-chains");
     const reviewHistoryResource =
       api_endpoint.root.addResource("review-history");
 
@@ -263,14 +263,14 @@ export class CdkStack extends cdk.Stack {
       response_parameters
     );
 
-    const list_store_options_fn = new lambdaNodejs.NodejsFunction(
+    const get_store_chains_fn = new lambdaNodejs.NodejsFunction(
       this,
-      "ListStoreOptions",
+      "GetStoreChains",
       {
         runtime: lambda.Runtime.NODEJS_22_X,
         handler: "handler.handler",
         code: lambda.Code.fromAsset(
-          path.join(__dirname, "list-store-options")
+          path.join(__dirname, "get-store-chains")
         ),
         vpc: vpc, // Reference the VPC defined above
         environment: {
@@ -283,9 +283,9 @@ export class CdkStack extends cdk.Stack {
         timeout: Duration.seconds(6), // Example timeout, adjust as needed
       }
     );
-    listStoreOptionsResource.addMethod(
+    getStoreChainsResource.addMethod(
       "GET",
-      new apigw.LambdaIntegration(list_store_options_fn, integration_parameters),
+      new apigw.LambdaIntegration(get_store_chains_fn, integration_parameters),
       response_parameters
     );
   }
