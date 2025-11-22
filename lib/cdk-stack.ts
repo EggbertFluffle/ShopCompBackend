@@ -71,6 +71,8 @@ export class CdkStack extends cdk.Stack {
       api_endpoint.root.addResource("register-shopper");
     const submitReceiptResource =
       api_endpoint.root.addResource("submit-receipt");
+    const listStoreOptionsResource =
+      api_endpoint.root.addResource("list-store-options");
 
     // https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
     const integration_parameters = {
@@ -205,6 +207,32 @@ export class CdkStack extends cdk.Stack {
     submitReceiptResource.addMethod(
       "POST",
       new apigw.LambdaIntegration(submit_receipt_fn, integration_parameters),
+      response_parameters
+    );
+
+    const list_store_options_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "ListStoreOptions",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, "list-store-options")
+        ),
+        vpc: vpc, // Reference the VPC defined above
+        environment: {
+          RDS_USER: rdsUser,
+          RDS_PASSWORD: rdsPassword,
+          RDS_DATABASE: rdsDatabase,
+          RDS_HOST: rdsHost,
+        },
+        securityGroups: [securityGroup], // Associate the security group
+        timeout: Duration.seconds(6), // Example timeout, adjust as needed
+      }
+    );
+    listStoreOptionsResource.addMethod(
+      "GET",
+      new apigw.LambdaIntegration(list_store_options_fn, integration_parameters),
       response_parameters
     );
   }
