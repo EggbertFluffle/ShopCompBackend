@@ -67,6 +67,8 @@ export class CdkStack extends cdk.Stack {
     });
 
     // Create a resource (e.g., '/calc')
+    const loginShopperResource =
+      api_endpoint.root.addResource("login-shopper");
     const registerShopperResource =
       api_endpoint.root.addResource("register-shopper");
     const submitReceiptResource =
@@ -162,6 +164,31 @@ export class CdkStack extends cdk.Stack {
         },
       ],
     };
+
+    // Add a POST method to the '/register-shopper' resource
+    const login_shopper_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "LoginShopper",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+        code: lambda.Code.fromAsset(path.join(__dirname, "login-shopper")),
+        vpc: vpc, // Reference the VPC defined above
+        environment: {
+          RDS_USER: rdsUser,
+          RDS_PASSWORD: rdsPassword,
+          RDS_DATABASE: rdsDatabase,
+          RDS_HOST: rdsHost,
+        },
+        securityGroups: [securityGroup], // Associate the security group
+        timeout: Duration.seconds(3), // Example timeout, adjust as needed
+      }
+    );
+    loginShopperResource.addMethod(
+      "POST",
+      new apigw.LambdaIntegration(login_shopper_fn, integration_parameters),
+      response_parameters
+    );
 
     // Add a POST method to the '/register-shopper' resource
     const register_shopper_fn = new lambdaNodejs.NodejsFunction(
