@@ -288,5 +288,42 @@ export class CdkStack extends cdk.Stack {
       new apigw.LambdaIntegration(get_store_chains_fn, integration_parameters),
       response_parameters
     );
+  
+            // ================================================================
+        // /login-administrator  -> LoginAdministrator lambda
+        // ================================================================
+        const loginAdminResource = api_endpoint.root.addResource(
+            'login-administrator',
+        );
+
+        const login_admin_fn = new lambdaNodejs.NodejsFunction(
+            this,
+            'LoginAdministrator',
+            {
+                runtime: lambda.Runtime.NODEJS_22_X,
+                handler: 'handler.handler',
+                code: lambda.Code.fromAsset(
+                    path.join(__dirname, 'login-administrator'),
+                ),
+                vpc,
+                environment: {
+                    RDS_USER: rdsUser,
+                    RDS_PASSWORD: rdsPassword,
+                    RDS_DATABASE: rdsDatabase,
+                    RDS_HOST: rdsHost,
+                },
+                securityGroups: [securityGroup],
+                timeout: Duration.seconds(3),
+            },
+        );
+
+        loginAdminResource.addMethod(
+            'POST',
+            new apigw.LambdaIntegration(
+                login_admin_fn,
+                integration_parameters,
+            ),
+            response_parameters,
+        );
   }
 }
