@@ -1,16 +1,11 @@
-## Shopper 
+## Shopper
 
-|uuid|username|password|
-|---|---|---|
-|abc123|eggbert|goat123|
-|efg456|ibomba|unc456|
+| uuid   | username | password | is_admin |
+|--------|----------|----------|----------|
+| abc123 | eggbert  | goat123  | false    |
+| efg456 | ibomba   | unc456   | false    |
+| adm001 | admin    | goat123  | true     |
 
-
-## Admin
-
-|uuid|username|password|
-|---|---|---|
-|abc123|admin|goat123|
 
 
 ## Receipt
