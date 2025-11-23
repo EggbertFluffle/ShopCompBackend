@@ -74,6 +74,7 @@ export class CdkStack extends cdk.Stack {
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
     const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
     const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -337,6 +338,7 @@ export class CdkStack extends cdk.Stack {
 			new apigw.LambdaIntegration(list_shopping_lists_fn, integration_parameters),
 			response_parameters,
 		);
+
     const create_shopping_list_fn = new lambdaNodejs.NodejsFunction(
       this,
       "CreateShoppingList",
@@ -360,6 +362,32 @@ export class CdkStack extends cdk.Stack {
 		createShoppingListResource.addMethod(
 			"POST",
 			new apigw.LambdaIntegration(create_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const add_to_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "AddItemToShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "add-to-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		addItemToShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(add_to_shopping_list_fn, integration_parameters),
 			response_parameters,
 		);
 
