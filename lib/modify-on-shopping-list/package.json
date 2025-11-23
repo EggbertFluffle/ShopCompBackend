@@ -1,5 +1,5 @@
 {
-  "name": "remove-from-shopping-list",
+  "name": "modify-on-shopping-list",
   "version": "1.0.0",
   "main": "handler.mjs",
   "dependencies": {
