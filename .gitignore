@@ -2,7 +2,11 @@
 !jest.config.js
 *.d.ts
 node_modules
+lib/*/node_modules
 
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# scripts
+total_lines.sh

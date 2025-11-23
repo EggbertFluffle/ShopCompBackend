@@ -1,72 +1,78 @@
 ShopComp Use Cases JSON State Representations
 
+Calculator Tutorial: https://andry-tutorial-bucket.s3.us-east-1.amazonaws.com/lambdaAdder.html
+
 (1)----------------------------------------------------------------- Andry
 /register-shopper --> (a uuid is created but not passed to the shopper)
 POST:
-{
-    "shopper-username": "catmajor",
-    "password": "password123"
-}
+    {
+        "shopper-username": "catmajor",
+        "password": "password123"
+    }
 200:
-{
-    "shopper-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b"
-}
+    {
+        "shopper-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b"
+    }
 400: { "error": "Error creating account. Please follow the username/password policy" }
-400: { "error": "Error creating account. Shopper username already exists" }
+400: { "error": "Error creating account. Username already exists" }
 
 (2)----------------------------------------------------------------- Andry
 /login-shopper
 POST:
-{
-    "shopper-username": "eggbert",
-    "password": "password123"
-}
+    {
+        "shopper-username": "eggbert",
+        "password": "password123"
+    }
 200:
-{
-    "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
-}
+    {
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+    }
 400: { "error": "Error logging in. Please follow the username/password policy" }
 400: { "error": "Error logging in. Wrong username or password " }
 
 (3)----------------------------------------------------------------- Andry
 /return-main-page-info --> (post logging in, main page is rendered, calling this lambda)
 POST:
-{
-    "shopper-username": "eggbert",
-    "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
-}
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+    }
 200:
-{
-    "store-chains": [
-        {
-            "name": "BJ's",
-            "url": "https://www.bjs.com",
-            "store-chain-uuid": "8cb9f0a1-efb7-40c6-8929-2cd792478086",
-            "stores": []
-        },
-        {
-            "name": "Walmart",
-            "url": "https://www.walmart.com",
-            "store-chain-uuid": "8f22b275-f0ed-4b66-a96c-0dc7c29a3eb8",
-            "stores": [
-                {
-                    "address": "123 Main St. Boston"
-                    "store-uuid": "58de70e2-28f7-40b2-b8b5-81178326d146",
-                },
-                {
-                    "address": "200 East Rd. Chicago"
-                    "store-uuid": "f0568158-af34-4d7e-8f49-0a915abfc298",
-                }
-            ]
-        }
-    ]
-}
-400: { "error": "Unable to return store-chains" }
+    {
+        "store-chains": [
+            {
+                "name": "BJ's",
+                "url": "https://www.bjs.com",
+                "store-chain-uuid": "8cb9f0a1-efb7-40c6-8929-2cd792478086",
+                "stores": []
+            },
+            {
+                "name": "Walmart",
+                "url": "https://www.walmart.com",
+                "store-chain-uuid": "8f22b275-f0ed-4b66-a96c-0dc7c29a3eb8",
+                "stores": [
+                    {
+                        "address": "123 Main St. Boston"
+                        "store-uuid": "58de70e2-28f7-40b2-b8b5-81178326d146",
+                    },
+                    {
+                        "address": "200 East Rd. Chicago"
+                        "store-uuid": "f0568158-af34-4d7e-8f49-0a915abfc298",
+                    }
+                ]
+            }
+        ]
+    }
+400: { "error": "Unable to return receipts" }
 400: { "error": "Unable to return store chains information" }
 
 (4)----------------------------------------------------------------- Andry
-/show-account-dashboard  -->  We will NOT have an API for this USE CASE  
-GET // Shopper only sees all the public chains and stores
+/show-account-dashboard
+POST:
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+    }
 200:
 {
     "store-chains": [
@@ -87,135 +93,135 @@ GET // Shopper only sees all the public chains and stores
             "store-chain-uuid": "71cdcd1a-7082-4ce7-af0c-b09606304094",
             "stores": [
                 {
-                    "address": "122 Goat St, Worcester, MA",
-                    "store-uuid": "12886594-e6a6-46a8-9951-5313d8528ce8",
-                    {
-                        "address": "121 Goat St, Worcester, MA",
-                        "store-uuid": "ea973996-8193-4fa0-8cf2-afc41b90695a"
-                    }
-                ]
-            }
+                    "address": "121 Goat St, Worcester, MA",
+                    "store-uuid": "ea973996-8193-4fa0-8cf2-afc41b90695a"
+                },
+                {
+                    "address": "123 Lmabda St, Natick, MA",
+                    "store-uuid": "ea011926-8993-4fs0-6cf2-afc73b90695a"
+                },
+            ]
         }
     ]
 }
 400: { "error": "Unable to return account information" }
-
 (5)----------------------------------------------------------------- Andry
 /add-chain
 POST:
-{
-    "shopper-username": "eggbert",
-    "shopper-uuid": "1eb16c2b-1b23-41cb-a28b-1149543a307b",
-    "store-chain-name": "Walmart",
-    "store-chain-url": "https://www.walmart.com"
-}
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "1eb16c2b-1b23-41cb-a28b-1149543a307b",
+        "store-chain-name": "Walmart",
+        "store-chain-url": "https://www.walmart.com"
+    }
 200:
-{
-    "store-chains": [
-        {
-            "name": "BJ's",
-            "store-chain-uuid": "76aed3e5-ff1e-4df6-a8e0-f168ecee40b4",
-            "url": "https://www.bjs.com",
-            "stores": []
-        },
-        {
-            "name": "Walmart",
-            "store-chain-uuid": "c7b13c64-9f9e-4116-b841-024d4d6b2674",
-            "url": "https://www.walmart.com",
-            "stores": []
-        }
-    ]
-}
+    {
+        "store-chains-list": [
+            {
+                "name": "BJ's",
+                "store-chain-uuid": "76aed3e5-ff1e-4df6-a8e0-f168ecee40b4",
+                "url": "https://www.bjs.com",
+                "stores": []
+            },
+            {
+                "name": "Walmart",
+                "store-chain-uuid": "c7b13c64-9f9e-4116-b841-024d4d6b2674",
+                "url": "https://www.walmart.com",
+                "stores": []
+            }
+        ]
+    }
 400: { "error": "Error. Some field/s are empty" }
 400: { "error": "Error. Chain name already exists" }
 
 (6)----------------------------------------------------------------- Andry
 /add-store-to-chain
 POST:
-{
-    "shopper-username": "eggbert",
-    "shopper-uuid": "f117b458-4498-42e6-886b-c6c1c52c93b9",
-    "store-chain-name": "Walmart",
-    "store-chain-uuid": "733c0455-97ee-47e9-9add-6391f5c77722",
-    "address": "210 C St. Milford"
-}
+    {
+      "shopper-username": "eggbert",
+      "shopper-uuid": "f117b458-4498-42e6-886b-c6c1c52c93b9",
+      "store-chain-name": "Walmart",
+      "store-chain-uuid": "733c0455-97ee-47e9-9add-6391f5c77722",
+      "address": "210 C St. Milford"
+    }
 200:
-{
-    "store-chains": [
-        {
-            "name": "BJ's",
-            "store-chain-uuid": "3e0b7b11-dadd-4ea2-a6f9-cfc390698eb1",
-            "url": "https://www.bjs.com",
-            "stores": []
-        },
-        {
-            "name": "Walmart",
-            "store-chain-uuid": "2f7b98b6-bdba-401b-bcae-3a0f40e4675f",
-            "url": "https://www.walmart.com",
-            "stores": [
-                {
-                    "store-uuid": "62948627-9462-4151-8aab-57a9fd17ef7b",
-                    "address": "210 C St. Milford"
-                }
-            ]
-        }
-    ]
-}
+    {
+        "store-chains-list": [
+            {
+                "name": "BJ's",
+                "store-chain-uuid": "3e0b7b11-dadd-4ea2-a6f9-cfc390698eb1",
+                "url": "https://www.bjs.com",
+                "stores": []
+            },
+            {
+                "name": "Walmart",
+                "store-chain-uuid": "2f7b98b6-bdba-401b-bcae-3a0f40e4675f",
+                "url": "https://www.walmart.com",
+                "stores": [
+                    {
+                      "store-uuid": "62948627-9462-4151-8aab-57a9fd17ef7b",
+                      "address": "210 C St. Milford"
+                    }
+                ]
+            }
+        ]
+    }
 400: { "error": "Error. Store already exists in chain" }
 400: { "error": "Error. Some field/s are empty" }
 
 (7)----------------------------------------------------------------- Andry
 /review-history
 POST:
-{
-    "shopper-username": "eggbert",
-}
+    {
+        "shopper-username": "catmajor",
+        "password": "password123"
+    }
 200:
-{
-    "receipts": [
-        {
-            "date": "2025-10-31",
-            "store": {
-                "address": "123 Main St. Boston",
-                "store-uuid": "947c5233-06f0-4633-9021-ea2f10cf0da3"
-            },
-            "receipt-uuid": "e80dc1ea-df8f-414c-8991-8942d756a0e0",
-            "items": [
-                {
-                    "name": "Whole Milk Bottle",
-                    "category": "Milk",
-                    "price": "10",
-                    "quantity": "1",
-                    "item-uuid": "a494e5e5-d2c5-4535-8eaa-b22d9b2b733b"
-                }
-            ]
-        },
-        {
-            "date": "2025-10-31",
-            "store": {
-                "address": "200 East Rd. Chicago",
-                "store-uuid": "0e1280f5-fff8-4cbd-892d-1d9309e1df64"
-            },
-            "receipt-uuid": "0a6c5000-ed61-4c8b-91cb-3e21e19f14b4",
-            "items": [
-                {
-                    "name": "Classic Lays Chips",
-                    "category": "Chips",
-                    "price": "3",
-                    "quantity": "2",
-                    "item-uuid": "55094466-dfee-45c4-8a28-fef6df67687b"
+    {
+        "receipts": [
+            {
+                "date": "2025-10-31",
+                "store": {
+                    "address": "123 Main St. Boston",
+                    "store-uuid": "947c5233-06f0-4633-9021-ea2f10cf0da3"
                 },
-                {
-                    "name": "Slim Milk Bottle",
-                    "category": "Milk",
-                    "price": "12",
-                    "quantity": "1",
-                    "item-uuid": "ce6d1180-7208-440c-89e9-e009973435e6"
-                }
-            ]
-        }
-    ]
-}
+                "receipt-uuid": "e80dc1ea-df8f-414c-8991-8942d756a0e0",
+                "items": [
+                    {
+                        "name": "Whole Milk Bottle",
+                        "category": "Milk",
+                        "price": "10",
+                        "quantity": "1",
+                        "item-uuid": "a494e5e5-d2c5-4535-8eaa-b22d9b2b733b"
+                    }
+                ]
+            },
+            {
+                "date": "2025-10-31",
+                "store": {
+                    "address": "200 East Rd. Chicago",
+                    "store-uuid": "0e1280f5-fff8-4cbd-892d-1d9309e1df64"
+                },
+                "receipt-uuid": "0a6c5000-ed61-4c8b-91cb-3e21e19f14b4",
+                "items": [
+                    {
+                        "name": "Classic Lays Chips",
+                        "category": "Chips",
+                        "price": "3",
+                        "quantity": "2",
+                        "item-uuid": "55094466-dfee-45c4-8a28-fef6df67687b"
+                    },
+                    {
+                        "name": "Slim Milk Bottle",
+                        "category": "Milk",
+                        "price": "12",
+                        "quantity": "1",
+                        "item-uuid": "ce6d1180-7208-440c-89e9-e009973435e6"
+                    }
+                ]
+            }
+        ]
+    }
 400: { "error": "Error returning receipts" }
 400: { "error": "No receipts exist" }
 
@@ -228,17 +234,17 @@ POST:
     "time-period": "last-week"
 }
 200:
-{
-    "receipt-dates": [
-        { "date": "2025-10-31" },
-        { "date": "2025-10-31" }
-    ],
-    "receipt-totals": [
-        { "total": "10" },
-        { "total": "18" }
-    ],
-    "total-spent": "28"
-}
+    {
+        "receipt-dates": [
+            { "date": "2025-10-31" },
+            { "date": "2025-10-31" }
+        ],
+        "receipts-totals": [
+            { "total": "10" },
+            { "total": "18" }
+        ],
+        "total-spent": "28"
+    }
 400: { "error": "Error returning receipts" }
 400: { "error": "No receipts exist" }
 
@@ -277,50 +283,50 @@ POST:
     "message": "Receipt submitted successfully",
     "receipt-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72"
 }
-400: { "error": "Shopper not authenticated or not authorized to submit receipt for this user" }
+400: { "error": "User not authenticated or not authorized to submit receipt for this user" }
 400: { "error": "Invalid receipt data format" }
 400: { "error": "Database error while storing receipt" }
 400: { "error": "Store ID does not exist" }
 400: { "error": "Receipt date is in the future" }
 400: { "error": "Receipt contains no items" }
-400: { "error": "Shopper does not exist" }
+400: { "error": "User does not exist" }
 
 (10)----------------------------------------------------------------- Harrison
 /analyse-receipt-image
 POST:
-{
-    "shopper-username": "eggbert",
-    "shopper-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72",
-    "open-api-key": "SUPER_SECRET_OPEN_API_KEY",
-    "image": "image/png:base_64,SUPER_COOL_IMAGE_OF_RECEIPT_IN_BASE_64"
-}
-200:
-{
-    "receipt": {
-        "date": "2025-10-31",
-        "store": {
-            "address": "123 Main St. Boston",
-            "store-uuid": "bd9f3bf6-8d66-4bc4-8246-794bcce952e7"
-        },
-        "items": [
-            {
-                "name": "Apple",
-                "price": "1.00",
-                "quantity": "2"
-            },
-            {
-                "name": "Banana",
-                "price": "0.50",
-                "quantity": "3"
-            },
-            {
-                "name": "Chocolate Bar",
-                "price": "2.00",
-                "quantity": "1"
-            },
-        ]
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "ee0a6f92-3a5c-41fe-9ae0-72397ad6da72",
+        "open-api-key": "SUPER_SECRET_OPEN_API_KEY",
+        "image": "image/png:base_64,SUPER_COOL_IMAGE_OF_RECEIPT_IN_BASE_64"
     }
-}
+200:
+    {
+        "receipt": {
+            "date": "2025-10-31",
+            "store": {
+                "address": "123 Main St. Boston",
+                "store-uuid": "bd9f3bf6-8d66-4bc4-8246-794bcce952e7"
+            },
+            "items": [
+                {
+                    "name": "Apple",
+                    "price": "1.00",
+                    "quantity": "2"
+                },
+                {
+                    "name": "Banana",
+                    "price": "0.50",
+                    "quantity": "3"
+                },
+                {
+                    "name": "Chocolate Bar",
+                    "price": "2.00",
+                    "quantity": "1"
+                },
+            ]
+        }
+    }
 400: { "error": "Invalid Open-API key" }
 400: { "error": "Image file is missing or corrupted" }
 400: { "error": "OpenAI generated an error" }
@@ -328,269 +334,364 @@ POST:
 (11)----------------------------------------------------------------- Nikita
 /list-shopping-lists
 POST:
-{
-    "shopper-username": "eggbert"
-}
+    {
+        "shopper-username": "catmajor",
+        "password": "password123"
+    }
 200:
-{
-    "shopping-lists": [
-        {
-            "name": "Weekly Groceries",
-            "shopping-list-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
-            "items": [
-                {
-                    "name": "Apples",
-                    "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
-                    "quantity": "5"
-                },
-                {
-                    "name": "Bananas",
-                    "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
-                    "quantity": "7"
-                }
-            ]
-        },
-        {
-            "name": "Party Supplies",
-            "shopping-list-uuid": "d690a7f3-e135-4499-8b6e-cb51157ba5da",
-            "items": [
-                {
-                    "name": "Chips",
-                    "item-uuid": "b038d09b-5ec9-4050-b61f-b57f1d936c17",
-                    "quantity": "10"
-                },
-                {
-                    "name": "Soda",
-                    "item-uuid": "78282345-6f5b-4547-94ba-ee1bb1ee8742",
-                    "quantity": "6"
-                }
-            ]
-        }
-    ]
-}
-400: { "error": "Shopper does not exist" }
+    {
+        "shopping-list": [
+            {
+                "name": "Weekly Groceries",
+                "shopping-list-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
+                "items": [
+                    {
+                        "name": "Apples",
+                        "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
+                        "quantity": 5
+                    },
+                    {
+                        "name": "Bananas",
+                        "item-uuid": "ae0396c3-a393-4eb5-b41e-d4b8e112b0e8",
+                        "quantity": 7
+                    }
+                ]
+            },
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "d690a7f3-e135-4499-8b6e-cb51157ba5da",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "item-uuid": "b038d09b-5ec9-4050-b61f-b57f1d936c17",
+                        "quantity": "10"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "78282345-6f5b-4547-94ba-ee1bb1ee8742",
+                        "quantity": "6"
+                    }
+                ]
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
 400: { "error": "Not authenticated" }
 
 (12)----------------------------------------------------------------- Nikita
 /remove-shopping-list
 POST:
-{
-    "shopper-username": "eggbert",
-    "shopper-uuid": "3d3d86a9-1d45-4333-b779-c58353c489d2"
-}
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "3d3d86a9-1d45-4333-b779-c58353c489d2"
+        "shopping-list-name": "Fridsay's list",
+        "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+    }
 200:
-{
-    "shopping-lists": [
-        {
-            "name": "Party Supplies",
-            "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
-            "items": [
-                {
-                    "name": "Chips",
-                    "quantity": "10",
-					"item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
-                },
-                {
-                    "name": "Soda",
-                    "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
-                    "quantity": "6"
-                }
-            ]
-        }
-    ]
-}
-400: { "error": "Shopper does not exist" }
+    {
+        "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+              "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to delete this list" }
 
 (13)----------------------------------------------------------------- Nikita
 /create-shopping-list
 POST:
-{
-    "shopper-username": "eggbert",
-	"shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
-	"shopping-list-name": "Weekly Groceries",
-}
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
+        "shopping-list-name": "Weekly Groceries",
+    }
 200:
-{
-    "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
-    "message": "Shopping list created successfully",
-}
-400: { "error": "Shopper does not exist" }
+    {  
+        "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+                        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            },
+            {
+              "name": "Weekly Groceries",
+              "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
+              "items": []
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
 400: { "error": "Shopping list with this name already exists" }
 400: { "error": "Not authenticated or not authorized to create a list for this user" }
 
 (14)----------------------------------------------------------------- Nikita
 /add-to-shopping-list
 POST:
-{
-    "shopper-username": "eggber",
-    "shopper-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
-    "item": {
-        "name": "Apples",
-        "quantity": 5
-    }
-}
+  {
+      "shopper-username": "eggbert",
+      "shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
+      "shopper-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
+      "shopping-list-name": "Weekly Groceries",
+      "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242"
+
+      
+      "item-name": "Apples",
+      "item-quantity": "5"
+      
+  }
 200:
-{
-    "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
-    "item": {
-        "name": "Apples",
-        "quantity": "5"
-    },
-    "items": [
-        {
-            "name": "Apples",
-            "quantity": "5"
-        },
-        {
-            "name": "Bananas",
-            "quantity": 7
-        }
-    ],
-}
-400: { "error": "Shopper does not exist" }
+    {  
+        "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+                        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            },
+            {
+              "name": "Weekly Groceries",
+              "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
+              "items": [
+                { "name": "Apples",
+                  "quantity": "5",
+                  "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"}
+              ]
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to modify this list" }
 400: { "error": "Item already exists in the shopping list" }
-400: { "error": "Invalid item data" }
+400: { "error": "Some field/s are empty" }
 
 (15)----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
 POST:
-{
-    "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
-    "shopper-username": "eggbert",
-    "item-name": "Apples"
-}
+    {
+        "shopping-list-name": "Weekly Groceries",
+        "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
+        "shopper-username": "eggbert",
+        "shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
+        "item-name": "Apples",
+        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+    }
 200:
-{
-    "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
-    "items": [
-        {
-            "name": "Bananas",
-            "quantity": "7"
-        }
-    ],
-}
-400: { "error": "Shopper does not exist" }
+  {  
+    "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+                        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            },
+            {
+              "name": "Weekly Groceries",
+              "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
+              "items": []
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
 400: { "error": "Shopping list does not exist" }
 400: { "error": "Not authenticated or not authorized to modify this list" }
 400: { "error": "Item does not exist in the shopping list" }
 
 (16)----------------------------------------------------------------- Harrison
 /list-store-chains
-GET:
+POST:
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+    }
 200:
-{
-    "store-chains": [
-        {
-            "name": "BJ's",
-            "url": "https://www.bjs.com",
-            "store-chain-uuid": "3722687c-3c93-4e44-ab4e-0464ad8d8b88 ",
-            "stores": [
-                {
-                    "address": "120 Goat St, Worcester, MA",
-                    "store-uuid": "f92bbc75-36d7-42e2-830c-ed485b9def41 "
-                }
-            ]
-        },
-        {
-            "name": "Walmart",
-            "url": "https://www.walmart.com",
-            "store-chain-uuid": "1a9fe42e-3d79-4c98-86be-a94758647ff4 ",
-            "stores": [
-                {
-                    "address": "122 Goat St, Worcester, MA",
-                    "store-uuid": "96d466de-e69d-4bf6-b113-2da2eba0389c "
-                },
-                {
-                    "address": "124 Goat St, Worcester, MA",
-                    "store-uuid": "ea4d4ac5-91fd-4646-a554-89497698a723 "
-                }
-            ]
-        }
-    ]
-}
+    {
+        "chains": [
+            {
+                "name": "BJ's",
+                "url": "https://www.bjs.com",
+                "store-chain-uuid": "3722687c-3c93-4e44-ab4e-0464ad8d8b88 ",
+                "stores": [
+                    {
+                        "address": "120 Goat St, Worcester, MA",
+                        "store-uuid": "f92bbc75-36d7-42e2-830c-ed485b9def41 "
+                    }
+                ]
+            },
+            {
+                "name": "Walmart",
+                "url": "https://www.walmart.com",
+                "store-chain-uuid": "1a9fe42e-3d79-4c98-86be-a94758647ff4 ",
+                "stores": [
+                    {
+                        "address": "122 Goat St, Worcester, MA",
+                        "store-uuid": "96d466de-e69d-4bf6-b113-2da2eba0389c "
+                    },
+                    {
+                        "address": "124 Goat St, Worcester, MA",
+                        "store-uuid": "ea4d4ac5-91fd-4646-a554-89497698a723 "
+                    }
+                ]
+            }
+        ]
+    }
 400: { "error": "Database error while retrieving store chains" }
-400:  "error": "Shopper not authenticated or not authorized to view store chains" }
+400: { "error": "User not authenticated or not authorized to view store chains" }
 
 (17)-----------------------------------------------------------------
 /report-options-for-shopping-list    --> Attempts to find shopping list items in existing receipts
 POST:
-{
-    "shopping-list-name": "Weekly Groceries",
-    "shopping-list-uuid": "de2c22b8-9e0e-4a29-a414-b59f1ff7d737 ",
-    "items": [
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+        "shopping-list-name": "Weekly Groceries",
+        "shopping-list-uuid": "de2c22b8-9e0e-4a29-a414-b59f1ff7d737 ",
+        "items": [
+            {
+                "name": "Apples",
+                "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                "quantity": "5"
+            },
+            {
+                "name": "Bananas",
+                "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                "quantity": "7"
+            }
+        ]
+    }
+200:
+    {  
+      "shopping-list-uuid": "uuid-here",
+      "items": [
         {
-            "name": "Apples",
-            "quantity": 5
+            "name": "Bannanas",
+            "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
+            "options": [
+                {
+                    "name": "Bananas",
+                    "item-uuid": "949cd564-a64d-4709-ab02-cff638415894",
+                    "quantity": 3,
+                    "price": 2,
+                },
+                {
+                    "name": "Bananas",
+                    "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
+                    "quantity": 1,
+                    "price": 8,
+                },
+                {
+                    "name": "Bananas",
+                    "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
+                    "quantity": 1,
+                    "price": 4,
+                }
+            ]
         },
         {
-            "name": "Bananas",
-            "quantity": 7
+            "name": "Apples",
+            "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
+            "options": [] // This indicates no options for buying exist
         }
     ]
-}
-200:
-{
 }
 400: { }
 
 (18)-----------------------------------------------------------------
 /search-recent-purchases --> Uses "keyword" to return receipts with "keyword" items
 POST:
-{
-    "shopper-username": "shopper-username",
-    "search-keyword": "Chips"
-}
+    {
+        "shopper-username": "eggbert",
+        "shopper-uuid": "949cd564-a64d-4709-ab02-cff638415894"
+        "search-keyword": "Chips"
+    }
 200:
-{
-    "receipts": [
-      {
-        "date": "2025-10-31",
-        "receipt-uuid": "receipt-uuid", "store": {
-            "address": "200 East Rd. Chicago",
-            "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
-        }
-        "items": [
-            {
-                "name": "Classic Lays Chips",
-                "category": "Chips",
-                "price": "3",
-                "quantity": "2",
-                "item-uuid": "6801704f-cfc4-4eb1-90d1-29b1797e9824 "
-            },
-            {
-                "name": "Slim Milk Bottle",
-                "category": "Milk",
-                "price": "12",
-                "quantity": "1",
-                "item-uuid": "c400e24b-4a8b-4e48-b14e-2a428cf3bd37 "
+    {
+        "receipt": {
+            "date": "2025-10-31",
+            "receipt-uuid": "receipt-uuid", "store": {
+                "address": "200 East Rd. Chicago",
+                "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
             }
-        ]
-      }
-    ]
-}
+            "items": [
+                {
+                    "name": "Classic Lays Chips",
+                    "category": "Chips",
+                    "price": "3",
+                    "quantity": "2",
+                    "item-uuid": "6801704f-cfc4-4eb1-90d1-29b1797e9824 "
+                },
+                {
+                    "name": "Slim Milk Bottle",
+                    "category": "Milk",
+                    "price": "12",
+                    "quantity": "1",
+                    "item-uuid": "c400e24b-4a8b-4e48-b14e-2a428cf3bd37 "
+                }
+            ]
+        }
+    }
 400: { "error": "Item does not exist in recent purchases" }
-400: { "error": "Shopper does not exist" }
-400: { "error": "Shopper not authenticated or not authorized to view recent purchases" }
+400: { "error": "User does not exist" }
+400: { "error": "User not authenticated or not authorized to view recent purchases" }
 400: { "error": "Database error while retrieving recent purchases" }
 
 (19)----------------------------------------------------------------- Bryce
 /login-administrator
 POST:
-{
-    "admin-username": "admin",
-    "password": "super-password123"
-}
+    {
+        "admin-username": "admin",
+        "password": "super-password123"
+    }
 200:
-{
-    "admin-uuid": "667ddd8a-377c-43b7-a71f-ff0e86211ff4 "
-}
+    {
+        "admin-uuid": "667ddd8a-377c-43b7-a71f-ff0e86211ff4 "
+    }
 400: { "error": "Error logging in. Please follow the username/password policy" }
 400: { "error": "Error logging in. Wrong username or password " }
 
@@ -642,16 +743,6 @@ POST:
             "store-chain-uuid": "e40842a2-cb70-4499-a9bf-dfc4b6f84d79 ",
             "stores": []
         }
-    ],
-    "recent-activity": [
-        {
-            "timestamp": "2025-11-17T10:15:00Z",
-            "event": "New receipt submitted for Walmart"
-        },
-        {
-            "timestamp": "2025-11-17T09:42:00Z",
-            "event": "Store added to BJ's"
-        }
     ]
 }
 400: { "error": "Missing administrator username" }
@@ -660,13 +751,14 @@ POST:
 (21)----------------------------------------------------------------- Bryce
 /remove-store
 POST:
-{
-    "admin-username": "admin",
-    "admin-uuid": "6de4130e-3d50-4685-a4c8-07a74c0cb1f0 ",
-    "store-chain-name": "BJ's",
-    "store-chain-uuid": "705d5ec0-702d-4e09-9004-2b9e296db6ae "
-    "store-uuid": "d80c4583-d1eb-4c01-a104-7c8b8aa21aa2 ",
-}
+  {
+      "admin-username": "admin",
+      "admin-uuid": "6de4130e-3d50-4685-a4c8-07a74c0cb1f0 ",
+      "store-chain-name": "BJ's",
+      "store-chain-uuid": "705d5ec0-702d-4e09-9004-2b9e296db6ae ",
+      "address": "10 Maple St. Worcester",
+      "store-uuid": "d80c4583-d1eb-4c01-a104-7c8b8aa21aa2 "
+  }
 200:
 {
     "store-chains": [
@@ -738,4 +830,3 @@ POST:
     ],
 }
 400: { "error": "Store Chain does not exist" }
-

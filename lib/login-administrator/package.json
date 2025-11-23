@@ -1,0 +1,8 @@
+{
+  "name": "login-administrator",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "mysql2": "^3.11.0"
+  }
+}
