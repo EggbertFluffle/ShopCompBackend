@@ -73,6 +73,7 @@ export class CdkStack extends cdk.Stack {
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
     const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -334,6 +335,31 @@ export class CdkStack extends cdk.Stack {
 		listShoppingListsResource.addMethod(
 			"POST",
 			new apigw.LambdaIntegration(list_shopping_lists_fn, integration_parameters),
+			response_parameters,
+		);
+    const create_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "CreateShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "create-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		createShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(create_shopping_list_fn, integration_parameters),
 			response_parameters,
 		);
 
