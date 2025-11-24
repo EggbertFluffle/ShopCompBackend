@@ -72,13 +72,14 @@ export class CdkStack extends cdk.Stack {
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
-    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
-    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
-    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
-    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
-    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
-    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
-    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+        const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
+        const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+        const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+        const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+        const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+        const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+        const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+        const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -317,7 +318,35 @@ export class CdkStack extends cdk.Stack {
 			response_parameters,
 		);
 
-    const list_shopping_lists_fn = new lambdaNodejs.NodejsFunction(
+        const show_admin_dashboard_fn = new lambdaNodejs.NodejsFunction(
+            this,
+            "ShowAdminDashboard",
+            {
+                runtime: lambda.Runtime.NODEJS_22_X,
+                handler: "handler.handler",
+                code: lambda.Code.fromAsset(
+                    path.join(__dirname, "show-admin-dashboard"),
+                ),
+                vpc,
+                // no DB  right now, but we can still pass env through for consistency
+                environment: {
+                    RDS_USER: rdsUser,
+                    RDS_PASSWORD: rdsPassword,
+                    RDS_DATABASE: rdsDatabase,
+                    RDS_HOST: rdsHost,
+                },
+                securityGroups: [securityGroup],
+                timeout: Duration.seconds(3),
+            },
+        );
+
+        showAdminDashboardResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(show_admin_dashboard_fn, integration_parameters),
+            response_parameters,
+        );
+
+        const list_shopping_lists_fn = new lambdaNodejs.NodejsFunction(
       this,
       "ListShoppingLists",
       {
