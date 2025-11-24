@@ -501,6 +501,54 @@ POST:
 400: { "error": "Item already exists in the shopping list" }
 400: { "error": "Some field/s are empty" }
 
+(14.5)----------------------------------------------------------------- Nikita
+/modify-on-shopping-list
+POST:
+  {
+      "shopper-username": "eggbert",
+      "shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
+      "shopper-uuid": "34672f9b-4582-4045-9ba4-2e0abb9333fc",
+      "shopping-list-name": "Weekly Groceries",
+      "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242"
+      "item-name": "Apple",
+      "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b",
+      "item-quantity": "23"      
+  }
+200:
+    {  
+        "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+                        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            },
+            {
+              "name": "Weekly Groceries",
+              "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
+              "items": [
+                { "name": "Apple",
+                  "quantity": "2333",
+                  "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"}
+              ]
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
+400: { "error": "Shopping list does not exist" }
+400: { "error": "Not authenticated or not authorized to modify this list" }
+400: { "error": "Some field/s are empty" }
+
 (15)----------------------------------------------------------------- Nikita
 /remove-from-shopping-list
 POST:
@@ -533,6 +581,46 @@ POST:
             },
             {
               "name": "Weekly Groceries",
+              "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
+              "items": []
+            }
+        ]
+    }
+400: { "error": "User does not exist" }
+400: { "error": "Shopping list does not exist" }
+400: { "error": "Not authenticated or not authorized to modify this list" }
+400: { "error": "Item does not exist in the shopping list" }
+
+(15.5)----------------------------------------------------------------- Nikita
+/modify-shopping-list
+POST:
+    {
+        "shopping-list-name": "Weekly Groceries New",
+        "shopping-list-uuid": "f1f8ce08-5971-4a0f-a99c-5be48e2d4ae0",
+        "shopper-username": "eggbert",
+        "shopper-uuid": "9ff6a976-a849-4d0c-8c26-7da766ebd5d5",
+    }
+200:
+  {  
+    "shopping-lists": [
+            {
+                "name": "Party Supplies",
+                "shopping-list-uuid": "0f2e2e7d-0381-4afd-ae52-86780b9a6da7",
+                "items": [
+                    {
+                        "name": "Chips",
+                        "quantity": "10",
+                        "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
+                    },
+                    {
+                        "name": "Soda",
+                        "item-uuid": "cad884cf-a021-4c7c-b6b3-a8c848b99675",
+                        "quantity": "6"
+                    }
+                ]
+            },
+            {
+              "name": "Weekly Groceries New",
               "shopping-list-uuid": "52ff1ab9-a741-4436-9649-461f6ae7e242",
               "items": []
             }

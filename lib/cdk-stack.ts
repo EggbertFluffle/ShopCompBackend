@@ -72,6 +72,13 @@ export class CdkStack extends cdk.Stack {
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
+    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -309,5 +316,188 @@ export class CdkStack extends cdk.Stack {
 			new apigw.LambdaIntegration(login_admin_fn, integration_parameters),
 			response_parameters,
 		);
+
+    const list_shopping_lists_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "ListShoppingLists",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "list-shopping-lists"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		listShoppingListsResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(list_shopping_lists_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const create_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "CreateShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "create-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		createShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(create_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const add_to_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "AddItemToShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "add-to-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		addItemToShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(add_to_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const remove_from_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "RemoveItemFromShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "remove-from-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		removeItemFromShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(remove_from_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const modify_on_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "ModifyItemOnShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "modify-on-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		modifyItemOnShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(modify_on_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const remove_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "RemoveShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "remove-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		removeShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(remove_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
+    const modify_shopping_list_fn = new lambdaNodejs.NodejsFunction(
+      this,
+      "ModifyShoppingList",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "modify-shopping-list"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		modifyShoppingListResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(modify_shopping_list_fn, integration_parameters),
+			response_parameters,
+		);
+
 	}
 }
