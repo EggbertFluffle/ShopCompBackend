@@ -1,0 +1,8 @@
+{
+  "name": "modify-on-shopping-list",
+  "version": "1.0.0",
+  "main": "handler.mjs",
+  "dependencies": {
+    "mysql2": "^3.15.1"
+  }
+}
