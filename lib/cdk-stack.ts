@@ -72,14 +72,14 @@ export class CdkStack extends cdk.Stack {
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
-        const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
-        const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
-        const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
-        const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
-        const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
-        const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
-        const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
-        const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+    const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
+    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
