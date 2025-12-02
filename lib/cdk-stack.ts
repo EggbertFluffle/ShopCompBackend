@@ -69,16 +69,17 @@ export class CdkStack extends cdk.Stack {
 		const loginShopperResource = api_endpoint.root.addResource("login-shopper");
 		const registerShopperResource = api_endpoint.root.addResource("register-shopper");
 		const submitReceiptResource = api_endpoint.root.addResource("submit-receipt");
+        const addStoreResource = api_endpoint.root.addResource("add-store");
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
-    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
-    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
-    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
-    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
-    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
-    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
-    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+        const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+        const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+        const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+        const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+        const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+        const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+        const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -291,7 +292,33 @@ export class CdkStack extends cdk.Stack {
 			response_parameters
 		);
 
-		const login_admin_fn = new lambdaNodejs.NodejsFunction(
+
+
+        // AddStore Lambda (no bundling, no Docker, same structure as other lambdas)
+        const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
+            runtime: lambda.Runtime.NODEJS_22_X,
+            handler: "handler.handler",                  // export const handler
+            code: lambda.Code.fromAsset(path.join(__dirname, "add-store")),
+            vpc,
+            environment: {
+                RDS_USER: rdsUser,
+                RDS_PASSWORD: rdsPassword,
+                RDS_DATABASE: rdsDatabase,
+                RDS_HOST: rdsHost,
+            },
+            securityGroups: [securityGroup],
+            timeout: Duration.seconds(3),
+        });
+
+        // POST /add-store
+        addStoreResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(add_store_fn, integration_parameters),
+            response_parameters
+        );
+
+
+        const login_admin_fn = new lambdaNodejs.NodejsFunction(
 			this,
 			"LoginAdministrator",
 			{
