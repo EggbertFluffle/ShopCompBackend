@@ -685,11 +685,12 @@ POST:
                 "name": "Apples",
                 "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
                 "quantity": "5"
-            },
+             },
             {
                 "name": "Bananas",
                 "item-uuid": "694a3517-7769-4faf-bf60-00108ffac17b"
                 "quantity": "7"
+                "receipt-uuid": "receipt-uuid-here"
             }
         ]
     }
@@ -706,18 +707,51 @@ POST:
                     "item-uuid": "949cd564-a64d-4709-ab02-cff638415894",
                     "quantity": 3,
                     "price": 2,
+                    "receipt-uuid": "receipt-uuid-here"
+                    "receipt": {
+                      "date": "2025-10-31",
+                      "store-chain-uuid": "store-chain-uuid-here",
+                      "store-chain-name": "Walmart",
+                      "store-chain-url": "https://www.walmart.com",
+                      "store": {
+                          "address": "200 East Rd. Chicago",
+                          "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
+                       }
+                    }
                 },
                 {
                     "name": "Bananas",
                     "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
                     "quantity": 1,
                     "price": 8,
+                    "receipt-uuid": "receipt-uuid-here"
+                    "receipt": {
+                      "date": "2025-10-31",
+                      "store-chain-uuid": "store-chain-uuid-here",
+                      "store-chain-name": "Walmart",
+                      "store-chain-url": "https://www.walmart.com",
+                      "store": {
+                          "address": "200 East Rd. Chicago",
+                          "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
+                       }
+                    }
                 },
                 {
                     "name": "Bananas",
                     "item-uuid": "b5280bf1-8a69-4a79-89be-7a96a05ec26b",
                     "quantity": 1,
                     "price": 4,
+                    "receipt-uuid": "receipt-uuid-here"
+                    "receipt": {
+                      "date": "2025-10-31",
+                      "store-chain-uuid": "store-chain-uuid-here",
+                      "store-chain-name": "Walmart",
+                      "store-chain-url": "https://www.walmart.com",
+                      "store": {
+                          "address": "200 East Rd. Chicago",
+                          "store-uuid": "448ef4d3-dca9-4a7c-b53b-0403751b16a4 ",
+                       }
+                    }
                 }
             ]
         },
