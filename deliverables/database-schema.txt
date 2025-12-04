@@ -1,0 +1,73 @@
+CREATE TABLE `Item` (
+  `uuid` varchar(64) NOT NULL,
+  `receipt-uuid` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `price` double NOT NULL,
+  `quantity` int NOT NULL,
+  `category` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Receipt` (
+  `uuid` varchar(64) NOT NULL,
+  `shopper-uuid` varchar(64) NOT NULL,
+  `date` datetime NOT NULL,
+  `store-uuid` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`),
+  KEY `RECEIPT_SHOPPER_FK` (`shopper-uuid`),
+  KEY `RECEIPT_STORE_FK` (`store-uuid`),
+  CONSTRAINT `RECEIPT_SHOPPER_FK` FOREIGN KEY (`shopper-uuid`) REFERENCES `Shopper` (`uuid`) ON DELETE CASCADE,
+  CONSTRAINT `RECEIPT_STORE_FK` FOREIGN KEY (`store-uuid`) REFERENCES `Store` (`uuid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Shopper` (
+  `uuid` varchar(64) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `is_admin` tinyint NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Shopping List` (
+  `uuid` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `shopper-uuid` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  KEY `SHOPPING_LIST_SHOPPER_FK` (`shopper-uuid`),
+  CONSTRAINT `SHOPPING_LIST_SHOPPER_FK` FOREIGN KEY (`shopper-uuid`) REFERENCES `Shopper` (`uuid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Shopping List Item` (
+  `uuid` varchar(64) NOT NULL,
+  `list-uuid` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `quantity` int NOT NULL,
+  `category` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`),
+  KEY `LIST_ITEM_LIST_FK` (`list-uuid`),
+  CONSTRAINT `LIST_ITEM_LIST_FK` FOREIGN KEY (`list-uuid`) REFERENCES `Shopping List` (`uuid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Store` (
+  `uuid` varchar(64) NOT NULL,
+  `address` varchar(64) NOT NULL,
+  `store-chain-uuid` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`),
+  KEY `STORE_STORE_CHAIN_FK` (`store-chain-uuid`),
+  CONSTRAINT `STORE_STORE_CHAIN_FK` FOREIGN KEY (`store-chain-uuid`) REFERENCES `Store Chain` (`uuid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `Store Chain` (
+  `uuid` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `url` varchar(64) NOT NULL,
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid_UNIQUE` (`uuid`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

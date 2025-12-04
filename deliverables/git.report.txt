@@ -1,0 +1,1513 @@
+commit ecb2e353928b80ec9d9b98fe5a4198e3c6883217
+Merge: 49da974 df0f525
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 24 13:30:22 2025 -0500
+
+    Merge branch 'dev' of github.com:EggbertFluffle/ShopCompBackend into dev
+    merging chat
+
+commit 49da97429d714dad023899ae250a4379235ee563
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 24 13:29:59 2025 -0500
+
+    trust its good
+
+ lib/submit-receipt/handler.mjs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit df0f5257b1db9f384fd810d1c9d6212fd62ec5cf
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 03:59:20 2025 -0500
+
+    🐛 fix(shopping-list): accept zero item-quantity
+    
+    Validate against null/undefined instead of falsy values so an explicit
+    quantity of 0 is accepted. This fixes handlers rejecting valid zero
+    quantities when updating or adding items.
+    
+    chore(remove-from-shopping-list): clean package-lock
+    
+    Remove stale uuid entry from package-lock to reflect actual package
+    dependencies.
+
+ lib/add-to-shopping-list/handler.mjs            |  2 +-
+ lib/modify-on-shopping-list/handler.mjs         |  2 +-
+ lib/remove-from-shopping-list/package-lock.json | 16 +---------------
+ 3 files changed, 3 insertions(+), 17 deletions(-)
+
+commit 64cedffa87344a85b6d492919473c533eab468b1
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 02:09:06 2025 -0500
+
+    🐛 fix(modify-shopping-list): remove unused param
+    
+    Remove the unused 'name' parameter from getShoppingList in
+    lib/modify-shopping-list/handler.mjs. The function signature now
+    accepts (uuid, shopperUUID) and the SQL parameter list is aligned with
+    the signature. This fixes a bug where mismatched SQL params could cause
+    errors; no functional behavior changes beyond removing the unused
+    parameter.
+
+ lib/modify-shopping-list/handler.mjs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3f79e87421701ce6a7bf4afeffddcdce1035826a
+Merge: 9758306 f74389e
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 02:02:36 2025 -0500
+
+    Merge pull request #43 from EggbertFluffle/42-use-case-modify-shopping-list
+    
+    42 use case modify shopping list
+
+commit f74389eb6b71beb7c6f2816b291d4ba40d7bcf59
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:59:03 2025 -0500
+
+    ✨ feat(api): add modify-shopping-list
+    
+    Add new API Gateway resource "modify-shopping-list" and a corresponding
+    Nodejs Lambda (ModifyShoppingList). Wire the Lambda integration, VPC,
+    security group, RDS environment variables, and set a 3s timeout. This
+    enables modifying shopping list items via POST. Modified lib/cdk-stack.ts.
+
+ lib/cdk-stack.ts | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit 6b42841ba207407a32dbe634fa0e88b38c8e7632
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:56:49 2025 -0500
+
+    📦 chore(modify-shopping-list): add package files
+    
+    Add package.json and package-lock.json for the add-to-shopping-list
+    function (lib/modify-shopping-list). Declares mysql2 dependency to
+    enable database interaction during runtime.
+
+ lib/modify-shopping-list/package-lock.json | 146 +++++++++++++++++++++++++++++
+ lib/modify-shopping-list/package.json      |   8 ++
+ 2 files changed, 154 insertions(+)
+
+commit ecceb993570c9d7cfb21e9f3e9231fd9a32681c6
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:55:18 2025 -0500
+
+    ✨ feat(modify-shopping-list): add handler
+    
+    Add new handler to modify a shopping list's name.
+    
+    Validates required event fields, connects to MySQL via mysql2,
+    verifies shopper and list ownership, updates the shopping list name,
+    and returns the shopper's lists with their items. Closes the DB pool
+    on success or error and uses parameterized queries for safety.
+
+ lib/modify-shopping-list/handler.mjs | 132 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
+
+commit 8b2ada4c0a976d2fe1b719e9b425809a8d69672f
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:51:59 2025 -0500
+
+    📝 docs: add /modify-shopping-list JSON example
+    
+    Add JSON payload and responses for the /modify-shopping-list endpoint to
+    json.txt. Includes a 200 response showing updated shopping lists and
+    several 400 error examples for missing user, missing list, unauthorized
+    access, and nonexistent items.
+
+ json.txt | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+commit 9758306abad7820d1966839de8ea2caf42d0d9d1
+Merge: 30a8f12 b4fa494
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 01:48:22 2025 -0500
+
+    Merge pull request #41 from EggbertFluffle/31-use-case-remove-shopping-list
+    
+    31 use case remove shopping list
+
+commit b4fa494d6acc505b801fb1eb30c07426973c2013
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:47:40 2025 -0500
+
+    🐛 fix(shopping-list): validate list & fix update
+    
+    Remove the redundant name condition from the UPDATE query in the
+    modify-on-shopping-list handler to fix the parameter mismatch and
+    ensure the update executes correctly.
+    
+    Add a getShoppingList helper and validate the shopping list's existence
+    and ownership before attempting removal in the remove-shopping-list
+    handler. This prevents accidental or unauthorized deletions and surfaces
+    a clearer error when the list is not found or does not belong to the
+    user.
+
+ lib/modify-on-shopping-list/handler.mjs |  4 ++--
+ lib/remove-shopping-list/handler.mjs    | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+), 2 deletions(-)
+
+commit 8b52244541ccabb6beb9b0744227d75c59e5d928
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:33:01 2025 -0500
+
+    ✨ feat(api): add remove-shopping-list endpoint
+    
+    Add a POST /remove-shopping-list API resource and corresponding
+    RemoveShoppingList Lambda function.
+    
+    - Create API resource 'remove-shopping-list' and attach POST method.
+    - Add NodejsFunction 'RemoveShoppingList' using NodeJS 22.x
+      with code from lib/remove-shopping-list, VPC, security group,
+      environment variables for RDS, and 3s timeout.
+    - Integrate the Lambda with API Gateway using existing
+      integration parameters and response mapping.
+
+ lib/cdk-stack.ts | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit deb33b38d4e5fc8c1b1eb699ea2fde23080c1886
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:30:18 2025 -0500
+
+    📦 chore: add remove-shopping-list package
+    
+    Add package.json and package-lock.json for the remove-shopping-list
+    module. Introduces mysql2 as a dependency and locks transitive
+    dependencies. Declares handler.mjs as the package entrypoint.
+
+ lib/remove-shopping-list/package-lock.json | 146 +++++++++++++++++++++++++++++
+ lib/remove-shopping-list/package.json      |   8 ++
+ 2 files changed, 154 insertions(+)
+
+commit 7b5895955d7685b12ead39a00ecafcbc395c763f
+Merge: e663705 30a8f12
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:29:00 2025 -0500
+
+    Merge branch 'dev' into 31-use-case-remove-shopping-list
+
+commit e663705602addfc6ad94d347ea8e5b4dd89fdf45
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:26:50 2025 -0500
+
+    ✨ feat(remove-shopping-list): add delete handler
+    
+    Validate required event fields, verify shopper identity, and delete the
+    specified shopping list only if it belongs to the shopper. Returns the
+    updated shopping lists with their items. Uses mysql2 pool with proper error
+    handling and pool cleanup.
+
+ lib/remove-shopping-list/handler.mjs | 114 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
+
+commit 30a8f120aec2abe845bb3e7e0cd97e6735f687b5
+Merge: bbc274b a381ac7
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 01:26:37 2025 -0500
+
+    Merge pull request #40 from EggbertFluffle/39-use-case-modify-on-shopping-list
+    
+    39 use case modify on shopping list
+
+commit a381ac75ac81644792624ed4b9ac97bbd35d716b
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:21:51 2025 -0500
+
+    ✨ feat(api): add modify-on-shopping-list endpoint
+    
+    Add a new API Gateway resource "modify-on-shopping-list" and wire it to a
+    Lambda (ModifyItemOnShoppingList) implemented as a NodejsFunction. The
+    Lambda is configured with VPC access, security group, RDS connection
+    environment variables, and a LambdaIntegration for POST requests.
+    
+    Remove the unused "uuid" dependency from lib/remove-from-shopping-list's
+    package.json.
+
+ lib/cdk-stack.ts                           | 27 +++++++++++++++++++++++++++
+ lib/remove-from-shopping-list/package.json |  3 +--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
+
+commit f7cb24e2b15ca052cdd69a5d72e1f97285094449
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:19:21 2025 -0500
+
+    📦 chore(modify-on-shopping-list): add package files
+    
+    Add package.json and package-lock.json for the
+    modify-on-shopping-list module. Declares mysql2 dependency and
+    sets handler.mjs as main to enable installing node dependencies.
+
+ lib/modify-on-shopping-list/package-lock.json | 146 ++++++++++++++++++++++++++
+ lib/modify-on-shopping-list/package.json      |   8 ++
+ 2 files changed, 154 insertions(+)
+
+commit 31daf664ea3b47834557c01fb9bf661df0f5435a
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:17:48 2025 -0500
+
+    ✨ feat(shopping-list): add modify item handler
+    
+    Add a new handler to modify items in a shopping list. The handler
+    validates required event fields, updates the Shopping List Item row,
+    and returns the shopper's lists with items. Uses a mysql2 connection
+    pool and proper error handling.
+    
+    Remove an unused uuid import from the remove-from-shopping-list
+    handler to clean up an unnecessary dependency.
+
+ lib/modify-on-shopping-list/handler.mjs   | 141 ++++++++++++++++++++++++++++++
+ lib/remove-from-shopping-list/handler.mjs |   1 -
+ 2 files changed, 141 insertions(+), 1 deletion(-)
+
+commit 8acde8c3f5550a8577731492eb20e065a15b6716
+Merge: 4dbfeb7 bbc274b
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:12:23 2025 -0500
+
+    Merge branch 'dev' into 39-use-case-modify-on-shopping-list
+
+commit bbc274b0329e1248b09df52a4a927902dbe86672
+Merge: a193166 2a494cc
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 01:11:26 2025 -0500
+
+    Merge pull request #38 from EggbertFluffle/34-use-case-remove-from-shopping-list
+    
+    34 use case remove from shopping list
+
+commit 4dbfeb775fa7ed16dbd9670de6399919e8629177
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 01:09:40 2025 -0500
+
+    📝 docs(api): add /modify-on-shopping-list
+    
+    Add documentation for the /modify-on-shopping-list endpoint in json.txt.
+    Includes an example POST request, a successful 200 response showing
+    shopping lists and items, and the possible 400 error responses for
+    missing user, missing list, auth failures, or empty fields.
+
+ json.txt | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+commit 2a494ccb14ac6b1729335bd7b2c961c2843bd51d
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:54:07 2025 -0500
+
+    ✨ feat(api): add remove-item endpoint
+    
+    Add API Gateway resource 'remove-from-shopping-list' and a Node.js
+    Lambda function 'RemoveItemFromShoppingList'. The function is deployed
+    into the VPC with a security group, RDS environment variables and a 3s
+    timeout, and a POST method is integrated to invoke the Lambda.
+
+ lib/cdk-stack.ts | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit b7a58739b3da5d2014cd2cfea153bd3f98c4615d
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:51:35 2025 -0500
+
+    📦 chore(shopping-list): add package files
+    
+    Add package.json and package-lock.json for the
+    remove-from-shopping-list module. Declares mysql2 and uuid
+    dependencies so the module can be installed independently and
+    included in builds/deployments.
+
+ lib/remove-from-shopping-list/package-lock.json | 160 ++++++++++++++++++++++++
+ lib/remove-from-shopping-list/package.json      |   9 ++
+ 2 files changed, 169 insertions(+)
+
+commit 1475dccd22a1edcc134e19272f4e2493b4837a43
+Merge: 0809b55 a193166
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:50:32 2025 -0500
+
+    Merge branch 'dev' into 34-use-case-remove-from-shopping-list
+
+commit 0809b557a11066d9c88112e715441e5e182b01f3
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:49:21 2025 -0500
+
+    🗑️ feat(remove-from-shopping-list): add handler
+    
+    Add a new Lambda handler lib/remove-from-shopping-list/handler.mjs that
+    validates required shopper/list/item fields, removes the specified item
+    from the Shopping List Item table, and returns the updated shopping lists
+    for the shopper.
+    
+    Uses mysql2 pool queries, closes the pool on completion or error, and
+    returns an array of shopping lists with their items. Throws clear errors
+    when the user, list, or item are not found.
+
+ lib/remove-from-shopping-list/handler.mjs | 134 ++++++++++++++++++++++++++++++
+ 1 file changed, 134 insertions(+)
+
+commit a193166f23edf0a42966449accbc4e74ce759702
+Merge: 55d3500 26d616e
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 00:48:45 2025 -0500
+
+    Merge pull request #37 from EggbertFluffle/33-use-case-add-to-shopping-list
+    
+    33 use case add to shopping list
+
+commit 26d616e4aac37ef454053ad9c1b3f9d8b519e0ce
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:31:57 2025 -0500
+
+    🔙 chore(shopping-list): revert accidental edits
+    
+    Revert accidental edits to lib/add-to-shopping-list/handler.mjs that were
+    introduced in the wrong file. These changes were not intended and break
+    the intended workflow; this commit restores the file to its previous
+    state so development can continue on the correct target.
+
+ lib/add-to-shopping-list/handler.mjs | 133 +++++++++++++++++++++++++++++++++++
+ lib/create-shopping-list/handler.mjs |  32 ++-------
+ 2 files changed, 138 insertions(+), 27 deletions(-)
+
+commit 065f1cba43efe2a0cb89b004e2bdc951c883b956
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:20:40 2025 -0500
+
+    ✨ feat(api): add add-item-to-shopping-list
+    
+    Add a new API Gateway resource and Lambda integration to support adding
+    items to a shopping list. Registers the "add-item-to-shopping-list"
+    resource and creates an AddItemToShoppingList NodejsFunction with VPC,
+    security group, and RDS environment variables. Wires a POST method to
+    the new lambda with the existing integration and response parameters.
+    Updated lib/cdk-stack.ts to include these changes.
+
+ lib/cdk-stack.ts | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+commit 0af1eeb2961a3db761aaa758ed40b3f974f94c14
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:17:37 2025 -0500
+
+    📦 feat(add-to-shopping-list): add package files
+    
+    Add new add-to-shopping-list package with package.json and
+    package-lock.json. Includes mysql2 and uuid dependencies for DB
+    access and UUID generation. Files are placed under
+    lib/add-to-shopping-list for deployment.
+
+ lib/add-to-shopping-list/package-lock.json | 160 +++++++++++++++++++++++++++++
+ lib/add-to-shopping-list/package.json      |   9 ++
+ 2 files changed, 169 insertions(+)
+
+commit 4e485ac888b1eb854d74129b4f49f192b4020573
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sun Nov 23 00:15:37 2025 -0500
+
+    ✨ feat(shopping-list): add item to existing list
+    
+    Add a new add-to-shopping-list handler and update the create-shopping-list
+    handler to validate shopping-list-uuid, item-name, and item-quantity. New
+    helpers getShoppingList and addItemToList are introduced to select the
+    target list and insert items into the "Shopping List Item" table. Existing
+    user/list checks are preserved and database errors are surfaced.
+
+ lib/add-to-shopping-list/handler.mjs |  0
+ lib/create-shopping-list/handler.mjs | 32 +++++++++++++++++++++++++++-----
+ 2 files changed, 27 insertions(+), 5 deletions(-)
+
+commit 55d350032fa88337bf97cc02094ba91a20dfa1e3
+Merge: bb4f792 f3489fa
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sun Nov 23 00:05:31 2025 -0500
+
+    Merge pull request #36 from EggbertFluffle/32-use-case-create-shopping-list
+    
+    32 use case create shopping list
+
+commit f3489fa844840a1c180271b55f661a6b9e48b7dd
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:58:25 2025 -0500
+
+    🐛 fix(shopping-lists): validate inputs & UUID
+    
+    Add required field checks to the create-shopping-list handler so requests
+    fail fast when shopper-uuid, shopper-username, or shopping-list-name are
+    missing. Rework error handling to avoid prematurely ending the DB pool and
+    preserve proper control flow. Fix an issue in list-shopping-lists where the
+    DB query used an undefined variable by using the shopperUUID parameter.
+
+ lib/create-shopping-list/handler.mjs | 15 ++++-----------
+ lib/list-shopping-lists/handler.mjs  |  3 ++-
+ 2 files changed, 6 insertions(+), 12 deletions(-)
+
+commit fdca529d01c8f739ce4ce4efb053bec152d30f02
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:45:20 2025 -0500
+
+    🐛 fix(shopping-list): return empty items when none
+    
+    Ensure the items field is an empty array when a row has no item_uuid.
+    Previously the handlers always emitted an array with a single item
+    object which could contain null values. Update both create-shopping-list
+    and list-shopping-lists handlers to set items to row.item_uuid
+    ? [ { ... } ] : [] so clients receive an empty list instead of a
+    placeholder.
+
+ lib/create-shopping-list/handler.mjs | 4 ++--
+ lib/list-shopping-lists/handler.mjs  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 81035100e74fc12bed744c2c09dd0041cf47b81c
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:35:18 2025 -0500
+
+    ✨ feat(api): add create-shopping-list endpoint
+    
+    Add API Gateway resource "create-shopping-list" and wire a new
+    Nodejs Lambda function (CreateShoppingList) in lib/cdk-stack.ts.
+    The Lambda is configured with VPC access, security group, RDS
+    environment variables (RDS_USER, RDS_PASSWORD, RDS_DATABASE,
+    RDS_HOST), a 3s timeout, and a POST method integration.
+
+ lib/cdk-stack.ts | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+commit ab6c3fabd13e3d148c327eea730dc23a1f43c7cc
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:32:21 2025 -0500
+
+    📦 feat(lib): add create-shopping-list package
+    
+    Add package.json and package-lock.json for a new
+    lib/create-shopping-list package. Declares mysql2 and uuid
+    dependencies and sets main to handler.mjs. Provides the packaged
+    module needed for shopping-list creation.
+
+ lib/create-shopping-list/package-lock.json | 160 +++++++++++++++++++++++++++++
+ lib/create-shopping-list/package.json      |   9 ++
+ 2 files changed, 169 insertions(+)
+
+commit e696657dd2a442284f1246e3231ece1a8941b32f
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:30:32 2025 -0500
+
+    🐛 fix(shopping-lists): pass shopper-uuid to getLists
+    
+    Update getLists in both handlers to accept a shopperUUID parameter and
+    use event["shopper-uuid"] when invoking the query. Adjust error handling
+    in list-shopping-lists so pool.end() is always called and errors are
+    rethrown correctly.
+
+ lib/create-shopping-list/handler.mjs | 6 +++---
+ lib/list-shopping-lists/handler.mjs  | 8 +++++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+commit 1c79d87268fec6d3ecf0e0c9d64e0003e86d377e
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 23:27:25 2025 -0500
+
+    ✨ feat(create-shopping-list): add handler
+    
+    Adds a new handler at lib/create-shopping-list/handler.mjs that creates a
+    shopping list for a shopper. The handler:
+    - connects to MySQL via mysql2 using RDS env vars
+    - validates shopper by uuid and username
+    - inserts a new shopping list with a generated UUID (uuid v4)
+    - retrieves and returns all shopping lists with their items
+    - ensures the DB pool is closed on success or error
+
+ lib/create-shopping-list/handler.mjs | 118 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
+
+commit d673331f6713cb11c6d776a83989c1ffd7559958
+Merge: 3ba8bb9 bb4f792
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 23:14:17 2025 -0500
+
+    Merge branch 'dev' of github.com:EggbertFluffle/ShopCompBackend into dev
+    
+    mergin new shopping list code into dev
+
+commit bb4f792c142a65e03e92656a096fc9af783d30cb
+Merge: ef49035 80b8eee
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 23:13:59 2025 -0500
+
+    Merge pull request #35 from EggbertFluffle/30-use-case-list-shopping-lists
+    
+    30 use case list shopping lists
+
+commit 80b8eee87c324a2c1d91417c8fbdda1aa70f533b
+Author: Nikita Ostapenko <119273404+catmajor@users.noreply.github.com>
+Date:   Sat Nov 22 22:54:33 2025 -0500
+
+    we need to close db connections! always!
+    
+    copilot lowk coming in clutch w/this one
+    
+    Co-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>
+
+ lib/list-shopping-lists/handler.mjs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+commit 1eb7313173303d813700ffba38d8102d44627e68
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 22:46:20 2025 -0500
+
+    ♻️ refactor(lists): rename UUID keys
+    
+    Rename response properties to more explicit keys.
+    
+    - list.uuid -> "shopping-list-uuid"
+    - item.uuid -> "item-uuid"
+    
+    This clarifies the payload shape. Note: this is a breaking change;
+    clients must update to read the new fields.
+
+ lib/list-shopping-lists/handler.mjs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 0bf4267a8c47f3510b4c51ffabcd59ed57818238
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 22:35:53 2025 -0500
+
+    🧪 test(sql): add shopping-lists query
+    
+    Add sql-queries/test-list-shopping-lists.sql containing queries to inspect
+    Shopping List and Shopping List Item tables. Includes a LEFT JOIN query that
+    selects lists and their items for a specific shopper UUID and some commented
+    sample INSERTs for manual testing.
+
+ sql-queries/test-list-shopping-lists.sql | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+commit 26e3aed860cfd8446736e271db7c75949e3d9ef7
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 22:30:26 2025 -0500
+
+    ✨ feat: add list-shopping-lists Lambda + endpoint
+    
+    Add API Gateway resource and Node.js Lambda to list a shopper's
+    shopping lists and items. The CDK stack now creates the
+    list-shopping-lists resource and a NodejsFunction wired to the API
+    with VPC, security group, environment and timeout configuration.
+    
+    Include Lambda handler (lib/list-shopping-lists/handler.mjs) that
+    queries the RDS MySQL database and returns shopping lists with items.
+    Add package.json and package-lock.json for Lambda dependencies.
+
+ lib/cdk-stack.ts                          |  28 ++++++
+ lib/list-shopping-lists/handler.mjs       |  70 +++++++++++++
+ lib/list-shopping-lists/package-lock.json | 160 ++++++++++++++++++++++++++++++
+ lib/list-shopping-lists/package.json      |   9 ++
+ 4 files changed, 267 insertions(+)
+
+commit d28bd03b56f036b567123e801536b01674e256a1
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 20:48:11 2025 -0500
+
+    ✨ feat(db): add shopping list tables
+    
+    Add SQL migration that creates Shopping List and Shopping List Item
+    tables. Shopping List contains uuid and name. Shopping List Item
+    contains uuid, list-uuid, name, quantity, and category. Adds primary
+    keys, a unique key on item uuid, and a foreign key linking items to
+    lists. File: sql-queries/create-shopping-list-tables.sql
+
+ sql-queries/create-shopping-list-tables.sql | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+commit fbb90ffa073d9fed4d6013a9e8d538bfbc61318c
+Merge: ee90af9 ef49035
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Sat Nov 22 19:40:09 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+
+commit 3ba8bb9ed4b4bff7a42ead2b8fc1a439e7d38077
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 17:17:18 2025 -0500
+
+    removed need for shopper-username on submit receipt
+
+ lib/submit-receipt/handler.mjs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit ef4903515f7a0f6671ecfc993875a59ee0064c55
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 16:06:44 2025 -0500
+
+    consistency changes
+
+ lib/cdk-stack.ts | 582 +++++++++++++++++++++++++++----------------------------
+ 1 file changed, 283 insertions(+), 299 deletions(-)
+
+commit 6df76829abe66917accc060f98a0e0280055658e
+Merge: 7811e8c 7bf0dd5
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 16:04:30 2025 -0500
+
+    Merge branch 'dev' of github.com:EggbertFluffle/ShopCompBackend into dev
+    
+    It must be done for the greater good of the project
+
+commit 7811e8c12ea98077ce72eeccc98745979938bdf5
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 16:04:21 2025 -0500
+
+    get-store-chains
+
+ lib/cdk-stack.ts                                           | 14 +++++++-------
+ lib/{list-store-options => get-store-chains}/handler.mjs   |  2 --
+ .../package-lock.json                                      |  4 ++--
+ lib/{list-store-options => get-store-chains}/package.json  |  2 +-
+ 4 files changed, 10 insertions(+), 12 deletions(-)
+
+commit 7bf0dd5eb398f3bcf64af863d3083b707b8730fa
+Merge: 96016de 4b46e66
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 16:03:03 2025 -0500
+
+    Merge pull request #29 from EggbertFluffle/Admin-Login
+    
+    Admin login
+
+commit 4b46e665e6be13d8c0da99eb96bbbb79029c3d4f
+Merge: 742efca 96016de
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 16:02:49 2025 -0500
+
+    Merge branch 'dev' into Admin-Login
+
+commit 742efca4a2ce3de835d9dcc0c83d6a547f48bd8b
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Sat Nov 22 15:52:57 2025 -0500
+
+    Admin Dashboard Fixed and good to go
+
+ lib/login-administrator/handler.mjs       | 2 +-
+ lib/login-administrator/package-lock.json | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 96016def1384a2cb45b374dc85e9fc048d6089b9
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 15:18:25 2025 -0500
+
+    fixed list-store-options lambda
+
+ lib/list-store-options/handler.mjs | 98 +++++++++++++++++---------------------
+ 1 file changed, 43 insertions(+), 55 deletions(-)
+
+commit 0c67057b62428440bae8121de493d1502b6ff5ea
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 14:16:32 2025 -0500
+
+    login shopper done
+
+ lib/cdk-stack.ts                    |  27 ++++++
+ lib/login-shopper/handler.mjs       |  46 +++++++++++
+ lib/login-shopper/package-lock.json | 160 ++++++++++++++++++++++++++++++++++++
+ lib/login-shopper/package.json      |   9 ++
+ lib/review-history/handler.mjs      |   2 +-
+ 5 files changed, 243 insertions(+), 1 deletion(-)
+
+commit bf5fe9460943f51f9236888aded8f1d18c6f30b7
+Merge: d6b0c21 cc932b7
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 22 00:03:48 2025 -0500
+
+    Merge pull request #28 from EggbertFluffle/review-history-usecase-andry
+    
+    /review-history backend part
+
+commit cc932b76af334439fb7bf0655711a8c0cb65b4d1
+Merge: 5785804 6ca8bb3
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 23:57:54 2025 -0500
+
+    review-history DEPLOYED and TESTED
+
+commit 57858046f3476c65106bd331fec4616bcd9e0dca
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 23:53:03 2025 -0500
+
+    review-history deployed and tested
+
+ lib/cdk-stack.ts                     |  26 ++++++
+ lib/list-store-options/handler.mjs   |   2 +-
+ lib/review-history/handler.mjs       |  99 ++++++++++++++++++++++
+ lib/review-history/package-lock.json | 160 +++++++++++++++++++++++++++++++++++
+ lib/review-history/package.json      |   9 ++
+ 5 files changed, 295 insertions(+), 1 deletion(-)
+
+commit d6b0c21293974c7ec4357981262e96325ea30552
+Merge: 4fe2f87 2b64b70
+Author: Andry Nasief <125379087+andrynasief@users.noreply.github.com>
+Date:   Fri Nov 21 19:44:12 2025 -0500
+
+    Merge pull request #27 from EggbertFluffle/list-store-options-usecase
+    
+    listing all store options deploys (GET)
+
+commit 2b64b704648d0abd3ec7aa9eea033a2f4b783cb8
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 17:26:30 2025 -0500
+
+    listing all store options deploys (GET)
+
+ lib/cdk-stack.ts                         |  28 ++++++
+ lib/list-store-options/handler.mjs       |  78 +++++++++++++++
+ lib/list-store-options/package-lock.json | 160 +++++++++++++++++++++++++++++++
+ lib/list-store-options/package.json      |   9 ++
+ 4 files changed, 275 insertions(+)
+
+commit 4fe2f87e3f49dd0bd384652768ffd4d63305da9b
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 14:58:36 2025 -0500
+
+    Added Category to Items
+
+ lib/submit-receipt/handler.mjs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit af8bb2ea907dcdff5964af0b818f2b7c6af2732f
+Merge: 0ec157d 7fef506
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Fri Nov 21 14:48:21 2025 -0500
+
+    Merge pull request #26 from EggbertFluffle/submit-receipt-usecase-andry
+    
+    submit-receipt Use Case Backend
+
+commit 7fef50630a6a2416434742d61304ec9982ea88ed
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 14:46:23 2025 -0500
+
+    submit-receipt Use Case Backend
+
+ lib/cdk-stack.ts                     | 361 ++++++++++++++++++++---------------
+ lib/submit-receipt/handler.mjs       |  81 ++++++++
+ lib/submit-receipt/package-lock.json | 160 ++++++++++++++++
+ lib/submit-receipt/package.json      |   9 +
+ package-lock.json                    |   9 +-
+ 5 files changed, 457 insertions(+), 163 deletions(-)
+
+commit ee90af96f75f483855c6883911197dea552cd2fd
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Fri Nov 21 14:14:06 2025 -0500
+
+    🔒 feat(db): add foreign keys to Receipt
+    
+    Add SQL script sql-queries/add-receipt-constraints.sql that adds
+    SHOPPER_FK and STORE_FK foreign key constraints on Receipt to
+    reference Shopper(uuid) and Store(uuid), ensuring referential
+    integrity.
+    
+    Fix filename typo by renaming
+    sql-queries/add-store-contraints.sql -> sql-queries/add-store-constraints.sql.
+
+ sql-queries/add-receipt-constraints.sql            | 41 ++++++++++++++++++++++
+ ...re-contraints.sql => add-store-constraints.sql} |  0
+ 2 files changed, 41 insertions(+)
+
+commit 61b62c0eef20cd8801ebd7ab03408c51de09568d
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Fri Nov 21 14:03:50 2025 -0500
+
+    🗄️ chore(db): add store foreign key constraint
+    
+    Add sql-queries/add-store-contraints.sql which inspects existing table
+    constraints and adds a foreign key from Store.store-chain-uuid to
+    `Store Chain`(uuid). This prepares the schema to link stores to their
+    store chain.
+
+ sql-queries/add-store-contraints.sql | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+commit 0ec157d52e1014670516f7c447f98beda9239868
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Fri Nov 21 13:14:07 2025 -0500
+
+    IDF folder
+
+ .idea/.gitignore                     |  8 ++++++++
+ .idea/ShopCompBackend.iml            | 12 ++++++++++++
+ .idea/material_theme_project_new.xml | 12 ++++++++++++
+ .idea/modules.xml                    |  8 ++++++++
+ .idea/vcs.xml                        |  6 ++++++
+ 5 files changed, 46 insertions(+)
+
+commit 6ca8bb3e792867cd9c90b8aef306a448cea1a2b0
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 21 13:09:18 2025 -0500
+
+    do later
+
+ lib/review-history/handler.mjs  | 23 +++++++++++++++++++++++
+ lib/review-history/package.json |  9 +++++++++
+ 2 files changed, 32 insertions(+)
+
+commit 08ef62d3a9839a56e8cfa986a25377b9bd7b9984
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Fri Nov 21 12:43:54 2025 -0500
+
+    added scripts to .gitignore
+
+ .idea/.gitignore                          |   8 ++
+ .idea/ShopCompBackend.iml                 |  12 +++
+ .idea/copilot.data.migration.agent.xml    |   6 ++
+ .idea/material_theme_project_new.xml      |  12 +++
+ .idea/misc.xml                            |  14 +++
+ .idea/modules.xml                         |   8 ++
+ .idea/vcs.xml                             |   6 ++
+ lib/login-administrator/package-lock.json | 146 ++++++++++++++++++++++++++++++
+ 8 files changed, 212 insertions(+)
+
+commit 027782a0dcea5ef5c4f3fab619990ef0dae1da26
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 23:22:01 2025 -0500
+
+    added scripts to .gitignore
+
+ .gitignore                           |   3 +
+ database-schema.md                   |  17 ++---
+ lib/cdk-stack.ts                     |  41 ++++++++++-
+ lib/login-administrator/handler.mjs  |  81 +++++++++++++++++++++
+ lib/login-administrator/package.json |   8 +++
+ lib/register-shopper/handler.mjs     | 114 ++++++++++++++---------------
+ package-lock.json                    | 134 ++++++++++++++++++++++++++++++++++-
+ package.json                         |   5 +-
+ 8 files changed, 327 insertions(+), 76 deletions(-)
+
+commit 10d0eef2020ec06108e495e550f8044163ac2324
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 23:22:01 2025 -0500
+
+    added scripts to .gitignore
+
+ .gitignore | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit afdbb2c800fabca6fc37cbfa2e38e95799f651eb
+Merge: e1328f7 e0c1b55
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 23:10:24 2025 -0500
+
+    Merge pull request #25 from EggbertFluffle/bug-cant-parse-register-reponse
+    
+    allowing messages to be sent as JSON, and not strings
+
+commit e0c1b559550d09aa8d162576b4065ca5b948680e
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 23:09:08 2025 -0500
+
+    allowing messages to be sent as JSON, and not strings
+
+ lib/register-shopper/handler.mjs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e1328f7a92fcf6d1c82c86c69fea560c2f3f0a2e
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 22:55:55 2025 -0500
+
+    minor change that changed nothing
+
+ lib/register-shopper/handler.mjs |  2 +-
+ package-lock.json                | 15 +++++++++++----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 54789ed1ec94ff12474a9e16821fa70bbd586ac2
+Merge: 41ac811 d19f353
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 22:50:51 2025 -0500
+
+    Merge pull request #24 from EggbertFluffle/23-register-shopper-lambda
+    
+    register user lambda works
+
+commit d19f353ad5500d0357b790d602e149950812c086
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 21:30:30 2025 -0500
+
+    register user lambda works
+
+ .gitignore                             |   1 +
+ json.txt                               |   2 +-
+ lib/cdk-stack.ts                       |  33 ++++---
+ lib/register-shopper/handler.mjs       |  64 +++++++++++++
+ lib/register-shopper/package-lock.json | 160 +++++++++++++++++++++++++++++++++
+ lib/register-shopper/package.json      |   9 ++
+ lib/test/handler.mjs                   |   9 --
+ 7 files changed, 251 insertions(+), 27 deletions(-)
+
+commit 41ac811c3d0b4b30e5d3646ddc8b371dda4857c1
+Author: Andry <andry.nasief@gmail.com>
+Date:   Thu Nov 20 16:10:56 2025 -0500
+
+    added calc tutorial link for TA's
+
+ json.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 5030b71a9ca1df6748cf32554e93d958bf192c43
+Author: Andry <andry.nasief@gmail.com>
+Date:   Thu Nov 20 14:39:49 2025 -0500
+
+    final? json.txt
+
+ json.txt | 919 +++++++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 504 insertions(+), 415 deletions(-)
+
+commit 400e355542877ef6ced9e87f93c2e99898c679d8
+Merge: 8d46a83 3f81648
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Thu Nov 20 13:54:53 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+
+commit 8d46a83239f36a481d4651d4e1a0339dbc18e01c
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Thu Nov 20 13:54:31 2025 -0500
+
+    fix some issues
+
+ json.txt | 48 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
+
+commit 3f816482ff413abfea11152360e70c5db96961af
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 13:35:04 2025 -0500
+
+    database schema
+
+ database-schema.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+commit a7fab5a24b7444c7f34ca404219f34b9807b93e4
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Thu Nov 20 12:07:10 2025 -0500
+
+    uuids added
+
+ json.txt    | 163 +++++++-------
+ newJSON.txt | 739 ------------------------------------------------------------
+ 2 files changed, 81 insertions(+), 821 deletions(-)
+
+commit 9e9cfe019fd79a5de48b35e6d8ab583abc1aed06
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 18:36:17 2025 -0500
+
+    rename new api
+
+ newfile.txt => newJSON.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c1e266e2987ad9529fdd09944094ab93c089f269
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 17:10:13 2025 -0500
+
+    consistency changes and real uuids
+
+ json.txt    | 1234 ++++++++++++++++++++++++++++++-----------------------------
+ newfile.txt |  739 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 1372 insertions(+), 601 deletions(-)
+
+commit 79a33617a9601aa59f51dc007ec391baecdcf11b
+Author: Andry <andry.nasief@gmail.com>
+Date:   Wed Nov 19 13:27:11 2025 -0500
+
+    rough draft
+
+ json.txt | 49 ++++++++-----------------------------------------
+ 1 file changed, 8 insertions(+), 41 deletions(-)
+
+commit c0dc5d0bb3563d9c453fcb936e38903f75ffddac
+Merge: dd2cd67 8d5a405
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 13:12:30 2025 -0500
+
+    merged
+
+commit dd2cd67707752b6c6d645df7ada33c8df951a007
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 13:11:42 2025 -0500
+
+    pull ma sheesh
+
+ json.txt | 41 ++++++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 19 deletions(-)
+
+commit 8d5a405b5ed094cf62497100d72d662a87e2a15e
+Author: Andry <andry.nasief@gmail.com>
+Date:   Wed Nov 19 12:56:35 2025 -0500
+
+    test new account
+
+ json.txt | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+commit a45c5815c395ca792b8361a065dacacfd868d4d7
+Author: Andry <andry.nasief@gmail.com>
+Date:   Wed Nov 19 12:23:14 2025 -0500
+
+    admin login errors
+
+ json.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 1993de02fda991a2ca5c944a05da97c6e58556e6
+Author: Andry <andry.nasief@gmail.com>
+Date:   Wed Nov 19 12:05:20 2025 -0500
+
+    /report-options-for-shopping-list NEEDS WORK :D
+
+ json.txt | 185 ++++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 95 insertions(+), 90 deletions(-)
+
+commit a4a82e056c3462fbf9d1845d1bbfc712db6222f5
+Merge: e50b384 e40a06b
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 11:15:00 2025 -0500
+
+    Merge pull request #22 from EggbertFluffle/20-spam-error-codes-everywhere
+    
+    📝 docs: add IDs & errors to JSON examples
+
+commit e40a06b40230ddbc59bb8e6a9d79738d3112940a
+Merge: 4d45732 e50b384
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Wed Nov 19 11:14:50 2025 -0500
+
+    Merge branch 'dev' into 20-spam-error-codes-everywhere
+
+commit e50b38466b6e4e2e468ad31b50f00c51716f6bdf
+Merge: d0abfbb f164f86
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 19:37:44 2025 -0500
+
+    merged
+
+commit d0abfbb9e1460360277900ccb3755cd9c20a0e51
+Merge: 09e4dfc 9db1fbf
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 19:37:05 2025 -0500
+
+    merged
+
+commit f164f86edfa84f3c49a81dbbb351c8ef58720a51
+Merge: 6ad9fca 9db1fbf
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 19:34:42 2025 -0500
+
+    merge classness
+
+commit 6ad9fcaf296596354e5dfd4d0a9bd5f33f649c29
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 19:29:44 2025 -0500
+
+    start for database schema
+
+ database-schema.md | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+commit 09e4dfc6449d7ad8aecd4723a9907f78322753d4
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 15:37:39 2025 -0500
+
+    general changes
+
+ json.txt | 224 ++++++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 121 insertions(+), 103 deletions(-)
+
+commit 4d45732c869439236ebe903b4e9ba74e2799d048
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Tue Nov 18 13:55:48 2025 -0500
+
+    📝 docs: add IDs & errors to JSON examples
+    
+    Add stable identifiers and expanded error states to API JSON
+    examples.
+    
+    - Add chain-id, store-id, and chain-url fields for chains and
+      stores.
+    - Replace placeholder receipt samples with realistic payloads and
+      success responses.
+    - Add multiple detailed 4xx error variants for submit, analyze, and
+      listing endpoints.
+    
+    Improves clarity of examples and aligns documentation with API
+    design.
+
+ json.txt | 238 ++++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 150 insertions(+), 88 deletions(-)
+
+commit 9db1fbfaee78ffe3ce15703ddc8f291ace406523
+Merge: 6afbe1a 5c308c3
+Author: Andry <andry.nasief@gmail.com>
+Date:   Tue Nov 18 13:30:23 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+    
+    merged
+
+commit 5c308c3c333bff82baf826d59dd5f72fc0f4d3d8
+Merge: e715341 2fb4108
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 18 13:30:13 2025 -0500
+
+    Merge pull request #19 from EggbertFluffle/18-add-multiple-error-codes-to-shopping-list-usecases
+    
+    📝 docs(use-cases): update error responses
+    Co-authored-by: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+
+commit 6afbe1ab48a96b18e20d21b02ca988715b9c6ce8
+Author: Andry <andry.nasief@gmail.com>
+Date:   Tue Nov 18 13:30:04 2025 -0500
+
+    added error codes
+
+ json.txt          | 20 +++++++++++++++-----
+ package-lock.json |  9 +--------
+ 2 files changed, 16 insertions(+), 13 deletions(-)
+
+commit 2fb41081f8d6774477c3754e7a5195b6b8d3072f
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Tue Nov 18 13:12:50 2025 -0500
+
+    📝 docs(use-cases): update error responses
+    
+    Add explicit 400 failure variants (e.g. "User does not exist",
+    "Not authenticated", "Shopping list does not exist", "Item already
+    exists", "Invalid item data") across shopping-list related use-case
+    examples. Endpoints updated: get/create/remove shopping lists and add/
+    remove items. Improves documentation clarity for client handling.
+
+ json.txt | 48 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
+
+commit e71534128a96d687e083632f1d83017383f5d613
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 17:41:51 2025 -0500
+
+    /report-options-for-shopping-list (DESCRIPTION)
+
+ json.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 000f53ab20b688db03b056469ff471aafdae02d1
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 17:38:35 2025 -0500
+
+    /search-recent-purchases
+
+ json.txt | 89 +++++++++++++++++++---------------------------------------------
+ 1 file changed, 26 insertions(+), 63 deletions(-)
+
+commit 87918a0d4aa50fc09262ab6f8ac1556a91cd3293
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 16:18:36 2025 -0500
+
+    fixing formatting
+
+ json.txt | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+commit 8aebadbe03a736fb47624584afc2d8f53eb5e4a4
+Merge: 1d08778 128d0ed
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 15:55:36 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+
+commit 1d08778566696604e659f0e0d21479992233170d
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 15:52:25 2025 -0500
+
+    readme
+
+ README.md | 52 ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 20 deletions(-)
+
+commit 128d0ede6a60ef97a4531a616c43f9de9a386ed9
+Merge: 8546528 7568954
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Mon Nov 17 15:51:31 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+
+commit 85465280a0a0d6398bf6e9618c7dbe8a174e512c
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Mon Nov 17 15:50:17 2025 -0500
+
+    HAPPY BIRTHDAY ANDRY
+
+ README.md | 200 +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 100 insertions(+), 100 deletions(-)
+
+commit 7568954d6b3e5072a214feea27bdcd51afa74542
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 15:48:53 2025 -0500
+
+    README
+
+ README.md | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+commit 9a304407d6449c1b4afad93c16a397654c2bd6c3
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 15:45:10 2025 -0500
+
+    hbd andry
+
+ README.md | 101 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 101 insertions(+)
+
+commit b6287fa240b3d86304ebd8c0d0da3f6acaa8d5c8
+Merge: 9839f1f 6720176
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 15:42:05 2025 -0500
+
+    merged
+
+commit 9839f1f071db21d75830908807c403e073b2ecf6
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 15:40:58 2025 -0500
+
+    I will survive
+
+ json.txt | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+
+commit 6720176aedc834c0ffa4b1d837a03603bd583c49
+Merge: e58c2b5 f585d9d
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 15:39:44 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into dev
+
+commit e58c2b5dfa74fa6aa3117d419e2d529c43722a81
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 15:36:30 2025 -0500
+
+    buncha use cases
+
+ json.txt | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 55 insertions(+), 11 deletions(-)
+
+commit f585d9dd72ab6f297ef9017f63a3f983c92b4da8
+Merge: 414f59b 29d204b
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 15:35:26 2025 -0500
+
+    Merge pull request #16 from EggbertFluffle/15-do-shopping-lists-api-design
+    
+    🫃🏿 feat(api): add shopping-list endpoints
+
+commit 29d204bf59167f9895f5643ddaa5d28753f5c838
+Author: Nikita Ostapenko <nikitul2005@gmail.com>
+Date:   Mon Nov 17 15:25:55 2025 -0500
+
+    🫃🏿 feat(api): add shopping-list endpoints
+    
+    🤸‍♂️
+    
+                  🦽🏌️‍♀️
+
+ json.txt | 146 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 132 insertions(+), 14 deletions(-)
+
+commit 414f59b0b75158beb833960384e58be723ed508e
+Merge: 41473c8 0a66f99
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 15:01:19 2025 -0500
+
+    marged
+
+commit 0a66f9944dba6c51db123ffdbc72904636bfecca
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 14:56:41 2025 -0500
+
+    /return-main-page-info
+
+ json.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 41473c88117e40299fd2674ef16d9315a7b92e83
+Merge: fade9f7 8217c72
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 14:50:45 2025 -0500
+
+    Merge pull request #14 from EggbertFluffle/3-use-case-submit-receipt
+    
+    Submit receipt
+
+commit 8217c72e684f9dc01b201715b3d334502a2914d6
+Merge: ceb8176 fade9f7
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 17 14:50:34 2025 -0500
+
+    Merge branch 'dev' into 3-use-case-submit-receipt
+
+commit 7ee5c7073f78fd5fc1e37980301bf771383470e2
+Author: Andry <andry.nasief@gmail.com>
+Date:   Mon Nov 17 14:23:14 2025 -0500
+
+    /login-shopper
+
+ json.txt | 60 +++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 45 insertions(+), 15 deletions(-)
+
+commit fade9f7b672055ed627b21d1d5cf70794e4f4d86
+Author: Bryce Lukacs <80437073+Turretlez@users.noreply.github.com>
+Date:   Mon Nov 17 02:10:57 2025 -0500
+
+    Add administrator API state representations
+    
+    Filled in JSON structures for /login-administrator, /show-admin-dashboard, /remove-store, and /remove-store-chain.
+
+ json.txt | 111 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 93 insertions(+), 18 deletions(-)
+
+commit ceb81768db06b0f3f85c54361ed82e38bc623254
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sun Nov 16 18:59:26 2025 -0500
+
+    still need to know what to respond with in the case of submitting a receipt
+
+ json.txt | 259 +++++++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 136 insertions(+), 123 deletions(-)
+
+commit 8c2f0cf0abc188d6acce01ef03590a69c51e35c9
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sun Nov 16 18:43:13 2025 -0500
+
+    cleaning up client side use cases from api spec
+
+ json.txt | 44 --------------------------------------------
+ 1 file changed, 44 deletions(-)
+
+commit 920a6375dbc2e095b2f4d51bb31937f6f1b73c31
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 15 11:33:54 2025 -0500
+
+    fixed deployment error for lambda enpoints
+
+ json.txt                              | 2 +-
+ lib/cdk-stack.ts                      | 4 ++--
+ lib/default/{test.mjs => handler.mjs} | 1 -
+ lib/test/handler.mjs                  | 1 -
+ 4 files changed, 3 insertions(+), 5 deletions(-)
+
+commit e2de2d0eb16f9482848cb937ceba0871922be284
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Sat Nov 15 01:54:18 2025 -0500
+
+    able to push lambdas and apis up
+
+ lib/cdk-stack.ts                      | 22 +++++++++++-----------
+ lib/default/{default.mjs => test.mjs} |  0
+ lib/test/handler.mjs                  | 10 ++++++++++
+ package-lock.json                     |  6 ++++++
+ 4 files changed, 27 insertions(+), 11 deletions(-)
+
+commit 50e7168acabed233308ec19580b36655e687241f
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Fri Nov 14 21:43:50 2025 -0500
+
+    mostly everything, but cdk still doesnt deploy, AWS account issues
+
+ lib/cdk-stack.ts        | 167 ++++++++++++++++++++++++++++++++++++++++++++----
+ lib/default/default.mjs |  11 ++++
+ lib/test/handler.mjs    |   0
+ 3 files changed, 167 insertions(+), 11 deletions(-)
+
+commit cbd1bacd31e2cb6ac83ece14b22b2349f8cc7694
+Merge: 7cea87b d833bed
+Author: Harrison DiAmbrosio <81518632+EggbertFluffle@users.noreply.github.com>
+Date:   Fri Nov 14 19:19:38 2025 -0500
+
+    Merge pull request #6 from EggbertFluffle/4-add-aws-cdk
+    
+    me when I merge my own pull request
+
+commit d833bedfe26bc91ea429c17a03e379c0cb504700
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Fri Nov 14 15:35:20 2025 -0500
+
+    initialied aws cdk repo
+
+ .gitignore        |    8 +
+ .npmignore        |    6 +
+ bin/cdk.ts        |   20 +
+ cdk.context.json  |    5 +
+ cdk.json          |  101 ++
+ jest.config.js    |    8 +
+ lib/cdk-stack.ts  |   16 +
+ package-lock.json | 4436 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ package.json      |   26 +
+ test/cdk.test.ts  |   17 +
+ tsconfig.json     |   32 +
+ 11 files changed, 4675 insertions(+)
+
+commit 7cea87b18487e5395159148d11bc1717758adb5c
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 14 14:58:10 2025 -0500
+
+    My name next to use cases assigned to me
+
+ json.txt | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+commit de7cf0e4b52d49bf18a7beaf0614277f690c3197
+Merge: 0109b1c 71dece8
+Author: Harrison DiAmbrosio <81518632+EggbertFluffle@users.noreply.github.com>
+Date:   Fri Nov 14 14:52:16 2025 -0500
+
+    Merge pull request #5 from EggbertFluffle/2-use-case-register-and-login-shopper
+    
+    register-shopper json rep
+
+commit 71dece8e8a2cdfe5ba6988b1b4ac8fd3f05e309c
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 14 14:50:24 2025 -0500
+
+    register-shopper json rep
+
+ json.txt | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+commit 0109b1cbcca53cf101def82075a9f79a3521c3af
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 14 14:23:03 2025 -0500
+
+    formatted
+
+ json.txt | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
+
+commit bcb35584452be5b833441edc3db9f52e109517f0
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 14 14:20:52 2025 -0500
+
+    added all the use cases
+
+ json.txt | 245 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 242 insertions(+), 3 deletions(-)
+
+commit cea3f300fb58c55c2c23dd22e03b50e3a3993e11
+Author: Andry <andry.nasief@gmail.com>
+Date:   Fri Nov 14 14:08:00 2025 -0500
+
+    Added json api txt file
+
+ json.txt | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+commit 76869f4d6548b4304c637064fbaea517c246cb82
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Fri Nov 14 13:53:22 2025 -0500
+
+    batman
+
+ README.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
