@@ -1,3 +1,41 @@
+commit c16df7186efce428fdf3c5eb173e7c0fccd15878
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Tue Nov 25 13:15:31 2025 -0500
+
+    idk wy admin login was in register user
+
+ lib/register-shopper/handler.mjs | 108 +++++++++++++++++++--------------------
+ 1 file changed, 53 insertions(+), 55 deletions(-)
+
+commit 774ec306bf5575acd03b7c220b09e0c8ee81927f
+Merge: 539cdcf 54ca6db
+Author: Bryce Lukacs <80437073+Turretlez@users.noreply.github.com>
+Date:   Mon Nov 24 15:31:15 2025 -0500
+
+    Merge pull request #45 from EggbertFluffle/show-admin-dashboard
+    
+    Show admin dashboard
+
+commit 539cdcf9941df03cb7c66b9786b3447baeef483d
+Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
+Date:   Mon Nov 24 15:30:10 2025 -0500
+
+    deliverables
+
+ database-schema.md => database-schema-mockup.md |    0
+ deliverables/database-schema.txt                |   73 ++
+ deliverables/git.report.txt                     | 1513 +++++++++++++++++++++++
+ install_all.sh                                  |    8 +
+ package-lock.json                               |    9 +-
+ 5 files changed, 1602 insertions(+), 1 deletion(-)
+
+commit 54ca6dbeb60b5064039e6af78940d2212fc16f67
+Merge: cf15034 ecb2e35
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Mon Nov 24 15:24:30 2025 -0500
+
+    Merge branch 'dev' of https://github.com/EggbertFluffle/ShopCompBackend into show-admin-dashboard
+
 commit ecb2e353928b80ec9d9b98fe5a4198e3c6883217
 Merge: 49da974 df0f525
 Author: Harrison DiAmbrosio <hdiambrosio@gmail.com>
@@ -14,6 +52,40 @@ Date:   Mon Nov 24 13:29:59 2025 -0500
 
  lib/submit-receipt/handler.mjs | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit cf1503451368172f2863b9a6cf0c91dbaedf7cd1
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Mon Nov 24 11:13:05 2025 -0500
+
+    Complete admin dashboard backend (handler, DB setup, CDK wiring)
+
+ lib/cdk-stack.ts                           |  45 +++++++--
+ lib/login-administrator/handler.mjs        |  90 +++++++++---------
+ lib/login-administrator/package-lock.json  |   2 +-
+ lib/login-administrator/package.json       |   2 +-
+ lib/show-admin-dashboard/handler.mjs       | 120 ++++++++++++++++++++++++
+ lib/show-admin-dashboard/index.mjs         |  89 ------------------
+ lib/show-admin-dashboard/package-lock.json | 143 +++++++++++++++++++++++++++++
+ lib/show-admin-dashboard/package.json      |   9 +-
+ 8 files changed, 348 insertions(+), 152 deletions(-)
+
+commit 892bf4b6764628927fb363b2c73aded51c17fc47
+Merge: 22abbc9 df0f525
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Mon Nov 24 04:37:53 2025 -0500
+
+    Merge branch 'dev' into show-admin-dashboard to do some more work
+
+commit 22abbc9c039d705c19afe640db4f88404f82a39c
+Author: Bryce Lukacs <brycelukacs@gmail.com>
+Date:   Mon Nov 24 04:35:21 2025 -0500
+
+    WIP: admin dashboard backend
+
+ lib/show-admin-dashboard/index.mjs    | 89 +++++++++++++++++++++++++++++++++++
+ lib/show-admin-dashboard/package.json |  9 ++++
+ package-lock.json                     |  9 +++-
+ 3 files changed, 106 insertions(+), 1 deletion(-)
 
 commit df0f5257b1db9f384fd810d1c9d6212fd62ec5cf
 Author: Nikita Ostapenko <nikitul2005@gmail.com>

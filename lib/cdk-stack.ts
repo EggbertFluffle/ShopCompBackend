@@ -69,6 +69,8 @@ export class CdkStack extends cdk.Stack {
 		const loginShopperResource = api_endpoint.root.addResource("login-shopper");
 		const registerShopperResource = api_endpoint.root.addResource("register-shopper");
 		const submitReceiptResource = api_endpoint.root.addResource("submit-receipt");
+        const addStoreResource = api_endpoint.root.addResource("add-store");
+        const addChainResource = api_endpoint.root.addResource("add-chain");
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
@@ -294,7 +296,55 @@ export class CdkStack extends cdk.Stack {
 			response_parameters
 		);
 
-		const login_admin_fn = new lambdaNodejs.NodejsFunction(
+        const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
+            runtime: lambda.Runtime.NODEJS_22_X,
+            handler: "handler.handler", 
+            code: lambda.Code.fromAsset(
+				path.join(__dirname, "add-store")
+			),
+            vpc,
+            environment: {
+                RDS_USER: rdsUser,
+                RDS_PASSWORD: rdsPassword,
+                RDS_DATABASE: rdsDatabase,
+                RDS_HOST: rdsHost,
+            },
+            securityGroups: [securityGroup],
+            timeout: Duration.seconds(3),
+        });
+        addStoreResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(add_store_fn, integration_parameters),
+            response_parameters
+        );
+
+        const add_chain_fn = new lambdaNodejs.NodejsFunction(
+			this,
+			"AddChain",
+			{
+				runtime: lambda.Runtime.NODEJS_22_X,
+				handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "add-chain"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		addChainResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(add_chain_fn, integration_parameters),
+			response_parameters,
+		);
+
+        const login_admin_fn = new lambdaNodejs.NodejsFunction(
 			this,
 			"LoginAdministrator",
 			{
