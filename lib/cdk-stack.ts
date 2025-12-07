@@ -72,15 +72,16 @@ export class CdkStack extends cdk.Stack {
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
-    const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
-    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
-    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
-    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
-    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
-    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
-    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
-    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
-    const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
+		const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
+		const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+		const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+		const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+		const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+		const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+		const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+		const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+		const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
+		const reportStoreChainSales = api_endpoint.root.addResource( 'report-store-chain-sales');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -555,6 +556,30 @@ export class CdkStack extends cdk.Stack {
 			response_parameters,
 		);
 
-
+		const report_store_chain_sales_fn = new lambdaNodejs.NodejsFunction(
+			this,
+			"ReportStoreChainSales",
+			{
+				runtime: lambda.Runtime.NODEJS_22_X,
+				handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+				path.join(__dirname, "report-store-chain-sales")
+				),
+				vpc,
+				environment: {
+				RDS_USER: rdsUser,
+				RDS_PASSWORD: rdsPassword,
+				RDS_DATABASE: rdsDatabase,
+				RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			}
+			);
+			reportStoreChainSales.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(report_store_chain_sales_fn, integration_parameters),
+			response_parameters
+			);
 	}
 }
