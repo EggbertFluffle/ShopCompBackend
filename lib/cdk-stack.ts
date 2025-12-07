@@ -295,9 +295,6 @@ export class CdkStack extends cdk.Stack {
 			response_parameters
 		);
 
-
-
-        // AddStore Lambda (no bundling, no Docker, same structure as other lambdas)
         const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
             runtime: lambda.Runtime.NODEJS_22_X,
             handler: "handler.handler", 
@@ -314,8 +311,6 @@ export class CdkStack extends cdk.Stack {
             securityGroups: [securityGroup],
             timeout: Duration.seconds(3),
         });
-
-        // POST /add-store
         addStoreResource.addMethod(
             "POST",
             new apigw.LambdaIntegration(add_store_fn, integration_parameters),
