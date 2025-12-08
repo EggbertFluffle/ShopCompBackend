@@ -70,18 +70,20 @@ export class CdkStack extends cdk.Stack {
 		const registerShopperResource = api_endpoint.root.addResource("register-shopper");
 		const submitReceiptResource = api_endpoint.root.addResource("submit-receipt");
         const addStoreResource = api_endpoint.root.addResource("add-store");
+        const addChainResource = api_endpoint.root.addResource("add-chain");
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
-    const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
-    const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
-    const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
-    const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
-    const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
-    const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
-    const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
-    const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
-    const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
+		const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
+		const listShoppingListsResource = api_endpoint.root.addResource( 'list-shopping-lists');
+		const createShoppingListResource = api_endpoint.root.addResource( 'create-shopping-list');
+		const addItemToShoppingListResource = api_endpoint.root.addResource( 'add-to-shopping-list');
+		const removeItemFromShoppingListResource = api_endpoint.root.addResource( 'remove-from-shopping-list');
+		const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
+		const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
+		const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+		const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
+		const reportStoreChainSales = api_endpoint.root.addResource( 'report-store-chain-sales');
 
 		// https://github.com/aws/aws-cdk/blob/main/packages/aws-cdk-lib/aws-apigateway/README.md
 		const integration_parameters = {
@@ -294,13 +296,12 @@ export class CdkStack extends cdk.Stack {
 			response_parameters
 		);
 
-
-
-        // AddStore Lambda (no bundling, no Docker, same structure as other lambdas)
         const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
             runtime: lambda.Runtime.NODEJS_22_X,
-            handler: "handler.handler",                  // export const handler
-            code: lambda.Code.fromAsset(path.join(__dirname, "add-store")),
+            handler: "handler.handler", 
+            code: lambda.Code.fromAsset(
+				path.join(__dirname, "add-store")
+			),
             vpc,
             environment: {
                 RDS_USER: rdsUser,
@@ -311,14 +312,37 @@ export class CdkStack extends cdk.Stack {
             securityGroups: [securityGroup],
             timeout: Duration.seconds(3),
         });
-
-        // POST /add-store
         addStoreResource.addMethod(
             "POST",
             new apigw.LambdaIntegration(add_store_fn, integration_parameters),
             response_parameters
         );
 
+        const add_chain_fn = new lambdaNodejs.NodejsFunction(
+			this,
+			"AddChain",
+			{
+				runtime: lambda.Runtime.NODEJS_22_X,
+				handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+					path.join(__dirname, "add-chain"),
+				),
+				vpc,
+				environment: {
+					RDS_USER: rdsUser,
+					RDS_PASSWORD: rdsPassword,
+					RDS_DATABASE: rdsDatabase,
+					RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			},
+		);
+		addChainResource.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(add_chain_fn, integration_parameters),
+			response_parameters,
+		);
 
         const login_admin_fn = new lambdaNodejs.NodejsFunction(
 			this,
@@ -582,6 +606,30 @@ export class CdkStack extends cdk.Stack {
 			response_parameters,
 		);
 
-
+		const report_store_chain_sales_fn = new lambdaNodejs.NodejsFunction(
+			this,
+			"ReportStoreChainSales",
+			{
+				runtime: lambda.Runtime.NODEJS_22_X,
+				handler: "handler.handler",
+				code: lambda.Code.fromAsset(
+				path.join(__dirname, "report-store-chain-sales")
+				),
+				vpc,
+				environment: {
+				RDS_USER: rdsUser,
+				RDS_PASSWORD: rdsPassword,
+				RDS_DATABASE: rdsDatabase,
+				RDS_HOST: rdsHost,
+				},
+				securityGroups: [securityGroup],
+				timeout: Duration.seconds(3),
+			}
+			);
+			reportStoreChainSales.addMethod(
+			"POST",
+			new apigw.LambdaIntegration(report_store_chain_sales_fn, integration_parameters),
+			response_parameters
+			);
 	}
 }
