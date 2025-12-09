@@ -1,0 +1,29 @@
+POST:
+    {
+        "admin-uuid": "18ba7790-12b6-47df-9aba-2e5c6db8b95e"
+    }
+200:
+    {
+        "sales-list" : [
+            {
+                "chain-name": "Walmart",
+                "total-sales": 660.78
+            },
+            {
+                "chain-name": "CVS",
+                "total-sales": 0
+            },
+            {
+                "chain-name": "Walgreens",
+                "total-sales": 389.05
+            },
+        ]
+    }
+400:
+    {
+        "error" : "Shopper is not an admin"
+    }
+400:
+    {
+        "error" : "Error returning chain sales"
+    }
