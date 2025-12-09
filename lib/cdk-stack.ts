@@ -69,8 +69,17 @@ export class CdkStack extends cdk.Stack {
 		const loginShopperResource = api_endpoint.root.addResource("login-shopper");
 		const registerShopperResource = api_endpoint.root.addResource("register-shopper");
 		const submitReceiptResource = api_endpoint.root.addResource("submit-receipt");
+<<<<<<< HEAD
         const addStoreResource = api_endpoint.root.addResource("add-store");
+=======
+<<<<<<< Updated upstream
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
 		const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
+=======
+        const addStoreResource = api_endpoint.root.addResource("add-store");
+        const removeStoreResource = api_endpoint.root.addResource("remove-store");
+        const getStoreChainsResource = api_endpoint.root.addResource("get-store-chains");
+>>>>>>> Stashed changes
 		const reviewHistoryResource = api_endpoint.root.addResource("review-history");
 		const loginAdminResource = api_endpoint.root.addResource( 'login-administrator');
         const showAdminDashboardResource = api_endpoint.root.addResource('show-admin-dashboard');
@@ -295,7 +304,16 @@ export class CdkStack extends cdk.Stack {
 			response_parameters
 		);
 
+<<<<<<< HEAD
         // AddStore Lambda (no bundling, no Docker, same structure as other lambdas)
+=======
+<<<<<<< Updated upstream
+		const login_admin_fn = new lambdaNodejs.NodejsFunction(
+=======
+
+
+        // AddStore Lambda
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
         const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
             runtime: lambda.Runtime.NODEJS_22_X,
             handler: "handler.handler",                  // export const handler
@@ -318,6 +336,7 @@ export class CdkStack extends cdk.Stack {
             response_parameters
         );
 
+<<<<<<< HEAD
         // RemoveStore Lambda
         const remove_store_fn = new lambdaNodejs.NodejsFunction(this, "RemoveStore", {
             runtime: lambda.Runtime.NODEJS_22_X,
@@ -325,6 +344,12 @@ export class CdkStack extends cdk.Stack {
             code: lambda.Code.fromAsset(
                 path.join(__dirname, "remove-store"),
             ),
+=======
+        const remove_store_fn = new lambdaNodejs.NodejsFunction(this, "RemoveStore", {
+            runtime: lambda.Runtime.NODEJS_22_X,
+            handler: "handler.handler", // export const handler in handler.mjs
+            code: lambda.Code.fromAsset(path.join(__dirname, "remove-store")),
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
             vpc,
             environment: {
                 RDS_USER: rdsUser,
@@ -336,16 +361,30 @@ export class CdkStack extends cdk.Stack {
             timeout: Duration.seconds(3),
         });
 
+<<<<<<< HEAD
 // POST /remove-store  (admin-only logic is inside the Lambda)
         removeStoreResource.addMethod(
             "POST",
             new apigw.LambdaIntegration(remove_store_fn, integration_parameters),
             response_parameters,
+=======
+        removeStoreResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(remove_store_fn, integration_parameters),
+            response_parameters
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
         );
 
 
 
+<<<<<<< HEAD
         const login_admin_fn = new lambdaNodejs.NodejsFunction(
+=======
+
+
+        const login_admin_fn = new lambdaNodejs.NodejsFunction(
+>>>>>>> Stashed changes
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
 			this,
 			"LoginAdministrator",
 			{

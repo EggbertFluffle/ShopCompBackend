@@ -1,11 +1,17 @@
 {
   "name": "remove-store",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "Lambda for removing a store from a chain",
   "main": "handler.mjs",
   "type": "module",
   "dependencies": {
     "mysql2": "^3.15.3",
     "uuid": "^13.0.0"
+=======
+  "main": "handler.mjs",
+  "dependencies": {
+    "mysql2": "^3.15.1"
+>>>>>>> b930c1b (Implement Remove Store Lambda (admin-only, WIP))
   }
 }
