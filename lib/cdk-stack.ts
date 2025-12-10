@@ -82,7 +82,8 @@ export class CdkStack extends cdk.Stack {
 		const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
 		const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
 		const removeStoreResource = api_endpoint.root.addResource("remove-store");
-		const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
+        const removeStoreChainResource = api_endpoint.root.addResource("remove-store-chain");
+        const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 		const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
 		const reportStoreChainSales = api_endpoint.root.addResource( 'report-store-chain-sales' );
 
@@ -296,7 +297,9 @@ export class CdkStack extends cdk.Stack {
 			new apigw.LambdaIntegration(get_store_chains_fn, integration_parameters),
 			response_parameters
 		);
-    
+
+
+
         const add_store_fn = new lambdaNodejs.NodejsFunction(this, "AddStore", {
             runtime: lambda.Runtime.NODEJS_22_X,
             handler: "handler.handler", 
@@ -341,6 +344,34 @@ export class CdkStack extends cdk.Stack {
             new apigw.LambdaIntegration(remove_store_fn, integration_parameters),
             response_parameters,
         );
+
+        const remove_store_chain_fn = new lambdaNodejs.NodejsFunction(
+            this,
+            "RemoveStoreChain",
+            {
+                runtime: lambda.Runtime.NODEJS_22_X,
+                handler: "handler.handler",
+                code: lambda.Code.fromAsset(
+                    path.join(__dirname, "remove-store-chain"),
+                ),
+                vpc,
+                environment: {
+                    RDS_USER: rdsUser,
+                    RDS_PASSWORD: rdsPassword,
+                    RDS_DATABASE: rdsDatabase,
+                    RDS_HOST: rdsHost,
+                },
+                securityGroups: [securityGroup],
+                timeout: Duration.seconds(3),
+            },
+        );
+
+        removeStoreChainResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(remove_store_chain_fn, integration_parameters),
+            response_parameters,
+        );
+
 
         const add_chain_fn = new lambdaNodejs.NodejsFunction(
 			this,

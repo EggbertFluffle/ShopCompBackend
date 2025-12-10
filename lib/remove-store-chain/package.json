@@ -1,0 +1,10 @@
+{
+  "name": "remove-store-chain",
+  "version": "1.0.0",
+  "description": "Lambda for removing a store chain from ShopComp",
+  "main": "handler.mjs",
+  "type": "module",
+  "dependencies": {
+    "mysql2": "^3.15.3"
+  }
+}
