@@ -82,6 +82,7 @@ export class CdkStack extends cdk.Stack {
 		const modifyItemOnShoppingListResource = api_endpoint.root.addResource( 'modify-on-shopping-list');
 		const removeShoppingListResource = api_endpoint.root.addResource( 'remove-shopping-list');
 		const removeStoreResource = api_endpoint.root.addResource("remove-store");
+		const removeChainResource = api_endpoint.root.addResource("remove-chain");
 		const modifyShoppingListResource = api_endpoint.root.addResource( 'modify-shopping-list');
 		const reportShoppingListOptions = api_endpoint.root.addResource( 'report-options-for-shopping-list');
 		const reportStoreChainSales = api_endpoint.root.addResource( 'report-store-chain-sales' );
@@ -335,10 +336,31 @@ export class CdkStack extends cdk.Stack {
             securityGroups: [securityGroup],
             timeout: Duration.seconds(3),
         });
-
         removeStoreResource.addMethod(
             "POST",
             new apigw.LambdaIntegration(remove_store_fn, integration_parameters),
+            response_parameters,
+        );
+
+        const remove_chain_fn = new lambdaNodejs.NodejsFunction(this, "RemoveChain", {
+            runtime: lambda.Runtime.NODEJS_22_X,
+            handler: "handler.handler",
+            code: lambda.Code.fromAsset(
+                path.join(__dirname, "remove-chain"),
+            ),
+            vpc,
+            environment: {
+                RDS_USER: rdsUser,
+                RDS_PASSWORD: rdsPassword,
+                RDS_DATABASE: rdsDatabase,
+                RDS_HOST: rdsHost,
+            },
+            securityGroups: [securityGroup],
+            timeout: Duration.seconds(3),
+        });
+        removeChainResource.addMethod(
+            "POST",
+            new apigw.LambdaIntegration(remove_chain_fn, integration_parameters),
             response_parameters,
         );
 
